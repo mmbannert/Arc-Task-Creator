@@ -1,0 +1,7 @@
+name: arc-task
+channels:
+  - conda-forge
+
+dependencies:
+  - pandas
+  - pillow

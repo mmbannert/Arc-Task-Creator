@@ -2,197 +2,141 @@ import random
 
 from src.grid import Grid
 from src.util import rand_between
+from src.rules._common import make_grids, make_params
+from src.config import COLORS, GRID_SIZE
 
 
-def generate_star_expansion_single_step(grid_size=(12, 12), star_num=(1, 4), colors=("red", "blue")):
+def generate_star_expansion_single_step(star_num=(1, 4)):
     """
     Careful, random.sample crashes if n > grid size. Same goes for n = 0.
     """
-    rows, cols = grid_size
-    grid_input, grid_output = Grid(rows, cols), Grid(rows, cols)
-
+    grid_input, grid_output = make_grids()
     n = rand_between(*star_num)
+    centers = random.sample(grid_input.interior_cells(), n)
 
-    centers = random.sample(
-        [(x, y) for x in range(1, cols - 1) for y in range(1, rows - 1)],
-        n
+    _fill_centers(grid_input, centers, COLORS[0])
+    directions = ((1, 1), (1, -1), (-1, 1), (-1, -1))
+    _apply_single_step(grid_output, centers, directions)
+    _fill_centers(grid_output, centers, COLORS[0])  # refill the center cells that might have been over-colored
+
+    params = make_params(
+        event="expansion",
+        condition="shape",
+        stimulus=["dots", "star"],
+        colors=COLORS[:2],
+        n_objects=n,
     )
-
-    for x, y in centers:
-        grid_input.fill_cell(x, y, colors[0])
-
-        grid_output.fill_cell(x + 1, y + 1, colors[1])
-        grid_output.fill_cell(x + 1, y - 1, colors[1])
-        grid_output.fill_cell(x - 1, y + 1, colors[1])
-        grid_output.fill_cell(x - 1, y - 1, colors[1])
-
-    for x, y in centers:
-        grid_output.fill_cell(x, y, colors[0])  # refill the center cells that might have been over-colored
-
-    params = {
-        "event": "expansion",
-        "condition": "shape",
-        "stimulus": ["dots", "star"],
-        "grid_size": grid_size,
-        "colors": colors,
-        "n_objects": n
-    }
 
     return grid_input, grid_output, params
 
 
-def generate_star_expansion_ray(grid_size=(12, 12), star_num=(1, 3), colors=("red", "blue")):
-    rows, cols = grid_size
-    grid_input, grid_output = Grid(rows, cols), Grid(rows, cols)
-
+def generate_star_expansion_ray(star_num=(1, 3)):
+    grid_input, grid_output = make_grids()
     n = rand_between(*star_num)
+    centers = random.sample(grid_input.interior_cells(), n)
 
-    centers = random.sample(
-        [(x, y) for x in range(1, cols - 1) for y in range(1, rows - 1)],
-        n
+    _fill_centers(grid_input, centers, COLORS[0])
+    directions = ((1, 1), (1, -1), (-1, 1), (-1, -1))
+    _apply_ray(grid_output, centers, directions)
+    _fill_centers(grid_output, centers, COLORS[0])  # refill the center cells that might have been over-colored
+
+    params = make_params(
+        event="expansion",
+        condition="shape",
+        stimulus=["dots", "star"],
+        colors=COLORS[:2],
+        n_objects=n,
     )
-
-    for x, y in centers:
-        grid_input.fill_cell(x, y, colors[0])
-
-    dirs = ((1, 1), (1, -1), (-1, 1), (-1, -1))
-
-    for x0, y0 in centers:
-        for dx, dy in dirs:
-            x, y = x0 + dx, y0 + dy
-            while 0 <= x < cols and 0 <= y < rows:
-                grid_output.fill_cell(x, y, colors[1])
-                x += dx
-                y += dy
-
-    for x0, y0 in centers:
-        grid_output.fill_cell(x0, y0, colors[0])  # refill the center cells that might have been over-colored
-
-    params = {
-        "event": "expansion",
-        "condition": "shape",
-        "stimulus": ["dots", "star"],
-        "grid_size": grid_size,
-        "colors": colors,
-        "n_objects": n
-    }
 
     return grid_input, grid_output, params
 
 
-def generate_plus_expansion_single_step(grid_size=(12, 12), plus_num=(1, 4), colors=("red", "blue")):
-    rows, cols = grid_size
-    grid_input, grid_output = Grid(rows, cols), Grid(rows, cols)
-
+def generate_plus_expansion_single_step(plus_num=(1, 4)):
+    grid_input, grid_output = make_grids()
     n = rand_between(*plus_num)
-    centers = random.sample(
-        [(x, y) for x in range(1, cols - 1) for y in range(1, rows - 1)],
-        n
+    centers = random.sample(grid_input.interior_cells(), n)
+
+    _fill_centers(grid_input, centers, COLORS[0])
+    directions = ((1, 0), (-1, 0), (0, 1), (0, -1))
+    _apply_single_step(grid_output, centers, directions)
+    _fill_centers(grid_input, centers, COLORS[0])
+
+    params = make_params(
+        event="expansion",
+        condition="shape",
+        stimulus=["dots", "plus"],
+        colors=COLORS[:2],
+        n_objects=n,
     )
-
-    for x, y in centers:
-        grid_input.fill_cell(x, y, colors[0])  # Center
-
-        grid_output.fill_cell(x + 1, y, colors[1])  # Right
-        grid_output.fill_cell(x - 1, y, colors[1])  # Left
-        grid_output.fill_cell(x, y + 1, colors[1])  # Top
-        grid_output.fill_cell(x, y - 1, colors[1])  # Bottom
-
-    for x, y in centers:
-        grid_output.fill_cell(x, y, colors[0])  # refill the center cells that might have been over-colored
-
-    params = {
-        "event": "expansion",
-        "condition": "shape",
-        "stimulus": ["dots", "plus"],
-        "grid_size": grid_size,
-        "colors": colors,
-        "n_objects": n
-    }
 
     return grid_input, grid_output, params
 
 
-def generate_plus_expansion_ray(grid_size=(12, 12), plus_num=(1, 3), colors=("red", "blue")):
-    rows, cols = grid_size
-    grid_input, grid_output = Grid(rows, cols), Grid(rows, cols)
-
+def generate_plus_expansion_ray(plus_num=(1, 3)):
+    grid_input, grid_output = make_grids()
     n = rand_between(*plus_num)
+    centers = random.sample(grid_input.interior_cells(), n)
 
-    centers = random.sample(
-        [(x, y) for x in range(1, cols - 1) for y in range(1, rows - 1)],
-        n
+    _fill_centers(grid_input, centers, COLORS[0])
+    directions = ((1, 0), (-1, 0), (0, 1), (0, -1))
+    _apply_ray(grid_output, centers, directions)
+    _fill_centers(grid_output, centers, COLORS[0])  # refill the center cells that might have been over-colored
+
+    params = make_params(
+        event="expansion",
+        condition="shape",
+        stimulus=["dots", "plus"],
+        colors=COLORS[:2],
+        n_objects=n,
     )
-
-    for x, y in centers:
-        grid_input.fill_cell(x, y, colors[0])
-
-    dirs = ((1, 0), (-1, 0), (0, 1), (0, -1))
-
-    for x0, y0 in centers:
-        for dx, dy in dirs:
-            x, y = x0 + dx, y0 + dy
-            while 0 <= x < cols and 0 <= y < rows:
-                grid_output.fill_cell(x, y, colors[1])
-                x += dx
-                y += dy
-
-    for x0, y0 in centers:
-        grid_output.fill_cell(x0, y0, colors[0])  # refill the origin points that might have been over-colored
-
-    params = {
-        "event": "expansion",
-        "condition": "shape",
-        "stimulus": ["dots", "plus"],
-        "grid_size": grid_size,
-        "colors": colors,
-        "n_objects": n
-    }
 
     return grid_input, grid_output, params
 
 
-def generate_3arm_star_expansion_ray(grid_size=(12, 12), star_num=(1, 3), colors=("red", "blue")):
-    rows, cols = grid_size
-    grid_input, grid_output = Grid(rows, cols), Grid(rows, cols)
-
+def generate_3arm_star_expansion_ray(star_num=(1, 3)):
+    grid_input, grid_output = make_grids()
     n = rand_between(*star_num)
+    centers = random.sample(grid_input.interior_cells(), n)
 
-    centers = random.sample(
-        [(x, y) for x in range(1, cols - 1) for y in range(1, rows - 1)],
-        n
+    _fill_centers(grid_input, centers, COLORS[0])
+    directions = ((1, 1), (1, -1), (-1, 1), (-1, -1))
+
+    # Remove one arm randomly
+    selected_directions = list(directions)
+    skip_direction = random.choice(selected_directions)
+    selected_directions.remove(skip_direction)
+
+    _apply_ray(grid_output, centers, selected_directions)
+    _fill_centers(grid_output, centers, COLORS[0])  # refill the center cells that might have been over-colored
+
+    params = make_params(
+        event="expansion",
+        condition="shape",
+        stimulus=["dots", "star"],
+        colors=COLORS[:2],
+        n_objects=n,
     )
 
-    # mark centers on input
+    return grid_input, grid_output, params
+
+
+def _fill_centers(grid, centers, color):
     for x, y in centers:
-        grid_input.fill_cell(x, y, colors[0])
+        grid.fill_cell(x, y, color)
 
-    # four diagonal directions
-    dirs_all = ((1, 1), (1, -1), (-1, 1), (-1, -1))
 
+def _apply_single_step(grid_output, centers, directions):
     for x0, y0 in centers:
-        # randomly choose one diagonal to *omit*
-        dirs = list(dirs_all)
-        skip_dir = random.choice(dirs)
-        dirs.remove(skip_dir)
+        for dx, dy in directions:
+            grid_output.fill_cell(x0 + dx, y0 + dy, COLORS[1])
 
-        for dx, dy in dirs:
+
+def _apply_ray(grid_output, centers, directions):
+    rows, cols = GRID_SIZE
+    for x0, y0 in centers:
+        for dx, dy in directions:
             x, y = x0 + dx, y0 + dy
             while 0 <= x < cols and 0 <= y < rows:
-                grid_output.fill_cell(x, y, colors[1])
+                grid_output.fill_cell(x, y, COLORS[1])
                 x += dx
                 y += dy
-
-    for x0, y0 in centers:
-        grid_output.fill_cell(x0, y0, colors[0])  # refill the origin points that might have been over-colored
-
-    params = {
-        "event": "expansion",
-        "condition": "shape",
-        "stimulus": ["dots", "star"],
-        "grid_size": grid_size,
-        "colors": colors,
-        "n_objects": n
-    }
-
-    return grid_input, grid_output, params

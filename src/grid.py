@@ -34,6 +34,22 @@ class Grid:
     def as_list(self):
         return self.grid
 
+    def cells(self):
+        """Return coordinates of all cells in the grid."""
+        return [
+            (row, col)
+            for row in range(self.rows)
+            for col in range(self.cols)
+        ]
+
+    def interior_cells(self):
+        """Return coordinates of all non-border cells in the grid."""
+        return [
+            (row, col)
+            for row in range(1, self.rows - 1)
+            for col in range(1, self.cols - 1)
+        ]
+
     def copy(self):
         new_grid = Grid(self.rows, self.cols)
         new_grid.grid = [row.copy() for row in self.grid]

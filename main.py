@@ -20,10 +20,10 @@ from src.rules.arithmetic import (
 
 from src.rules.expansion import (
     generate_star_expansion_single_step,
-    generate_star_expansion_full,
+    generate_star_expansion_ray,
     generate_plus_expansion_single_step,
-    generate_plus_expansion_full,
-    generate_3arm_star_expansion_full,
+    generate_plus_expansion_ray,
+    generate_3arm_star_expansion_ray,
 )
 
 from src.rules.occlusion import (
@@ -42,14 +42,8 @@ from src.rules.attraction import (
     generate_float, generate_dots_gravity,
 )
 
-
 """
 For testing
-"""
-
-def main(N):
-
-    rules = {
         "occlusion.occlusion_reversal": generate_occlusion_reversal,
         "occlusion.occlusion_mirror_x": generate_occlusion_mirror_x,
         "occlusion.occlusion_mirror_y": generate_occlusion_mirror_y,
@@ -62,10 +56,10 @@ def main(N):
         "attraction.repulsion": generate_repulsion,
         "attraction.gravity_dots": generate_dots_gravity,
         "expansion.star_step": generate_star_expansion_single_step,
-        "expansion.star_full": generate_star_expansion_full,
+        "expansion.star_ray": generate_star_expansion_ray,
         "expansion.plus_step": generate_plus_expansion_single_step,
-        "expansion.plus_full": generate_plus_expansion_full,
-        "expansion.3arm_star_full": generate_3arm_star_expansion_full,
+        "expansion.plus_ray": generate_plus_expansion_ray,
+        "expansion.3arm_star_ray": generate_3arm_star_expansion_ray,        
         "arithmetic.dot_majority_recolor": generate_dot_majority_recolor,
         "arithmetic.dot_minority_recolor": generate_dot_minority_recolor,
         "arithmetic.cross_plus_minority_recolor": generate_cross_plus_majority_recolor,
@@ -73,6 +67,17 @@ def main(N):
         "recoloring.dot_neighbor_recolor": generate_dot_neighbor_recolor,
         "recoloring.cross_plus_shape_fixed_recolor": generate_cross_plus_shape_fixed_recolor,
         "recoloring.cross_plus_cyclic_recolor": generate_cross_plus_cyclic_recolor,
+"""
+
+
+def main(N):
+    rules = {
+        "expansion.star_step": generate_star_expansion_single_step,
+        "expansion.star_ray": generate_star_expansion_ray,
+        "expansion.plus_step": generate_plus_expansion_single_step,
+        "expansion.plus_ray": generate_plus_expansion_ray,
+        "expansion.3arm_star_ray": generate_3arm_star_expansion_ray,
+
     }
 
     for name, gen in rules.items():
@@ -97,8 +102,10 @@ def _generate_stimulus(rule: str, gen, out_root: str = "out") -> None:
     p_out = base / f"{stim_id}.output.png"
     p_comb = base / f"{stim_id}.combined.png"
 
-    save_grid(inp, str(p_in))
-    save_grid(out, str(p_out))
+    # Separate stimuli currently not needed. Useful when participant picks correct output from multiple options.
+    # save_grid(inp, str(p_in))
+    # save_grid(out, str(p_out))
+
     save_combined_grids(inp, out, str(p_comb))
 
     family = rule.split(".", 1)[0]

@@ -3,8 +3,8 @@ from src.util import rand_between
 from src.grid import Grid
 from typing import Dict, Tuple, Any, List
 
-
 import random
+
 
 def generate_dot_majority_recolor(grid_size=(12, 12), block_num=(1, 6), colors=("red", "blue")):
     rows, cols = grid_size
@@ -62,6 +62,7 @@ def generate_dot_majority_recolor(grid_size=(12, 12), block_num=(1, 6), colors=(
     }
 
     return grid_input, grid_output, params
+
 
 def generate_dot_minority_recolor(grid_size=(12, 12), block_num=(1, 6), colors=("red", "blue")):
     rows, cols = grid_size
@@ -150,7 +151,7 @@ def generate_cross_plus_majority_recolor(grid_size=(12, 12), stamp_num=(1, 6), c
             break
 
     n_cross = sum(1 for shape, _ in placed if shape == "cross")
-    n_plus  = sum(1 for shape, _ in placed if shape == "plus")
+    n_plus = sum(1 for shape, _ in placed if shape == "plus")
 
     while n_cross == n_plus:
         return generate_cross_plus_majority_recolor(grid_size, stamp_num, colors)

@@ -144,7 +144,7 @@ def generate_occlusion_reversal(grid_size=(12, 12), size_range=(2, 5), colors=("
     grid_output.fill_rect(**front_block)
     grid_output.fill_rect(**back_block)
 
-    for _ in range(random.randrange(4)):
+    for _ in range(random.randrange(4)):  # Rotate few times to generate all variations
         grid_input.rotate_ccw_90()
         grid_output.rotate_ccw_90()
 

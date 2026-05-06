@@ -1,9 +1,7 @@
-
 import random
 
 from src.grid import Grid
 from src.util import rand_between
-
 
 
 def generate_star_expansion_single_step(grid_size=(12, 12), star_num=(1, 4), colors=("red", "blue")):
@@ -43,7 +41,7 @@ def generate_star_expansion_single_step(grid_size=(12, 12), star_num=(1, 4), col
     return grid_input, grid_output, params
 
 
-def generate_star_expansion_full(grid_size=(12, 12), star_num=(1, 3), colors=("red", "blue")):
+def generate_star_expansion_ray(grid_size=(12, 12), star_num=(1, 3), colors=("red", "blue")):
     rows, cols = grid_size
     grid_input, grid_output = Grid(rows, cols), Grid(rows, cols)
 
@@ -115,7 +113,7 @@ def generate_plus_expansion_single_step(grid_size=(12, 12), plus_num=(1, 4), col
     return grid_input, grid_output, params
 
 
-def generate_plus_expansion_full(grid_size=(12, 12), plus_num=(1, 3), colors=("red", "blue")):
+def generate_plus_expansion_ray(grid_size=(12, 12), plus_num=(1, 3), colors=("red", "blue")):
     rows, cols = grid_size
     grid_input, grid_output = Grid(rows, cols), Grid(rows, cols)
 
@@ -154,7 +152,7 @@ def generate_plus_expansion_full(grid_size=(12, 12), plus_num=(1, 3), colors=("r
     return grid_input, grid_output, params
 
 
-def generate_3arm_star_expansion_full(grid_size=(12, 12), star_num=(1, 3), colors=("red", "blue")):
+def generate_3arm_star_expansion_ray(grid_size=(12, 12), star_num=(1, 3), colors=("red", "blue")):
     rows, cols = grid_size
     grid_input, grid_output = Grid(rows, cols), Grid(rows, cols)
 

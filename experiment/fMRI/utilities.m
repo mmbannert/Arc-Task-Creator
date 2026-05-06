@@ -203,14 +203,22 @@ end
 
 % ===================== UI helpers =====================
 function rgb = phase_bg_rgb(bgName)
-    bgName = string(bgName);
-    if bgName == "green"
-        rgb = [0 0.45 0];
-    elseif bgName == "red"
-        rgb = [0.45 0 0];
-    else
-        rgb = [0 0 0];
+    luminosity = 0.4;  
+
+    switch string(bgName)
+        case "yellow"
+            base_rgb = [1 1 0];
+        case "cyan"
+            base_rgb = [0 1 1];
+        otherwise
+            rgb = [0 0 0];
+            return
     end
+
+    % Convert to HSV, adjust luminosity, convert back to RGB
+    hsv = rgb2hsv(base_rgb); 
+    hsv(3) = luminosity; % hsv = [Hue, Saturation, Value]
+    rgb = hsv2rgb(hsv); 
 end
 
 function [key, t] = wait_key(validKeys, escKey)
@@ -237,7 +245,12 @@ end
 
 % ===================== screens =====================
 function [resp, rt, tOn] = twoimg_screen(w, rect, phase, tr, texCache, keySame, keyDiff, keyEsc)
-    Screen('FillRect', w, utilities.phase_bg_rgb(phase.bg));
+    Screen('FillRect', w, [0.15 0.15 0.15]);
+
+    frameColor = utilities.phase_bg_rgb(phase.bg);
+    frameWidth = 30;
+    Screen('FrameRect', w, frameColor, rect, frameWidth);
+
     utilities.draw_header(w, rect, phase);
     utilities.draw_two_stacked_imgs(w, rect, texCache, tr.imgs);
 

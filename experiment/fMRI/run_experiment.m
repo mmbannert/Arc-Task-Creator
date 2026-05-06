@@ -3,8 +3,8 @@ function run_experiment(sessionPath)
 
 SKIP_SYNC_TESTS = 1;
 
-eyelink_flag = 1;
-DUMMY_MODE = 0;
+eyelink_flag = 0;
+DUMMY_MODE = 1;
 
 try
     session = jsondecode(fileread(sessionPath));

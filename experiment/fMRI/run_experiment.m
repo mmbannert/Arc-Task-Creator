@@ -6,6 +6,8 @@ SKIP_SYNC_TESTS = 1;
 eyelink_flag = 0;
 DUMMY_MODE = 1;
 
+REST_TIME = 15;
+
 try
     session = jsondecode(fileread(sessionPath));
     session = utilities.normalize_session(session);
@@ -76,6 +78,8 @@ try
 
             % ---------- phase_start: single trial stored in phase.trial ----------
             if phaseName == "phase_start"
+                utilities.rest_screen(w, rect, REST_TIME, 'Take a short break.');
+
                 if isfield(phase,'trial') && ~isempty(phase.trial)
                     tr0 = phase.trial(1);
                 else

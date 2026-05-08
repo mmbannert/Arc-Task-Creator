@@ -320,6 +320,16 @@ function draw_two_stacked_imgs(w, rect, texCache, imgsField)
     end
 end
 
+function rest_screen(w, rect, seconds, text)
+    Screen('FillRect', w, [0 0 0]);
+
+    msg = sprintf('%s\n\n%d seconds', text, seconds);
+    DrawFormattedText(w, msg, 'center', 'center', [1 1 1]);
+
+    Screen('Flip', w);
+    WaitSecs(seconds);
+end
+
 % ===================== EyeLink =====================
 
 function el = setup_eyelink(w, rect, dummyMode, participant)

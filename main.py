@@ -37,9 +37,9 @@ from src.rules.occlusion import (
 from src.rules.attraction import (
     generate_color_attraction,
     generate_size_attraction,
-    generate_repulsion,
-    generate_gravity,
-    generate_float, generate_dots_gravity,
+    generate_color_repulsion,
+    generate_falling_blocks,
+    generate_float, generate_falling_dots,
 )
 
 """
@@ -51,10 +51,10 @@ For testing
         "occlusion.occlusion_rotate_180": generate_occlusion_rotate_180,
         "attraction.color": generate_color_attraction,
         "attraction.size": generate_size_attraction,
-        "attraction.gravity": generate_gravity,
+        "attraction.falling_blocks": generate_falling_blocks,
         "attraction.float": generate_float,
         "attraction.repulsion": generate_repulsion,
-        "attraction.gravity_dots": generate_dots_gravity,
+        "attraction.falling_dots": generate_falling_dots,
         "expansion.star_step": generate_star_expansion_single_step,
         "expansion.star_ray": generate_star_expansion_ray,
         "expansion.plus_step": generate_plus_expansion_single_step,
@@ -72,12 +72,12 @@ For testing
 
 def main(N):
     rules = {
-        "expansion.star_step": generate_star_expansion_single_step,
-        "expansion.star_ray": generate_star_expansion_ray,
-        "expansion.plus_step": generate_plus_expansion_single_step,
-        "expansion.plus_ray": generate_plus_expansion_ray,
-        "expansion.3arm_star_ray": generate_3arm_star_expansion_ray,
-
+        "attraction.color": generate_color_attraction,
+        "attraction.size": generate_size_attraction,
+        "attraction.falling_blocks": generate_falling_blocks,
+        "attraction.float": generate_float,
+        "attraction.repulsion": generate_color_repulsion,
+        "attraction.falling_dots": generate_falling_dots,
     }
 
     for name, gen in rules.items():
@@ -124,4 +124,4 @@ def _generate_stimulus(rule: str, gen, out_root: str = "out") -> None:
 
 
 if __name__ == "__main__":
-    main(30)
+    main(10)

@@ -81,13 +81,13 @@ def build_session(
 
         # detect if this is color attraction via params
         has_bigger_block = any("bigger_block" in r.get("params", {}) for r in unused_records)
-
         if has_bigger_block:
             red_records = [r for r in unused_records if r["params"]["bigger_block"] == "red"]
             blue_records = [r for r in unused_records if r["params"]["bigger_block"] == "blue"]
 
             first = red_records[0]
             second = blue_records[0]
+
         else:
             first, second = unused_records[0], unused_records[1]
 

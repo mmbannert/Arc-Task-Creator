@@ -67,9 +67,9 @@ def save_combined_grids(grid1, grid2, save_path="combined.png"):
     # First grid
     axs[0].imshow(rgb_grid1, interpolation='none', extent=(0, cols1, rows1, 0))
     for x in range(cols1 + 1):
-        axs[0].axvline(x, color='gray', linewidth=2)
+        axs[0].axvline(x, color='dimgray', linewidth=2)
     for y in range(rows1 + 1):
-        axs[0].axhline(y, color='gray', linewidth=2)
+        axs[0].axhline(y, color='dimgray', linewidth=2)
     axs[0].set_xlim(0, cols1)
     axs[0].set_ylim(0, rows1)
     axs[0].set_aspect('equal')
@@ -78,9 +78,9 @@ def save_combined_grids(grid1, grid2, save_path="combined.png"):
     # Second grid
     axs[1].imshow(rgb_grid2, interpolation='none', extent=(0, cols2, rows2, 0))
     for x in range(cols2 + 1):
-        axs[1].axvline(x, color='gray', linewidth=2)
+        axs[1].axvline(x, color='dimgray', linewidth=2)
     for y in range(rows2 + 1):
-        axs[1].axhline(y, color='gray', linewidth=2)
+        axs[1].axhline(y, color='dimgray', linewidth=2)
     axs[1].set_xlim(0, cols2)
     axs[1].set_ylim(0, rows2)
     axs[1].set_aspect('equal')

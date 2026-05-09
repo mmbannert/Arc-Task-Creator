@@ -13,10 +13,10 @@ def generate_star_expansion_single_step(star_num=(1, 4)):
     n = rand_between(*star_num)
     centers = random.sample(grid_input.interior_cells(), n)
 
-    _fill_centers(grid_input, centers, COLORS[0])
+    grid_input.fill_multiple_cells(centers, COLORS[0])
     directions = ((1, 1), (1, -1), (-1, 1), (-1, -1))
     _apply_single_step(grid_output, centers, directions)
-    _fill_centers(grid_output, centers, COLORS[0])  # refill the center cells that might have been over-colored
+    grid_output.fill_multiple_cells(centers, COLORS[0])  # refill the center cells that might have been over-colored
 
     params = make_params(
         event="expansion",
@@ -34,10 +34,10 @@ def generate_star_expansion_ray(star_num=(1, 3)):
     n = rand_between(*star_num)
     centers = random.sample(grid_input.interior_cells(), n)
 
-    _fill_centers(grid_input, centers, COLORS[0])
+    grid_input.fill_multiple_cells(centers, COLORS[0])
     directions = ((1, 1), (1, -1), (-1, 1), (-1, -1))
     _apply_ray(grid_output, centers, directions)
-    _fill_centers(grid_output, centers, COLORS[0])
+    grid_output.fill_multiple_cells(centers, COLORS[0])
 
     params = make_params(
         event="expansion",
@@ -55,10 +55,10 @@ def generate_plus_expansion_single_step(plus_num=(1, 4)):
     n = rand_between(*plus_num)
     centers = random.sample(grid_input.interior_cells(), n)
 
-    _fill_centers(grid_input, centers, COLORS[0])
+    grid_input.fill_multiple_cells(centers, COLORS[0])
     directions = ((1, 0), (-1, 0), (0, 1), (0, -1))
     _apply_single_step(grid_output, centers, directions)
-    _fill_centers(grid_output, centers, COLORS[0])
+    grid_output.fill_multiple_cells(centers, COLORS[0])
 
     params = make_params(
         event="expansion",
@@ -76,10 +76,10 @@ def generate_plus_expansion_ray(plus_num=(1, 3)):
     n = rand_between(*plus_num)
     centers = random.sample(grid_input.interior_cells(), n)
 
-    _fill_centers(grid_input, centers, COLORS[0])
+    grid_input.fill_multiple_cells(centers, COLORS[0])
     directions = ((1, 0), (-1, 0), (0, 1), (0, -1))
     _apply_ray(grid_output, centers, directions)
-    _fill_centers(grid_output, centers, COLORS[0])
+    grid_output.fill_multiple_cells(centers, COLORS[0])
 
     params = make_params(
         event="expansion",
@@ -97,7 +97,7 @@ def generate_3arm_star_expansion_ray(star_num=(1, 3)):
     n = rand_between(*star_num)
     centers = random.sample(grid_input.interior_cells(), n)
 
-    _fill_centers(grid_input, centers, COLORS[0])
+    grid_input.fill_multiple_cells(centers, COLORS[0])
     directions = ((1, 1), (1, -1), (-1, 1), (-1, -1))
 
     # Remove one arm randomly
@@ -106,7 +106,7 @@ def generate_3arm_star_expansion_ray(star_num=(1, 3)):
     selected_directions.remove(skip_direction)
 
     _apply_ray(grid_output, centers, selected_directions)
-    _fill_centers(grid_output, centers, COLORS[0])
+    grid_output.fill_multiple_cells(centers, COLORS[0])
 
     params = make_params(
         event="expansion",
@@ -118,10 +118,6 @@ def generate_3arm_star_expansion_ray(star_num=(1, 3)):
 
     return grid_input, grid_output, params
 
-
-def _fill_centers(grid, centers, color):
-    for x, y in centers:
-        grid.fill_cell(x, y, color)
 
 
 def _apply_single_step(grid_output, centers, directions):

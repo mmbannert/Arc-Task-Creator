@@ -14,6 +14,11 @@ class Grid:
         """Alias for set() — for semantic clarity."""
         self.set(row, col, color)
 
+    def fill_multiple_cells(self, cells, color):
+        """Fill multiple cells with the same color."""
+        for row, col in cells:
+            self.fill_cell(row, col, color)
+
     def fill_rect(self, col_min, col_max, row_min, row_max, color):
         """
         Fill a rectangular area with `color`.

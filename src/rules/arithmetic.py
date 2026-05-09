@@ -1,190 +1,154 @@
 import random
+
+from rules._common import make_grids, make_params
+from src.config import COLORS
 from src.util import rand_between
-from src.grid import Grid
-from typing import Dict, Tuple, Any, List
-
-import random
 
 
-def generate_dot_majority_recolor(grid_size=(12, 12), block_num=(1, 6), colors=("red", "blue")):
-    rows, cols = grid_size
-    grid_input, grid_output = Grid(rows, cols), Grid(rows, cols)
+def generate_dot_majority_recolor(block_num=(1, 6)):
+    return _generate_dot_counting_recolor(
+        target="majority",
+        block_num=block_num
+    )
 
-    color1, color2 = random.sample(colors, 2)
-    n1 = rand_between(*block_num)
-    n2 = rand_between(*block_num)
 
-    # avoid ties
-    while n1 == n2:
-        n2 = rand_between(*block_num)
+def generate_dot_minority_recolor(block_num=(1, 6)):
+    return _generate_dot_counting_recolor(
+        target="minority",
+        block_num=block_num
+    )
 
-    # determine majority cleanly
-    if n1 > n2:
-        majority_color = color1
-        minority_color = color2
-        n_majority = n1
-        n_minority = n2
-    else:
-        majority_color = color2
-        minority_color = color1
-        n_majority = n2
-        n_minority = n1
+
+def _generate_dot_counting_recolor(target="majority", block_num=(1, 6)):
+    grid_input, grid_output = make_grids()
+
+    color1, color2 = random.sample(COLORS[:2], 2)
+    n1, n2 = _sample_two_counts(block_num)
+
+    n_majority = max(n1, n2)
+    n_minority = min(n1, n2)
+    majority_color = color1
+    minority_color = color2
 
     all_positions = random.sample(
-        [(x, y) for x in range(cols) for y in range(rows)],
+        grid_input.cells(),
         n_majority + n_minority
     )
 
     majority_positions = all_positions[:n_majority]
     minority_positions = all_positions[n_majority:]
 
-    for x, y in majority_positions:
-        grid_input.fill_cell(x, y, majority_color)
+    grid_input.fill_multiple_cells(majority_positions, majority_color)
+    grid_input.fill_multiple_cells(minority_positions, minority_color)
 
-    for x, y in minority_positions:
-        grid_input.fill_cell(x, y, minority_color)
+    target_color = majority_color if target == "majority" else minority_color
+    grid_output.fill_multiple_cells(all_positions, target_color)
 
-    for x, y in all_positions:
-        grid_output.fill_cell(x, y, majority_color)
-
-    # fixed threshold (no param)
-    difficulty = (n_majority - n_minority) / n_majority
-    counting_type = "soft" if difficulty >= 0.4 else "hard"
-
-    params = {
-        "event": "recoloring",
-        "condition": ["color", "counting"],
-        "stimulus": "dots",
-        "grid_size": grid_size,
-        "colors": colors,
-        "n_objects": n_majority + n_minority,
-        "counting_type": counting_type,
-    }
-
-    return grid_input, grid_output, params
-
-
-def generate_dot_minority_recolor(grid_size=(12, 12), block_num=(1, 6), colors=("red", "blue")):
-    rows, cols = grid_size
-    grid_input, grid_output = Grid(rows, cols), Grid(rows, cols)
-
-    color1, color2 = random.sample(colors, 2)
-    n1 = rand_between(*block_num)
-    n2 = rand_between(*block_num)
-
-    # avoid ties
-    while n1 == n2:
-        n2 = rand_between(*block_num)
-
-    # determine majority cleanly
-    if n1 < n2:
-        majority_color = color1
-        minority_color = color2
-        n_majority = n1
-        n_minority = n2
-    else:
-        majority_color = color2
-        minority_color = color1
-        n_majority = n2
-        n_minority = n1
-
-    all_positions = random.sample(
-        [(x, y) for x in range(cols) for y in range(rows)],
-        n_majority + n_minority
+    params = make_params(
+        event="recoloring",
+        condition=["color", "counting"],
+        stimulus="dots",
+        colors=(majority_color, minority_color),
+        n_objects=n_majority + n_minority,
+        counting_type=_counting_type(n_majority, n_minority),
+        target=target,
     )
 
-    majority_positions = all_positions[:n_majority]
-    minority_positions = all_positions[n_majority:]
-
-    for x, y in majority_positions:
-        grid_input.fill_cell(x, y, majority_color)
-
-    for x, y in minority_positions:
-        grid_input.fill_cell(x, y, minority_color)
-
-    for x, y in all_positions:
-        grid_output.fill_cell(x, y, majority_color)
-
-    difficulty = (n_majority - n_minority) / n_majority
-    counting_type = "soft" if difficulty >= 0.4 else "hard"
-
-    params = {
-        "event": "recoloring",
-        "condition": ["color", "counting"],
-        "stimulus": "dots",
-        "grid_size": grid_size,
-        "colors": colors,
-        "n_objects": n_majority + n_minority,
-        "counting_type": counting_type,
-    }
-
     return grid_input, grid_output, params
 
 
-# Needed for cross plus count
-OFFSETS = {
-    "plus": [(0, 1), (1, 0), (1, 1), (1, 2), (2, 1)],  # 2,4,5,6,8
-    "cross": [(0, 0), (0, 2), (1, 1), (2, 0), (2, 2)],  # 1,3,5,7,9
-}
+def generate_cross_plus_majority_recolor(stamp_num=(1, 3)):
+    grid_input, grid_output = make_grids()
 
+    n_cross, n_plus = _sample_two_counts(stamp_num)
 
-def generate_cross_plus_majority_recolor(grid_size=(12, 12), stamp_num=(1, 6), colors=("red", "blue")):
-    rows, cols = grid_size
-    grid_input, grid_output = Grid(rows, cols), Grid(rows, cols)
+    placed = _place_non_overlapping_shapes(
+        grid_input,
+        {"cross": n_cross, "plus": n_plus}
+    )
 
-    k = rand_between(*stamp_num)
+    majority_shape = "cross" if n_cross > n_plus else "plus"
+    minority_shape = "plus" if majority_shape == "cross" else "cross"
 
-    candidates = [(r, c) for r in range(rows - 2) for c in range(cols - 2)]
-    random.shuffle(candidates)
-
-    used = set()
-    placed: List[Tuple[str, List[Tuple[int, int]]]] = []
-
-    for top_r, top_c in candidates:
-        shape = random.choice(("cross", "plus"))
-        cells = [(top_r + dr, top_c + dc) for dr, dc in OFFSETS[shape]]
-        if any(cell in used for cell in cells):
-            continue
-        used.update(cells)
-        placed.append((shape, cells))
-        if len(placed) == k:
-            break
-
-    n_cross = sum(1 for shape, _ in placed if shape == "cross")
-    n_plus = sum(1 for shape, _ in placed if shape == "plus")
-
-    while n_cross == n_plus:
-        return generate_cross_plus_majority_recolor(grid_size, stamp_num, colors)
-
-    if n_cross > n_plus:
-        majority_shape = "cross"
-        minority_shape = "plus"
-    else:
-        majority_shape = "plus"
-        minority_shape = "cross"
-
-    out_map = {
-        majority_shape: colors[0],
-        minority_shape: colors[1],
+    output_colors = {
+        majority_shape: COLORS[0],
+        minority_shape: COLORS[1],
     }
 
     for shape, cells in placed:
-        input_color = random.choice(colors)
-        for r, c in cells:
-            grid_input.fill_cell(r, c, input_color)
-            grid_output.fill_cell(r, c, out_map[shape])
+        input_color = random.choice(COLORS)
+        grid_input.fill_multiple_cells(cells, input_color)
+        grid_output.fill_multiple_cells(cells, output_colors[shape])
 
-    difficulty = abs(n_cross - n_plus) / max(n_cross, n_plus)
-    counting_type = "soft" if difficulty >= 0.5 else "hard"
-
-    params = {
-        "event": "recoloring",
-        "condition": ["shape", "counting"],
-        "stimulus": "cross_plus",
-        "grid_size": grid_size,
-        "colors": colors,
-        "n_objects": len(placed),
-        "counting_type": counting_type,
-    }
+    params = make_params(
+        event="recoloring",
+        condition=["shape", "counting"],
+        stimulus="cross_plus",
+        colors=COLORS[:2],
+        n_objects=len(placed),
+        counting_type=_counting_type(
+            max(n_cross, n_plus),
+            min(n_cross, n_plus),
+            threshold=0.5,
+        ),
+        majority_shape=majority_shape,
+    )
 
     return grid_input, grid_output, params
+
+
+SHAPE_DIRECTIONS = {
+    "plus": ((1, 0), (-1, 0), (0, 1), (0, -1)),
+    "cross": ((1, 1), (1, -1), (-1, 1), (-1, -1)),
+}
+
+
+def _shape_cells(center, directions):
+    row, col = center
+    return [(row, col)] + [
+        (row + dr, col + dc)
+        for dr, dc in directions
+    ]
+
+
+def _place_non_overlapping_shapes(grid, shape_counts):
+    candidates = grid.interior_cells()
+    random.shuffle(candidates)
+
+    shapes = [
+        shape
+        for shape, n in shape_counts.items()
+        for _ in range(n)
+    ]
+    random.shuffle(shapes)
+
+    used = set()
+    placed = []
+
+    for shape in shapes:
+        for center in candidates:
+            cells = _shape_cells(center, SHAPE_DIRECTIONS[shape])
+
+            if any(cell in used for cell in cells):
+                continue
+
+            used.update(cells)
+            placed.append((shape, cells))
+            break
+
+    return placed
+
+
+def _sample_two_counts(block_num):
+    n1 = rand_between(*block_num)
+    n2 = rand_between(*block_num)
+
+    while n1 == n2:
+        n2 = rand_between(*block_num)
+
+    return n1, n2
+
+
+def _counting_type(n_majority, n_minority, threshold=0.4):
+    easiness = (n_majority - n_minority) / n_majority
+    return "soft" if easiness >= threshold else "hard"

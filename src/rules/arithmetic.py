@@ -58,6 +58,20 @@ def _generate_dot_counting_recolor(target="majority", block_num=(1, 6)):
 
 
 def generate_cross_plus_majority_recolor(stamp_num=(1, 3)):
+    return _generate_cross_plus_counting_recolor(
+        target="majority",
+        stamp_num=stamp_num,
+    )
+
+
+def generate_cross_plus_minority_recolor(stamp_num=(1, 3)):
+    return _generate_cross_plus_counting_recolor(
+        target="minority",
+        stamp_num=stamp_num,
+    )
+
+
+def _generate_cross_plus_counting_recolor(target="majority", stamp_num=(1, 3)):
     grid_input, grid_output = make_grids()
 
     n_cross, n_plus = _sample_two_counts(stamp_num)
@@ -67,30 +81,31 @@ def generate_cross_plus_majority_recolor(stamp_num=(1, 3)):
         {"cross": n_cross, "plus": n_plus}
     )
 
+    n_majority = max(n_cross, n_plus)
+    n_minority = min(n_cross, n_plus)
+
     majority_shape = "cross" if n_cross > n_plus else "plus"
     minority_shape = "plus" if majority_shape == "cross" else "cross"
 
-    output_colors = {
-        majority_shape: COLORS[0],
-        minority_shape: COLORS[1],
-    }
+    target_shape = majority_shape if target == "majority" else minority_shape
 
     for shape, cells in placed:
-        input_color = random.choice(COLORS)
+        input_color = random.choice(COLORS[:2])
+
         grid_input.fill_multiple_cells(cells, input_color)
-        grid_output.fill_multiple_cells(cells, output_colors[shape])
+
+        output_color = COLORS[2] if shape == target_shape else input_color
+        grid_output.fill_multiple_cells(cells, output_color)
 
     params = make_params(
         event="recoloring",
         condition=["shape", "counting"],
         stimulus="cross_plus",
-        colors=COLORS[:2],
+        colors=COLORS,
         n_objects=len(placed),
-        counting_type=_counting_type(
-            max(n_cross, n_plus),
-            min(n_cross, n_plus),
-            threshold=0.5,
-        ),
+        counting_type=_counting_type(n_majority, n_minority, threshold=0.5),
+        target=target,
+        target_shape=target_shape,
         majority_shape=majority_shape,
     )
 

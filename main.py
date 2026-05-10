@@ -15,15 +15,16 @@ from src.rules.recolor import (
 from src.rules.arithmetic import (
     generate_dot_majority_recolor,
     generate_dot_minority_recolor,
-    generate_cross_plus_majority_recolor,
+    generate_cross_plus_majority_recolor, generate_cross_plus_minority_recolor,
 )
 
 from src.rules.expansion import (
-    generate_star_expansion_single_step,
-    generate_star_expansion_ray,
+    generate_cross_expansion_single_step,
+    generate_cross_expansion_ray,
     generate_plus_expansion_single_step,
     generate_plus_expansion_ray,
     generate_3arm_star_expansion_ray,
+    generate_star_expansion_ray
 )
 
 from src.rules.occlusion import (
@@ -55,14 +56,16 @@ For testing
         "attraction.float": generate_float,
         "attraction.repulsion": generate_repulsion,
         "attraction.falling_dots": generate_falling_dots,
-        "expansion.star_step": generate_star_expansion_single_step,
-        "expansion.star_ray": generate_star_expansion_ray,
+        "expansion.cross_step": generate_cross_expansion_single_step,
+        "expansion.cross_ray": generate_cross_expansion_ray,
         "expansion.plus_step": generate_plus_expansion_single_step,
         "expansion.plus_ray": generate_plus_expansion_ray,
-        "expansion.3arm_star_ray": generate_3arm_star_expansion_ray,        
+        "expansion.3arm_star_ray": generate_3arm_star_expansion_ray,   
+        "expansion.star_ray": generate_star_expansion_ray,
         "arithmetic.dot_majority_recolor": generate_dot_majority_recolor,
         "arithmetic.dot_minority_recolor": generate_dot_minority_recolor,
-        "arithmetic.cross_plus_minority_recolor": generate_cross_plus_majority_recolor,
+        "arithmetic.cross_plus_majority_recolor": generate_cross_plus_majority_recolor,
+        "arithmetic.cross_plus_minority_recolor": generate_cross_plus_minority_recolor,
         "recoloring.dot_inversion_recolor": generate_dot_inversion_recolor,
         "recoloring.dot_neighbor_recolor": generate_dot_neighbor_recolor,
         "recoloring.cross_plus_shape_fixed_recolor": generate_cross_plus_shape_fixed_recolor,
@@ -72,12 +75,7 @@ For testing
 
 def main(N):
     rules = {
-        "attraction.color": generate_color_attraction,
-        "attraction.size": generate_size_attraction,
-        "attraction.falling_blocks": generate_falling_blocks,
-        "attraction.float": generate_float,
-        "attraction.repulsion": generate_color_repulsion,
-        "attraction.falling_dots": generate_falling_dots,
+        "expansion.star_ray": generate_star_expansion_ray,
     }
 
     for name, gen in rules.items():

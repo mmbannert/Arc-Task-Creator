@@ -5,7 +5,7 @@ from src.rules._common import make_grids, make_params
 from src.config import COLORS, GRID_SIZE
 
 
-def generate_star_expansion_single_step(star_num=(1, 4)):
+def generate_cross_expansion_single_step(star_num=(1, 4)):
     """
     Careful, random.sample crashes if n > grid size. Same goes for n = 0.
     """
@@ -29,7 +29,7 @@ def generate_star_expansion_single_step(star_num=(1, 4)):
     return grid_input, grid_output, params
 
 
-def generate_star_expansion_ray(star_num=(1, 3)):
+def generate_cross_expansion_ray(star_num=(1, 3)):
     grid_input, grid_output = make_grids()
     n = rand_between(*star_num)
     centers = random.sample(grid_input.interior_cells(), n)
@@ -118,6 +118,26 @@ def generate_3arm_star_expansion_ray(star_num=(1, 3)):
 
     return grid_input, grid_output, params
 
+
+def generate_star_expansion_ray(star_num=(1, 2)):
+    grid_input, grid_output = make_grids()
+    n = rand_between(*star_num)
+    centers = random.sample(grid_input.interior_cells(), n)
+
+    grid_input.fill_multiple_cells(centers, COLORS[0])
+    directions = ((1, 1), (1, -1), (-1, 1), (-1, -1), (1, 0), (-1, 0), (0, 1), (0, -1))
+    _apply_ray(grid_output, centers, directions)
+    grid_output.fill_multiple_cells(centers, COLORS[0])
+
+    params = make_params(
+        event="expansion",
+        condition="shape",
+        stimulus=["dots", "star"],
+        colors=COLORS[:2],
+        n_objects=n,
+    )
+
+    return grid_input, grid_output, params
 
 
 def _apply_single_step(grid_output, centers, directions):

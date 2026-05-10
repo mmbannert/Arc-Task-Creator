@@ -21,7 +21,7 @@ def generate_cross_expansion_single_step(star_num=(1, 4)):
     params = make_params(
         event="expansion",
         condition="shape",
-        stimulus=["dots", "star"],
+        stimulus="step_expansion",
         colors=COLORS[:2],
         n_objects=n,
     )
@@ -42,7 +42,7 @@ def generate_cross_expansion_ray(star_num=(1, 3)):
     params = make_params(
         event="expansion",
         condition="shape",
-        stimulus=["dots", "star"],
+        stimulus="ray_expansion",
         colors=COLORS[:2],
         n_objects=n,
     )
@@ -63,7 +63,7 @@ def generate_plus_expansion_single_step(plus_num=(1, 4)):
     params = make_params(
         event="expansion",
         condition="shape",
-        stimulus=["dots", "plus"],
+        stimulus="step_expansion",
         colors=COLORS[:2],
         n_objects=n,
     )
@@ -84,7 +84,7 @@ def generate_plus_expansion_ray(plus_num=(1, 3)):
     params = make_params(
         event="expansion",
         condition="shape",
-        stimulus=["dots", "plus"],
+        stimulus="ray_expansion",
         colors=COLORS[:2],
         n_objects=n,
     )
@@ -111,7 +111,7 @@ def generate_3arm_star_expansion_ray(star_num=(1, 3)):
     params = make_params(
         event="expansion",
         condition="shape",
-        stimulus=["dots", "star"],
+        stimulus="ray_expansion",
         colors=COLORS[:2],
         n_objects=n,
     )
@@ -132,7 +132,7 @@ def generate_star_expansion_ray(star_num=(1, 2)):
     params = make_params(
         event="expansion",
         condition="shape",
-        stimulus=["dots", "star"],
+        stimulus="ray_expansion",
         colors=COLORS[:2],
         n_objects=n,
     )

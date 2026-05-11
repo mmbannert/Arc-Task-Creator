@@ -55,7 +55,7 @@ def build_session(
     rng.shuffle(families)  # so that family blocks are shuffled
 
     # Hardcoded UI bits (MATLAB runner uses these strings directly)
-    keys = {"same": "LeftArrow", "different": "RightArrow"}
+    keys = {"same": "4$", "different": "3#"}
     tip_ready = "←   Ready          Ready   →"
     tip_memorized = "←   Memorized      Memorized   →"
     tip_decide = "←   Same          Different   →"

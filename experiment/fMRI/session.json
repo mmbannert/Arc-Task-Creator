@@ -1,8 +1,8 @@
 {
   "participant": "p002",
   "keys": {
-    "same": "LeftArrow",
-    "different": "RightArrow"
+    "same": "4$",
+    "different": "3#"
   },
   "blocks": [
     {

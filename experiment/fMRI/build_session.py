@@ -17,8 +17,8 @@ def build_session(
         session_path: str = "session.json",
         participant: str = "p002",
         seed: int = 2,
-        number_of_mix_blocks: int = 2,
-        number_of_decision_trials_per_phase: int = 12,
+        number_of_mix_blocks: int = 0,
+        number_of_decision_trials_per_phase: int = 6,
 ) -> None:
     """
     Main entry: loads stimulus pools and writes a randomized block/phase structure to session.json

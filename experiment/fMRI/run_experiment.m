@@ -7,6 +7,9 @@ eyelink_flag = 0;
 DUMMY_MODE = 1;
 
 REST_TIME = 15;
+% Currently unused.
+MIN_RT = 4;
+MAX_RT = 10;
 
 try
     session = jsondecode(fileread(sessionPath));
@@ -99,6 +102,8 @@ try
                     trialTemplate, block, phase, ph, 0, tr0, resp, rt, tOn, t0);
 
                 log.trials(end+1,1) = trial;
+
+                fprintf('Phase started\n')
                 continue
             end
 
@@ -123,6 +128,8 @@ try
                     trialTemplate, block, phase, ph, t, tr, resp, rt, tOn, t0);
 
                 log.trials(end+1,1) = trial; %#ok<AGROW>
+                fprintf('Trial Completed\n')
+
             end
         end
 

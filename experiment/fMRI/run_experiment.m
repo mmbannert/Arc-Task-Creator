@@ -29,7 +29,8 @@ try
     screen_id = max(Screen('Screens')); % usually the peripherial screen has max id
     resolution = [1400 1400];
     PsychImaging('AddTask', 'General', 'UsePanelFitter', resolution, 'Aspect')
-    [w, rect] = PsychImaging('OpenWindow', screen_id, [0 0 0]);
+    [w, rect] = PsychImaging('OpenWindow', screen_id, [0 0 0], [100 100 900 900]);
+    %[w, rect] = PsychImaging('OpenWindow', screen_id, [0 0 0]);
 
     Screen('ColorRange', w, 1);
     Screen('TextFont', w, 'Arial');

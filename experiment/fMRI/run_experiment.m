@@ -1,115 +1,118 @@
 function run_experiment(sessionPath)
-% Run by calling: run_experiment("session.json")
+% Run by calling:
+%   run_experiment("session.json")
 
-SKIP_SYNC_TESTS = 1;
+cfg = struct();
 
-eyelink_flag = 0;
-DUMMY_MODE = 1;
+% ---- general config ----
+cfg.SKIP_SYNC_TESTS = 1;
+cfg.REST_TIME = 15;
 
-REST_TIME = 15;
-% Currently unused.
-MIN_RT = 4;
-MAX_RT = 10;
+% ---- screen config ----
+cfg.use_windowed_mode = true;  % set false for scanner/fullscreen
+cfg.window_rect = [100 100 900 900];
+cfg.resolution = [1400 1400];
+cfg.bg_color = [0 0 0];
+
+% ---- EyeLink config ----
+cfg.eyelink_flag = 0;
+cfg.DUMMY_MODE = 1;
+
+% ---- scanner config ----
+cfg.use_scanner_trigger = true;
+cfg.trigger_key_name = 'w';
 
 try
-    session = jsondecode(fileread(sessionPath));
-    session = utilities.normalize_session(session);
+    % ===================== load session =====================
+    session = utilities.session_utils.load_session(sessionPath);
 
-    % ---- keys from session.json ----
+    % ===================== keys =====================
     KbName('UnifyKeyNames');
+
     keySame = KbName(char(session.keys.same));
     keyDiff = KbName(char(session.keys.different));
     keyEsc  = KbName('ESCAPE');
+    keyTrigger = KbName(cfg.trigger_key_name);
 
-    % ---- window ----
-    Screen('Preference','SkipSyncTests', SKIP_SYNC_TESTS);
-    AssertOpenGL;
-    PsychImaging('PrepareConfiguration')
+    responseKeys = [keySame keyDiff];
 
-    screen_id = max(Screen('Screens')); % usually the peripherial screen has max id
-    resolution = [1400 1400];
-    PsychImaging('AddTask', 'General', 'UsePanelFitter', resolution, 'Aspect')
-    [w, rect] = PsychImaging('OpenWindow', screen_id, [0 0 0], [100 100 900 900]);
-    %[w, rect] = PsychImaging('OpenWindow', screen_id, [0 0 0]);
+    % ===================== window =====================
+    [w, rect] = utilities.screen_utils.setup_window(cfg);
 
-    Screen('ColorRange', w, 1);
-    Screen('TextFont', w, 'Arial');
-
-    baseDir = fileparts(sessionPath);
-    if baseDir == "" % if empty make dir
-        baseDir = pwd;
+    % ===================== EyeLink =====================
+    if cfg.eyelink_flag
+        el = utilities.eyelink_utils.setup(w, rect, cfg.DUMMY_MODE, session.participant);
+        utilities.eyelink_utils.calibrate(el);
     end
 
-    % ---- eye tracker ----
-    if eyelink_flag
-        el = utilities.setup_eyelink(w, rect, DUMMY_MODE, session.participant);
-        utilities.calibrate_eyelink(el);
-    end
+    % ===================== preload =====================
+    texCache = utilities.session_utils.preload_textures(session, sessionPath, w);
 
-    % ---- preload textures ----
-    texCache = containers.Map();
-    allImgs = utilities.collect_all_images(session);
-    for i = 1:numel(allImgs)
-        rel = char(allImgs{i});
-        p = fullfile(baseDir, rel);
+    % ===================== log =====================
+    log = utilities.log_utils.init_log(session);
 
-        im = imread(p);
-        texCache(rel) = Screen('MakeTexture', w, im);
-    end
+    % ===================== task loop =====================
+    fprintf('\nExperiment started for participant %s\n', string(session.participant));
 
-    % ---- log init ----
-    trialTemplate = utilities.trial_template();
-    log = struct;
-    log.participant = string(session.participant);
-    log.started_at  = datestr(now,30);
-    log.trials = repmat(trialTemplate, 0, 1);
-
-    t0 = GetSecs();
-
-    % ---- task loop ----
     for b = 1:numel(session.blocks)
         block = session.blocks(b);
 
-        if eyelink_flag
-            utilities.msg_eyelink('BLOCK_START %d FAMILY %s', ...
-                b, char(string(block.family)));
-            utilities.start_eyelink_recording();
+        fprintf('\n==============================\n');
+        fprintf('Preparing block %d / %d | family: %s\n', ...
+            b, numel(session.blocks), string(block.family));
+        fprintf('==============================\n');
+
+        % ---------- participant ready ----------
+        utilities.screen_utils.message_screen( ...
+            w, rect, ...
+            sprintf('Block %d / %d\n\nPress any response button when ready for scan.', ...
+            b, numel(session.blocks)));
+
+        fprintf('Waiting for participant readiness...\n');
+        utilities.screen_utils.wait_key(responseKeys, keyEsc);
+        fprintf('Participant ready.\n');
+
+        % ---------- wait for scanner trigger ----------
+        utilities.screen_utils.message_screen(w, rect, 'Waiting for scanner...');
+        fprintf('Waiting for scanner trigger key "%s"...\n', cfg.trigger_key_name);
+
+        if cfg.use_scanner_trigger
+            [~, scan_t0] = utilities.screen_utils.wait_key(keyTrigger, keyEsc);
+        else
+            scan_t0 = GetSecs();
         end
 
+        fprintf('Scanner trigger received. Block %d started at %.4f\n', b, scan_t0);
+
+        if cfg.eyelink_flag
+            utilities.eyelink_utils.msg('BLOCK_START %d FAMILY %s', ...
+                b, char(string(block.family)));
+            utilities.eyelink_utils.start_recording();
+        end
+
+        % ---------- phases ----------
         for ph = 1:numel(block.phases)
             phase = block.phases(ph);
             phaseName = string(phase.phase);
 
-            % ---------- phase_start: single trial stored in phase.trial ----------
             if phaseName == "phase_start"
-                utilities.rest_screen(w, rect, REST_TIME, 'Take a short break.');
-
-                if isfield(phase,'trial') && ~isempty(phase.trial)
-                    tr0 = phase.trial(1);
-                else
-                    tr0 = struct;
+                if ph > 1
+                    utilities.screen_utils.fixation_screen( ...
+                        w, rect, cfg.REST_TIME);
                 end
 
-                trialId = sprintf('%d_%d_%d', b, ph, 0);
+                [trial, log] = run_phase_start( ...
+                    w, rect, texCache, ...
+                    block, phase, b, ph, ...
+                    responseKeys, keyEsc, scan_t0, log, cfg);
 
-                if eyelink_flag
-                    utilities.msg_eyelink('TRIALID %s', trialId);
-                end
+                utilities.log_utils.print_trial(trial);
 
-                [resp, rt, tOn] = utilities.twoimg_screen( ...
-                    w, rect, phase, tr0, texCache, keySame, keyDiff, keyEsc);
-
-                trial = utilities.make_trial( ...
-                    trialTemplate, block, phase, ph, 0, tr0, resp, rt, tOn, t0);
-
-                log.trials(end+1,1) = trial;
-
-                fprintf('Phase started\n')
                 continue
             end
 
-            % ---------- inference/application: multiple trials in phase.trials ----------
-            if ~isfield(phase,'trials') || isempty(phase.trials)
+            if ~isfield(phase, 'trials') || isempty(phase.trials)
+                fprintf('Skipping empty phase: %s\n', phaseName);
                 continue
             end
 
@@ -117,47 +120,72 @@ try
                 tr = phase.trials(t);
 
                 trialId = sprintf('%d_%d_%d', b, ph, t);
+                
 
-                if eyelink_flag
-                    utilities.msg_eyelink('TRIALID %s', trialId);
+                if cfg.eyelink_flag
+                    utilities.eyelink_utils.msg('TRIALID %s', trialId);
                 end
 
-                [resp, rt, tOn] = utilities.twoimg_screen( ...
+                [resp, rt, tOn] = utilities.screen_utils.twoimg_screen( ...
                     w, rect, phase, tr, texCache, keySame, keyDiff, keyEsc);
 
-                trial = utilities.make_trial( ...
-                    trialTemplate, block, phase, ph, t, tr, resp, rt, tOn, t0);
+                trial = utilities.log_utils.make_trial( ...
+                    block, phase, ph, t, tr, resp, rt, tOn, scan_t0);
 
-                log.trials(end+1,1) = trial; %#ok<AGROW>
-                fprintf('Trial Completed\n')
+                log.trials(end+1, 1) = trial; %#ok<AGROW>
 
+                utilities.log_utils.print_trial(trial);
             end
         end
 
-        if eyelink_flag
-            utilities.msg_eyelink('BLOCK_END %d', b);
-            utilities.stop_eyelink_recording();
+        if cfg.eyelink_flag
+            utilities.eyelink_utils.msg('BLOCK_END %d', b);
+            utilities.eyelink_utils.stop_recording();
         end
     end
 
-    % ---- save log and close all ----
-    outName = sprintf('log_%s_%s.mat', string(session.participant), datestr(now,30));
-    save(fullfile(baseDir, outName), 'log');
+    % ===================== finish =====================
+    utilities.log_utils.save_log(log, sessionPath, session);
 
-    if eyelink_flag
-        utilities.close_eyelink(session.participant, baseDir);
+    if cfg.eyelink_flag
+        utilities.eyelink_utils.close(session.participant, fileparts(sessionPath));
     end
+
     Screen('CloseAll');
+    fprintf('\nExperiment finished successfully.\n');
 
 catch ME
-    try
-        if exist('eyelink_flag', 'var') && eyelink_flag
-            Eyelink('StopRecording');
-            Eyelink('CloseFile');
-            Eyelink('Shutdown');
-        end
-    end
+    utilities.eyelink_utils.emergency_shutdown();
     try Screen('CloseAll'); end %#ok<TRYNC>
     rethrow(ME);
 end
+
+end
+
+
+function [trial, log] = run_phase_start( ...
+    w, rect, texCache, ...
+    block, phase, b, ph, ...
+    responseKeys, keyEsc, scan_t0, log, cfg)
+
+if isfield(phase, 'trial') && ~isempty(phase.trial)
+    tr0 = phase.trial(1);
+else
+    tr0 = struct();
+end
+
+trialId = sprintf('%d_%d_%d', b, ph, 0);
+
+if cfg.eyelink_flag
+    utilities.eyelink_utils.msg('TRIALID %s', trialId);
+end
+
+[resp, rt, tOn] = utilities.screen_utils.rule_start_screen( ...
+    w, rect, phase, tr0, texCache, responseKeys, keyEsc);
+
+trial = utilities.log_utils.make_trial( ...
+    block, phase, ph, 0, tr0, resp, rt, tOn, scan_t0);
+
+log.trials(end+1, 1) = trial;
+
 end

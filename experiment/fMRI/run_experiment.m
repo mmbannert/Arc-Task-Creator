@@ -2,43 +2,32 @@ function run_experiment(sessionPath)
 % Run by calling: run_experiment("session.json")
 
 config = utilities.session.default_config();
-% Change configurations in session_utils
+% Change configurations in utilities.session
 
 try
     session = utilities.session.load_session(sessionPath);
     keys = utilities.session.setup_keys(session, config);
-
     [window, windowRect] = utilities.screen.setup_window(config);
 
     textureCache = utilities.session.preload_textures(session, sessionPath, window);
     experimentLog = utilities.log.init_log(session);
 
-    fprintf('\nExperiment started for participant %s\n', string(session.participant));
-
-    experimentStartTime = prepare_experiment( ...
-    window, windowRect, session, keys, config);
+    experimentStartTime = prepare_experiment(window, windowRect, session, keys, config);
 
     for blockIndex = 1:numel(session.blocks)
         block = session.blocks(blockIndex);
     
-        utilities.message.print_block_prepare( ...
-            blockIndex, numel(session.blocks), block);
-
-        utilities.screen.block_progress_screen( ...
-            window, windowRect, blockIndex, numel(session.blocks));
+        utilities.message.print_block_prepare(blockIndex, numel(session.blocks), block);
+        utilities.screen.block_progress_screen(window, windowRect, blockIndex, numel(session.blocks));
     
-        blockTrials = run_block( ...
-            window, windowRect, block, textureCache, keys, config, experimentStartTime);
-    
+        blockTrials = run_block(window, windowRect, block, textureCache, keys, config, experimentStartTime);
         experimentLog.trials = [experimentLog.trials; blockTrials]; %#ok<AGROW>
 
         blockSummary = utilities.log.summarize_trials(blockTrials);
         utilities.message.print_block_summary(blockIndex, blockSummary);
+        utilities.screen.block_score_screen(window, blockSummary);
 
-        utilities.screen.block_score_screen( ...
-        window, windowRect, blockIndex, numel(session.blocks), blockSummary);
     end
-
 
     utilities.log.save_log(experimentLog, sessionPath, session);
 
@@ -75,7 +64,7 @@ for phaseIndex = 1:numel(block.phases)
 
     if string(phase.phase) == "phase_start"
         
-        if phaseIndex > 1 
+        if phaseIndex > 1 % Therefore just before rule memorization 
             utilities.screen.fixation_screen(window, windowRect, config.REST_TIME); end
 
         trial = run_phase_start( ...
@@ -91,31 +80,31 @@ for phaseIndex = 1:numel(block.phases)
 
     blockTrials = [blockTrials; phaseTrials]; %#ok<AGROW>
 end
+
 utilities.screen.fixation_screen(window, windowRect, config.REST_TIME);
 end
 
 
-function trial = run_phase_start(w, rect, block, phase, ph, texCache, keys, cfg, scan_t0)
+function trial = run_phase_start( ...
+    window, windowRect, block, phase, phaseIndex, textureCache, keys, config, experimentStartTime)
 
-if isfield(phase, 'trial') && ~isempty(phase.trial)
-    tr0 = phase.trial(1);
-else
-    tr0 = struct();
-end
+phaseStartTrial = phase.trial(1);
 
-trialId = utilities.message.make_trial_id(block.block_id, ph, 0);
-utilities.message.eyelink_trial_id(cfg, trialId);
+trialId = utilities.message.make_trial_id(block.block_id, phaseIndex, 0);
+utilities.message.eyelink_trial_id(config, trialId);
 
-[resp, rt, tOn] = utilities.screen.rule_start_screen( ...
-    w, rect, phase, tr0, texCache, keys.response, keys.escape);
+[response, reactionTime, stimulusOnsetTime] = utilities.screen.rule_start_screen( ...
+    window, windowRect, phase, phaseStartTrial, textureCache, keys.response, keys.escape);
 
 trial = utilities.log.make_trial( ...
-    block, phase, ph, 0, tr0, resp, rt, tOn, scan_t0);
+    block, phase, phaseIndex, 0, phaseStartTrial, ...
+    response, reactionTime, stimulusOnsetTime, experimentStartTime);
 
 end
 
 
-function phaseTrials = run_decision_phase(window, windowRect, block, phase, phaseIndex, textureCache, keys, config, experimentStartTime)
+function phaseTrials = run_decision_phase( ...
+    window, windowRect, block, phase, phaseIndex, textureCache, keys, config, experimentStartTime)
 
 trialTemplate = utilities.log.trial_template();
 phaseTrials = repmat(trialTemplate, 0, 1);
@@ -126,12 +115,16 @@ for trialIndex = 1:numel(phase.trials)
     trialId = utilities.message.make_trial_id(block.block_id, phaseIndex, trialIndex);
     utilities.message.eyelink_trial_id(config, trialId);
 
-    [resp, rt, tOn] = utilities.screen.twoimg_screen( ...
-        window, windowRect, phase, trialData, textureCache, ...
-        keys.sameResponse, keys.differentResponse, keys.escape);
+    [response, reactionTime, stimulusOnsetTime, allResponses, allReactionTimes] = ...
+        utilities.screen.decision_screen( ...
+            window, windowRect, phase, trialData, textureCache, ...
+            keys.sameResponse, keys.differentResponse, keys.escape, ...
+            config.DECISION_TIME_LIMIT);
 
     trial = utilities.log.make_trial( ...
-        block, phase, phaseIndex, trialIndex, trialData, resp, rt, tOn, experimentStartTime);
+        block, phase, phaseIndex, trialIndex, trialData, ...
+        response, reactionTime, stimulusOnsetTime, experimentStartTime, ...
+        allResponses, allReactionTimes);
 
     phaseTrials(end+1, 1) = trial; %#ok<AGROW>
     utilities.message.print_trial(trial);

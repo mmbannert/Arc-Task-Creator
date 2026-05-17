@@ -1,47 +1,45 @@
 classdef screen
 methods(Static)
 
-function [w, rect] = setup_window(cfg)
-    Screen('Preference', 'SkipSyncTests', cfg.SKIP_SYNC_TESTS);
-    Screen('Preference', 'Verbosity', cfg.verbosity); 
+function [w, rect] = setup_window(config)
+    Screen('Preference', 'SkipSyncTests', config.SKIP_SYNC_TESTS);
+    Screen('Preference', 'Verbosity', config.verbosity);
     AssertOpenGL;
 
     PsychImaging('PrepareConfiguration');
+    screenId = max(Screen('Screens'));
+    PsychImaging('AddTask', 'General', 'UsePanelFitter', config.resolution, 'Aspect');
 
-    screen_id = max(Screen('Screens'));
-
-    PsychImaging('AddTask', 'General', 'UsePanelFitter', cfg.resolution, 'Aspect');
-
-    if cfg.use_windowed_mode
-        [w, rect] = PsychImaging('OpenWindow', screen_id, cfg.bg_color, cfg.window_rect);
+    if config.use_windowed_mode
+        [w, rect] = PsychImaging('OpenWindow', screenId, config.bg_color, config.window_rect);
     else
-        [w, rect] = PsychImaging('OpenWindow', screen_id, cfg.bg_color);
+        [w, rect] = PsychImaging('OpenWindow', screenId, config.bg_color);
     end
 
     Screen('ColorRange', w, 1);
     Screen('TextFont', w, 'Arial');
 
-    fprintf('PTB window opened on screen %d.\n', screen_id);
+    fprintf('PTB window opened on screen %d.\n', screenId);
 end
 
 
-function [key, t] = wait_key(validKeys, escKey)
+function [key, time] = wait_key(validKeys, escapeKey)
     KbReleaseWait;
 
     while true
-        [down, secs, kc] = KbCheck;
+        [isDown, keyTime, keyCode] = KbCheck;
 
-        if ~down
+        if ~isDown
             continue
         end
 
-        if kc(escKey)
+        if keyCode(escapeKey)
             error('Experiment aborted with ESC.');
         end
 
-        if any(kc(validKeys))
-            key = find(kc, 1, 'first');
-            t = secs;
+        if any(keyCode(validKeys))
+            key = find(keyCode, 1, 'first');
+            time = keyTime;
             KbReleaseWait;
             return
         end
@@ -49,152 +47,170 @@ function [key, t] = wait_key(validKeys, escKey)
 end
 
 
-function message_screen(w, rect, text)
+function text_screen(w, text, duration, fontSize, isBold)
+    if nargin < 5
+        isBold = false;
+    end
 
-    % ---- gray background ----
-    bgColor = [0.15 0.15 0.15];
-    Screen('FillRect', w, bgColor);
+    if nargin < 4
+        fontSize = 34;
+    end
 
-    % ---- text ----
-    Screen('TextStyle', w, 0);
-    Screen('TextSize', w, 34);
+    if nargin < 3
+        duration = [];
+    end
 
-    DrawFormattedText( ...
+    utilities.screen.clear_screen(w);
+
+    Screen('TextStyle', w, double(isBold));
+    Screen('TextSize', w, fontSize);
+
+    DrawFormattedText(w, char(string(text)), 'center', 'center', [1 1 1]);
+
+    flipTime = Screen('Flip', w);
+
+    if ~isempty(duration)
+        WaitSecs('UntilTime', flipTime + duration);
+    end
+end
+
+
+function message_screen(w, rect, text) %#ok<INUSD>
+    utilities.screen.text_screen(w, text, [], 34, false);
+end
+
+
+function block_progress_screen(w, rect, blockIndex, numberOfBlocks) %#ok<INUSD>
+    utilities.screen.text_screen( ...
         w, ...
-        char(string(text)), ...
-        'center', ...
-        'center', ...
-        [1 1 1]);
+        sprintf('Block %d / %d', blockIndex, numberOfBlocks), ...
+        2, 42, true);
+end
 
-    Screen('Flip', w);
 
+function block_score_screen(w, summary)
+    utilities.screen.text_screen( ...
+        w, ...
+        sprintf('Block finished\n\n%d / %d correct\n\n', ...
+            summary.correctCount, summary.decisionCount), ...
+        5, 38, true);
 end
 
 
 function fixation_screen(w, rect, seconds)
+    utilities.screen.clear_screen(w);
 
-    % ---- gray background ----
-    bgColor = [0.15 0.15 0.15];
-    Screen('FillRect', w, bgColor);
-
-    % ---- fixation cross ----
     crossColor = [1 1 1];
-
     crossSize = 20;
     lineWidth = 4;
 
     xCenter = rect(3) / 2;
     yCenter = rect(4) / 2;
 
-    % Horizontal line
-    Screen('DrawLine', ...
-        w, crossColor, ...
+    Screen('DrawLine', w, crossColor, ...
         xCenter - crossSize, yCenter, ...
-        xCenter + crossSize, yCenter, ...
-        lineWidth);
+        xCenter + crossSize, yCenter, lineWidth);
 
-    % Vertical line
-    Screen('DrawLine', ...
-        w, crossColor, ...
+    Screen('DrawLine', w, crossColor, ...
         xCenter, yCenter - crossSize, ...
-        xCenter, yCenter + crossSize, ...
-        lineWidth);
+        xCenter, yCenter + crossSize, lineWidth);
 
-    % ---- flip ----
+    flipTime = Screen('Flip', w);
+    WaitSecs('UntilTime', flipTime + seconds);
+end
+
+
+function [resp, rt, tOn] = rule_start_screen(w, rect, phase, trialData, textureCache, validKeys, escapeKey)
+    utilities.screen.draw_trial_screen(w, rect, phase, trialData, textureCache, "");
     tOn = Screen('Flip', w);
 
-    % ---- precise timing ----
-    WaitSecs('UntilTime', tOn + seconds);
+    [~, responseTime] = utilities.screen.wait_key(validKeys, escapeKey);
 
-end
-
-function block_progress_screen(window, windowRect, blockIndex, numberOfBlocks)
-
-    Screen('FillRect', window, [0.15 0.15 0.15]);
-    Screen('TextStyle', window, 1);
-    Screen('TextSize', window, 42);
-
-    message = sprintf('Block %d / %d', blockIndex, numberOfBlocks);
-
-    DrawFormattedText(window, message, 'center', 'center', [1 1 1]);
-
-    Screen('Flip', window);
-    WaitSecs(2);
-
-end
-
-function block_score_screen(window, windowRect, blockIndex, numberOfBlocks, summary)
-
-    Screen('FillRect', window, [0.15 0.15 0.15]);
-    Screen('TextStyle', window, 1);
-    Screen('TextSize', window, 38);
-
-    message = sprintf([ ...
-        'Block finished\n\n' ...
-        '%d / %d correct\n\n'], ...
-        summary.correctCount, ...
-        summary.decisionCount);
-
-    DrawFormattedText(window, message, 'center', 'center', [1 1 1]);
-
-    Screen('Flip', window);
-    WaitSecs(5);
-
-end
-
-function [resp, rt, tOn] = rule_start_screen(w, rect, phase, tr, texCache, validKeys, keyEsc)
-    utilities.screen.draw_trial_screen(w, rect, phase, tr, texCache);
-
-    tOn = Screen('Flip', w);
-
-    [~, respTime] = utilities.screen.wait_key(validKeys, keyEsc);
-
-    rt = respTime - tOn;
     resp = "ready";
+    rt = responseTime - tOn;
 end
 
 
-function [resp, rt, tOn] = twoimg_screen(w, rect, phase, tr, texCache, keySame, keyDiff, keyEsc)
-    utilities.screen.draw_trial_screen(w, rect, phase, tr, texCache);
+function [resp, rt, tOn, allResponses, allRts] = decision_screen( ...
+    w, rect, phase, trialData, textureCache, ...
+    sameKey, differentKey, escapeKey, duration)
 
+    utilities.screen.draw_trial_screen(w, rect, phase, trialData, textureCache, "");
     tOn = Screen('Flip', w);
 
-    [respKey, respTime] = utilities.screen.wait_key([keySame keyDiff], keyEsc);
+    [resp, rt, allResponses, allRts] = utilities.screen.collect_responses( ...
+        w, rect, phase, trialData, textureCache, ...
+        tOn, duration, sameKey, differentKey, escapeKey);
+end
 
-    rt = respTime - tOn;
 
-    if respKey == keyDiff
-        resp = "different";
-    else
-        resp = "same";
+function [firstResponse, firstRt, allResponses, allRts] = collect_responses( ...
+    w, rect, phase, trialData, textureCache, ...
+    tOn, duration, sameKey, differentKey, escapeKey)
+
+    firstResponse = "timeout";
+    firstRt = NaN;
+
+    allResponses = strings(0,1);
+    allRts = [];
+
+    deadline = tOn + duration;
+    previousDown = false;
+
+    while GetSecs() < deadline
+
+        [isDown, keyTime, keyCode] = KbCheck;
+
+        if isDown && ~previousDown
+
+            if keyCode(escapeKey)
+                error('Experiment aborted with ESC.');
+            end
+
+            if keyCode(sameKey) || keyCode(differentKey)
+
+                currentResponse = "same";
+
+                if keyCode(differentKey)
+                    currentResponse = "different";
+                end
+
+                currentRt = keyTime - tOn;
+
+                allResponses(end+1,1) = currentResponse; %#ok<AGROW>
+                allRts(end+1,1) = currentRt; %#ok<AGROW>
+
+                if firstResponse == "timeout"
+
+                    firstResponse = currentResponse;
+                    firstRt = currentRt;
+
+                    utilities.screen.draw_trial_screen( ...
+                        w, rect, phase, trialData, textureCache, currentResponse);
+
+                    Screen('Flip', w);
+                end
+            end
+        end
+
+        previousDown = isDown;
+        WaitSecs(0.001);
     end
 end
 
 
-function draw_trial_screen(w, rect, phase, tr, texCache)
-    Screen('FillRect', w, [0.15 0.15 0.15]);
+function draw_trial_screen(w, rect, phase, trialData, textureCache, selectedResponse)
+    utilities.screen.clear_screen(w);
 
-    frameColor = utilities.screen.phase_bg_rgb(phase.bg);
-    frameWidth = 30;
+    Screen('FrameRect', w, utilities.screen.phase_bg_rgb(phase.bg), rect, 30);
 
-    Screen('FrameRect', w, frameColor, rect, frameWidth);
-
-    utilities.screen.draw_header(w, rect, phase);
-    utilities.screen.draw_two_stacked_imgs(w, rect, texCache, tr.imgs);
+    utilities.screen.draw_header(w, rect, phase, selectedResponse);
+    utilities.screen.draw_two_stacked_imgs(w, rect, textureCache, trialData.imgs);
 end
 
 
-function draw_header(w, rect, phase)
-    hint = "";
-    tip = "";
-
-    if isfield(phase, 'hint') && ~isempty(phase.hint)
-        hint = string(phase.hint);
-    end
-
-    if isfield(phase, 'tip') && ~isempty(phase.tip)
-        tip = string(phase.tip);
-    end
+function draw_header(w, rect, phase, selectedResponse)
+    [hint, tip] = utilities.screen.phase_text(phase);
 
     Screen('TextStyle', w, 1);
     Screen('TextSize', w, 38);
@@ -202,49 +218,113 @@ function draw_header(w, rect, phase)
 
     Screen('TextStyle', w, 0);
     Screen('TextSize', w, 30);
-    DrawFormattedText(w, char(tip), 'center', rect(4) * 0.18, [1 1 1]);
+
+    if string(phase.phase) == "inference" || string(phase.phase) == "application"
+        utilities.screen.draw_decision_tip(w, rect, selectedResponse);
+    else
+        DrawFormattedText(w, char(tip), 'center', rect(4) * 0.18, [1 1 1]);
+    end
 end
 
 
-function draw_two_stacked_imgs(w, rect, texCache, imgsField)
-    imgs = utilities.session.to_cellstr(imgsField);
+function draw_decision_tip(w, rect, selectedResponse)
+    y = rect(4) * 0.18;
 
-    keyTop = char(imgs{1});
-    keyBot = char(imgs{2});
+    leftColor = [1 1 1];
+    rightColor = [1 1 1];
+    leftText = '←   Same';
+    rightText = 'Different   →';
 
-    GAP = rect(4) * 0.06;
-    wImg = rect(3) * 0.80;
-    hImg = rect(4) * 0.30;
-
-    topMargin = rect(4) * 0.22;
-    bottomMargin = rect(4) * 0.06;
-
-    availTop = topMargin;
-    availBot = rect(4) - bottomMargin;
-
-    stackH = 2 * hImg + GAP;
-    centerX = rect(3) / 2;
-    centerY = (availTop + availBot) / 2;
-
-    if stackH > (availBot - availTop)
-        scale = (availBot - availTop) / stackH;
-        hImg = hImg * scale;
-        wImg = wImg * scale;
+    if selectedResponse == "same"
+        leftColor = [1 1 0];
+    elseif selectedResponse == "different"
+        rightColor = [1 1 0];
     end
 
-    dstTop = CenterRectOnPointd( ...
-        [0 0 wImg hImg], ...
-        centerX, ...
-        centerY - (hImg / 2 + GAP / 2));
+    DrawFormattedText(w, leftText, rect(3) * 0.35, y, leftColor);
+    DrawFormattedText(w, rightText, rect(3) * 0.57, y, rightColor);
+end
 
-    dstBot = CenterRectOnPointd( ...
-        [0 0 wImg hImg], ...
-        centerX, ...
-        centerY + (hImg / 2 + GAP / 2));
+function [hint, tip] = phase_text(phase)
+    phaseName = string(phase.phase);
 
-        
-    Screen('DrawTexture', w, texCache(keyTop), [], dstTop);
-    Screen('DrawTexture', w, texCache(keyBot), [], dstBot);
+    if phaseName == "phase_start"
+        parentPhase = string(phase.parent_phase);
+
+        if parentPhase == "inference"
+            hint = "First rule";
+            tip = "←   Ready          Ready   →";
+        elseif parentPhase == "application"
+            hint = "Memorize this rule";
+            tip = "←   Memorized      Memorized   →";
+        else
+            hint = "";
+            tip = "";
+        end
+
+    elseif phaseName == "inference"
+        hint = "Previous rule";
+        tip = "←   Same          Different   →";
+
+    elseif phaseName == "application"
+        hint = "Memorized rule";
+        tip = "←   Same          Different   →";
+
+    else
+        hint = "";
+        tip = "";
+    end
+end
+
+
+function draw_two_stacked_imgs(w, rect, textureCache, imgsField)
+    imgs = utilities.session.to_cellstr(imgsField);
+
+    topTexture = textureCache(char(imgs{1}));
+    bottomTexture = textureCache(char(imgs{2}));
+
+    gap = rect(4) * 0.06;
+    imageWidth = rect(3) * 0.80;
+    imageHeight = rect(4) * 0.30;
+
+    topLimit = rect(4) * 0.22;
+    bottomLimit = rect(4) * 0.94;
+
+    stackHeight = 2 * imageHeight + gap;
+
+    if stackHeight > bottomLimit - topLimit
+        scale = (bottomLimit - topLimit) / stackHeight;
+        imageWidth = imageWidth * scale;
+        imageHeight = imageHeight * scale;
+    end
+
+    centerX = rect(3) / 2;
+    centerY = (topLimit + bottomLimit) / 2;
+
+    topRect = CenterRectOnPointd( ...
+        [0 0 imageWidth imageHeight], ...
+        centerX, centerY - imageHeight / 2 - gap / 2);
+
+    bottomRect = CenterRectOnPointd( ...
+        [0 0 imageWidth imageHeight], ...
+        centerX, centerY + imageHeight / 2 + gap / 2);
+
+    Screen('DrawTexture', w, topTexture, [], topRect);
+    Screen('DrawTexture', w, bottomTexture, [], bottomRect);
+end
+
+
+function clear_screen(w)
+    Screen('FillRect', w, [0.15 0.15 0.15]);
+end
+
+
+function text = optional_string(structData, fieldName)
+    text = "";
+
+    if isfield(structData, fieldName) && ~isempty(structData.(fieldName))
+        text = string(structData.(fieldName));
+    end
 end
 
 
@@ -253,15 +333,15 @@ function rgb = phase_bg_rgb(bgName)
 
     switch string(bgName)
         case "yellow"
-            base_rgb = [1 1 0];
+            baseRgb = [1 1 0];
         case "cyan"
-            base_rgb = [0 1 1];
+            baseRgb = [0 1 1];
         otherwise
             rgb = [0 0 0];
             return
     end
 
-    hsv = rgb2hsv(base_rgb);
+    hsv = rgb2hsv(baseRgb);
     hsv(3) = luminosity;
     rgb = hsv2rgb(hsv);
 end

@@ -6,15 +6,16 @@ function config = default_config()
     config = struct();
 
     % ---- general config ----
-    config.SKIP_SYNC_TESTS = 1;
-    config.REST_TIME = 2; % 15 in production 
+    config.SKIP_SYNC_TESTS = 0;
+    config.REST_TIME = 1; % 10 or 15 in production 
+    config.DECISION_TIME_LIMIT = 1; % 10 in production
 
     % ---- screen config ----
     config.use_windowed_mode = true;  % false in production
     config.window_rect = [100 100 900 900];
     config.resolution = [1400 1400];
     config.bg_color = [0 0 0];
-    config.verbosity = 1;
+    config.verbosity = 1; 
 
     % ---- EyeLink config ----
     config.eyelink_flag = 0;  % 1 in production
@@ -62,45 +63,6 @@ function session = normalize_session(session)
                 session.blocks(b).phases(ph).trial = ...
                     utilities.session.force_struct_array(P.trial);
             end
-        end
-    end
-end
-
-
-function a = force_struct_array(x)
-    if isempty(x)
-        a = x;
-        return
-    end
-
-    if ~iscell(x)
-        a = x;
-        return
-    end
-
-    if ~all(cellfun(@isstruct, x))
-        try
-            a = [x{:}];
-        catch
-            a = x;
-        end
-        return
-    end
-
-    allFields = {};
-    for i = 1:numel(x)
-        allFields = union(allFields, fieldnames(x{i}), 'stable');
-    end
-
-    emptyStruct = cell2struct(repmat({[]}, 1, numel(allFields)), allFields, 2);
-    a = repmat(emptyStruct, 1, numel(x));
-
-    for i = 1:numel(x)
-        s = x{i};
-        fn = fieldnames(s);
-
-        for k = 1:numel(fn)
-            a(i).(fn{k}) = s.(fn{k});
         end
     end
 end
@@ -167,21 +129,50 @@ function allImgs = collect_all_images(session)
     allImgs = unique(allImgs, 'stable');
 end
 
-
 function c = to_cellstr(x)
     if isempty(x)
         c = {};
-        return
-    end
-
-    if ischar(x) || isstring(x)
-        c = cellstr(x);
     elseif iscell(x)
         c = x;
     else
         c = cellstr(string(x));
     end
 end
+
+
+function a = force_struct_array(x)
+    if isempty(x) || ~iscell(x)
+        a = x;
+        return
+    end
+
+    if ~all(cellfun(@isstruct, x))
+        try
+            a = [x{:}];
+        catch
+            a = x;
+        end
+        return
+    end
+
+    allFields = {};
+    for i = 1:numel(x)
+        allFields = union(allFields, fieldnames(x{i}), 'stable');
+    end
+
+    emptyStruct = cell2struct(repmat({[]}, 1, numel(allFields)), allFields, 2);
+    a = repmat(emptyStruct, 1, numel(x));
+
+    for i = 1:numel(x)
+        s = x{i};
+        fn = fieldnames(s);
+
+        for k = 1:numel(fn)
+            a(i).(fn{k}) = s.(fn{k});
+        end
+    end
+end
+
 
 end
 end

@@ -18,7 +18,7 @@ def build_session(
         participant: str = "p002",
         seed: int = 2,
         number_of_mix_blocks: int = 0,
-        number_of_decision_trials_per_phase: int = 6,
+        number_of_decision_trials_per_phase: int = 1,
 ) -> None:
     """
     Main entry: loads stimulus pools and writes a randomized block/phase structure to session.json
@@ -55,12 +55,9 @@ def build_session(
     rng.shuffle(families)  # so that family blocks are shuffled
 
     # Hardcoded UI bits (MATLAB runner uses these strings directly)
-    keys = {"same": "4$", "different": "3#"}
-    tip_ready = "←   Ready          Ready   →"
-    tip_memorized = "←   Memorized      Memorized   →"
-    tip_decide = "←   Same          Different   →"
-    inference_background, inference_hint, inference_start_hint = "yellow", "Previous rule", "First rule"
-    application_background, application_hint, application_start_hint = "cyan", "Memorized rule", "Memorize this rule"
+    keys = {"same": "3#", "different": "4$"}
+    inference_background = "yellow"
+    application_background = "cyan"
 
     # Swap background colors for even numbered participants
     if seed % 2 == 0:
@@ -164,13 +161,11 @@ def build_session(
                     "id": first["id"],
                     "seed": first.get("seed"),
                     "params": first.get("params"),
-                    "difficulty": first.get("difficulty"),
                 },
                 {
                     "id": second["id"],
                     "seed": second.get("seed"),
                     "params": second.get("params"),
-                    "difficulty": second.get("difficulty"),
                 },
             ],
         }
@@ -184,10 +179,6 @@ def build_session(
             allowed_contexts: list[tuple[str, str]],
             used_stimulus_ids: set[str],
             background: str,
-            start_hint: str,
-            decision_hint: str,
-            start_tip: str,
-            decision_tip: str
     ) -> list[dict]:
         """
         Build a phase consisting of one phase_start trial + a list of decision trials
@@ -200,8 +191,7 @@ def build_session(
         phase_start = {
             "phase": "phase_start",
             "bg": background,
-            "hint": start_hint,
-            "tip": start_tip,
+            "parent_phase": phase_name,
             "trial": [make_trial_entry(start_family, start_rule, first, second, correct=None)],
         }
 
@@ -218,8 +208,6 @@ def build_session(
         decision_phase = {
             "phase": phase_name,
             "bg": background,
-            "hint": decision_hint,
-            "tip": decision_tip,
             "trials": decision_trials,
         }
         return [phase_start, decision_phase]
@@ -242,23 +230,14 @@ def build_session(
             "inference",
             allowed_contexts,
             used_stimulus_ids,
-            inference_background,
-            inference_start_hint,
-            inference_hint,
-            tip_ready,
-            tip_decide
+            inference_background
         )
         phases += build_phase(
             "application",
             allowed_contexts,
             used_stimulus_ids,
-            application_background,
-            application_start_hint,
-            application_hint,
-            tip_memorized,
-            tip_decide
+            application_background
         )
-
         return {"block_id": block_id, "family": family_label, "phases": phases}
 
     # Build the full session: family blocks first (shuffled), then a few mix blocks at the end

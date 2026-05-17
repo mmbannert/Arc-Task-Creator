@@ -8,7 +8,6 @@ function log = init_log(session)
     log.trials = repmat(utilities.log.trial_template(), 0, 1);
 end
 
-
 function trialTemplate = trial_template()
     trialTemplate = struct( ...
         'uid', "", ...
@@ -19,54 +18,58 @@ function trialTemplate = trial_template()
         'phase_index', [], ...
         'trial_index', [], ...
         'bg', "", ...
-        'hint', "", ...
-        'tip', "", ...
         'rule', "", ...
-        'ids', strings(0, 1), ...
-        'seeds', [], ...
         'imgs', strings(0, 1), ...
         'correct', "", ...
         'resp', "", ...
         'is_correct', [], ...
         'rt', [], ...
+        'all_responses', strings(0, 1), ...
+        'all_rts', [], ...
         'stim_onset_abs', [], ...
         'stim_onset_rel', [], ...
-        'raw_trial', [] ...
+        'stimulus_info', [] ...
     );
 end
 
 
-function trial = make_trial(block, phase, ph, t, tr, resp, rt, tOn, t0)
+function trial = make_trial( ...
+    block, phase, phaseIndex, trialIndex, ...
+    trialData, response, reactionTime, stimulusOnsetTime, experimentStartTime, ...
+    allResponses, allReactionTimes)
+
+    if nargin < 10
+        allResponses = strings(0, 1);
+        allReactionTimes = [];
+    end
+
     trial = utilities.log.trial_template();
 
     trial.block_id = block.block_id;
     trial.block_family = string(block.family);
-    trial.trial_family = utilities.log.trial_family(block, tr);
-    trial.uid = utilities.message.make_trial_id(block.block_id, ph, t);
+    trial.trial_family = utilities.log.trial_family(block, trialData);
+    trial.uid = utilities.message.make_trial_id(block.block_id, phaseIndex, trialIndex);
 
     trial.phase = string(phase.phase);
-    trial.phase_index = ph;
-    trial.trial_index = t;
+    trial.phase_index = phaseIndex;
+    trial.trial_index = trialIndex;
 
     trial.bg = utilities.log.get_field_str(phase, 'bg');
-    trial.hint = utilities.log.get_field_str(phase, 'hint');
-    trial.tip = utilities.log.get_field_str(phase, 'tip');
+    trial.rule = utilities.log.get_field_str(trialData, 'rule');
+    trial.imgs = utilities.log.get_field_strarr(trialData, 'imgs');
 
-    trial.rule = utilities.log.get_field_str(tr, 'rule');
-
-    trial.ids = utilities.log.get_stimulus_ids(tr);
-    trial.seeds = utilities.log.get_stimulus_seeds(tr);
-    trial.imgs = utilities.log.get_field_strarr(tr, 'imgs');
-
-    trial.correct = utilities.log.get_field_str(tr, 'correct');
-    trial.resp = string(resp);
+    trial.correct = utilities.log.get_field_str(trialData, 'correct');
+    trial.resp = string(response);
     trial.is_correct = utilities.log.score(trial.resp, trial.correct);
 
-    trial.rt = rt;
-    trial.stim_onset_abs = tOn;
-    trial.stim_onset_rel = tOn - t0;
+    trial.rt = reactionTime;
+    trial.all_responses = allResponses;
+    trial.all_rts = allReactionTimes;
 
-    trial.raw_trial = tr;
+    trial.stim_onset_abs = stimulusOnsetTime;
+    trial.stim_onset_rel = stimulusOnsetTime - experimentStartTime;
+
+    trial.stimulus_info = trialData;
 end
 
 

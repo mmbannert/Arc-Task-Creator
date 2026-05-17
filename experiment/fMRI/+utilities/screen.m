@@ -1,8 +1,9 @@
-classdef screen_utils
+classdef screen
 methods(Static)
 
 function [w, rect] = setup_window(cfg)
     Screen('Preference', 'SkipSyncTests', cfg.SKIP_SYNC_TESTS);
+    Screen('Preference', 'Verbosity', cfg.verbosity); 
     AssertOpenGL;
 
     PsychImaging('PrepareConfiguration');
@@ -107,12 +108,46 @@ function fixation_screen(w, rect, seconds)
 
 end
 
+function block_progress_screen(window, windowRect, blockIndex, numberOfBlocks)
+
+    Screen('FillRect', window, [0.15 0.15 0.15]);
+    Screen('TextStyle', window, 1);
+    Screen('TextSize', window, 42);
+
+    message = sprintf('Block %d / %d', blockIndex, numberOfBlocks);
+
+    DrawFormattedText(window, message, 'center', 'center', [1 1 1]);
+
+    Screen('Flip', window);
+    WaitSecs(2);
+
+end
+
+function block_score_screen(window, windowRect, blockIndex, numberOfBlocks, summary)
+
+    Screen('FillRect', window, [0.15 0.15 0.15]);
+    Screen('TextStyle', window, 1);
+    Screen('TextSize', window, 38);
+
+    message = sprintf([ ...
+        'Block finished\n\n' ...
+        '%d / %d correct\n\n'], ...
+        summary.correctCount, ...
+        summary.decisionCount);
+
+    DrawFormattedText(window, message, 'center', 'center', [1 1 1]);
+
+    Screen('Flip', window);
+    WaitSecs(5);
+
+end
+
 function [resp, rt, tOn] = rule_start_screen(w, rect, phase, tr, texCache, validKeys, keyEsc)
-    utilities.screen_utils.draw_trial_screen(w, rect, phase, tr, texCache);
+    utilities.screen.draw_trial_screen(w, rect, phase, tr, texCache);
 
     tOn = Screen('Flip', w);
 
-    [~, respTime] = utilities.screen_utils.wait_key(validKeys, keyEsc);
+    [~, respTime] = utilities.screen.wait_key(validKeys, keyEsc);
 
     rt = respTime - tOn;
     resp = "ready";
@@ -120,11 +155,11 @@ end
 
 
 function [resp, rt, tOn] = twoimg_screen(w, rect, phase, tr, texCache, keySame, keyDiff, keyEsc)
-    utilities.screen_utils.draw_trial_screen(w, rect, phase, tr, texCache);
+    utilities.screen.draw_trial_screen(w, rect, phase, tr, texCache);
 
     tOn = Screen('Flip', w);
 
-    [respKey, respTime] = utilities.screen_utils.wait_key([keySame keyDiff], keyEsc);
+    [respKey, respTime] = utilities.screen.wait_key([keySame keyDiff], keyEsc);
 
     rt = respTime - tOn;
 
@@ -139,18 +174,13 @@ end
 function draw_trial_screen(w, rect, phase, tr, texCache)
     Screen('FillRect', w, [0.15 0.15 0.15]);
 
-    frameColor = utilities.screen_utils.phase_bg_rgb(phase.bg);
+    frameColor = utilities.screen.phase_bg_rgb(phase.bg);
     frameWidth = 30;
 
     Screen('FrameRect', w, frameColor, rect, frameWidth);
 
-    utilities.screen_utils.draw_header(w, rect, phase);
-
-    if isfield(tr, 'imgs') && ~isempty(tr.imgs)
-        utilities.screen_utils.draw_two_stacked_imgs(w, rect, texCache, tr.imgs);
-    else
-        DrawFormattedText(w, '[missing imgs field]', 'center', rect(4) * 0.6, [1 1 1]);
-    end
+    utilities.screen.draw_header(w, rect, phase);
+    utilities.screen.draw_two_stacked_imgs(w, rect, texCache, tr.imgs);
 end
 
 
@@ -177,12 +207,7 @@ end
 
 
 function draw_two_stacked_imgs(w, rect, texCache, imgsField)
-    imgs = utilities.session_utils.to_cellstr(imgsField);
-
-    if numel(imgs) < 2
-        DrawFormattedText(w, '[need 2 imgs]', 'center', rect(4) * 0.6, [1 1 1]);
-        return
-    end
+    imgs = utilities.session.to_cellstr(imgsField);
 
     keyTop = char(imgs{1});
     keyBot = char(imgs{2});
@@ -217,17 +242,9 @@ function draw_two_stacked_imgs(w, rect, texCache, imgsField)
         centerX, ...
         centerY + (hImg / 2 + GAP / 2));
 
-    if isKey(texCache, keyTop)
-        Screen('DrawTexture', w, texCache(keyTop), [], dstTop);
-    else
-        DrawFormattedText(w, '[missing top]', 'center', rect(4) * 0.55, [1 1 1]);
-    end
-
-    if isKey(texCache, keyBot)
-        Screen('DrawTexture', w, texCache(keyBot), [], dstBot);
-    else
-        DrawFormattedText(w, '[missing bottom]', 'center', rect(4) * 0.80, [1 1 1]);
-    end
+        
+    Screen('DrawTexture', w, texCache(keyTop), [], dstTop);
+    Screen('DrawTexture', w, texCache(keyBot), [], dstBot);
 end
 
 

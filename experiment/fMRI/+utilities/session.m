@@ -1,17 +1,53 @@
-classdef session_utils
+classdef session
 methods(Static)
+
+
+function config = default_config()
+    config = struct();
+
+    % ---- general config ----
+    config.SKIP_SYNC_TESTS = 1;
+    config.REST_TIME = 2; % 15 in production 
+
+    % ---- screen config ----
+    config.use_windowed_mode = true;  % false in production
+    config.window_rect = [100 100 900 900];
+    config.resolution = [1400 1400];
+    config.bg_color = [0 0 0];
+    config.verbosity = 1;
+
+    % ---- EyeLink config ----
+    config.eyelink_flag = 0;  % 1 in production
+    config.DUMMY_MODE = 1;  % 0 in production
+
+    % ---- scanner config ----
+    config.use_scanner_trigger = true;
+    config.trigger_key_name = 'w';
+end
+
+function keys = setup_keys(session, config)
+    KbName('UnifyKeyNames');
+
+    keys.sameResponse = KbName(char(session.keys.same));
+    keys.differentResponse = KbName(char(session.keys.different));
+    keys.escape = KbName('ESCAPE');
+    keys.scannerTrigger = KbName(config.trigger_key_name);
+
+    keys.response = [keys.sameResponse keys.differentResponse];
+end
+
 
 function session = load_session(sessionPath)
     session = jsondecode(fileread(sessionPath));
-    session = utilities.session_utils.normalize_session(session);
+    session = utilities.session.normalize_session(session);
 end
 
 
 function session = normalize_session(session)
-    session.blocks = utilities.session_utils.force_struct_array(session.blocks);
+    session.blocks = utilities.session.force_struct_array(session.blocks);
 
     for b = 1:numel(session.blocks)
-        session.blocks(b).phases = utilities.session_utils.force_struct_array( ...
+        session.blocks(b).phases = utilities.session.force_struct_array( ...
             session.blocks(b).phases);
 
         for ph = 1:numel(session.blocks(b).phases)
@@ -19,12 +55,12 @@ function session = normalize_session(session)
 
             if isfield(P, 'trials') && ~isempty(P.trials)
                 session.blocks(b).phases(ph).trials = ...
-                    utilities.session_utils.force_struct_array(P.trials);
+                    utilities.session.force_struct_array(P.trials);
             end
 
             if isfield(P, 'trial') && ~isempty(P.trial)
                 session.blocks(b).phases(ph).trial = ...
-                    utilities.session_utils.force_struct_array(P.trial);
+                    utilities.session.force_struct_array(P.trial);
             end
         end
     end
@@ -77,7 +113,7 @@ function texCache = preload_textures(session, sessionPath, w)
         baseDir = pwd;
     end
 
-    allImgs = utilities.session_utils.collect_all_images(session);
+    allImgs = utilities.session.collect_all_images(session);
 
     texCache = containers.Map();
 
@@ -112,7 +148,7 @@ function allImgs = collect_all_images(session)
                 tr0 = phase.trial(1);
 
                 if isfield(tr0, 'imgs') && ~isempty(tr0.imgs)
-                    allImgs = [allImgs, utilities.session_utils.to_cellstr(tr0.imgs)]; %#ok<AGROW>
+                    allImgs = [allImgs, utilities.session.to_cellstr(tr0.imgs)]; %#ok<AGROW>
                 end
             end
 
@@ -121,7 +157,7 @@ function allImgs = collect_all_images(session)
                     tr = phase.trials(t);
 
                     if isfield(tr, 'imgs') && ~isempty(tr.imgs)
-                        allImgs = [allImgs, utilities.session_utils.to_cellstr(tr.imgs)]; %#ok<AGROW>
+                        allImgs = [allImgs, utilities.session.to_cellstr(tr.imgs)]; %#ok<AGROW>
                     end
                 end
             end

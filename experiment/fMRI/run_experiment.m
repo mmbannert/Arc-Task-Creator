@@ -1,172 +1,101 @@
 function run_experiment(sessionPath)
-% Run by calling:
-%   run_experiment("session.json")
+% Run by calling: run_experiment("session.json")
 
-cfg = struct();
-
-% ---- general config ----
-cfg.SKIP_SYNC_TESTS = 1;
-cfg.REST_TIME = 15;
-
-% ---- screen config ----
-cfg.use_windowed_mode = true;  % set false for scanner/fullscreen
-cfg.window_rect = [100 100 900 900];
-cfg.resolution = [1400 1400];
-cfg.bg_color = [0 0 0];
-
-% ---- EyeLink config ----
-cfg.eyelink_flag = 0;
-cfg.DUMMY_MODE = 1;
-
-% ---- scanner config ----
-cfg.use_scanner_trigger = true;
-cfg.trigger_key_name = 'w';
+config = utilities.session.default_config();
+% Change configurations in session_utils
 
 try
-    % ===================== load session =====================
-    session = utilities.session_utils.load_session(sessionPath);
+    session = utilities.session.load_session(sessionPath);
+    keys = utilities.session.setup_keys(session, config);
 
-    % ===================== keys =====================
-    KbName('UnifyKeyNames');
+    [window, windowRect] = utilities.screen.setup_window(config);
 
-    keySame = KbName(char(session.keys.same));
-    keyDiff = KbName(char(session.keys.different));
-    keyEsc  = KbName('ESCAPE');
-    keyTrigger = KbName(cfg.trigger_key_name);
+    textureCache = utilities.session.preload_textures(session, sessionPath, window);
+    experimentLog = utilities.log.init_log(session);
 
-    responseKeys = [keySame keyDiff];
-
-    % ===================== window =====================
-    [w, rect] = utilities.screen_utils.setup_window(cfg);
-
-    % ===================== EyeLink =====================
-    if cfg.eyelink_flag
-        el = utilities.eyelink_utils.setup(w, rect, cfg.DUMMY_MODE, session.participant);
-        utilities.eyelink_utils.calibrate(el);
-    end
-
-    % ===================== preload =====================
-    texCache = utilities.session_utils.preload_textures(session, sessionPath, w);
-
-    % ===================== log =====================
-    log = utilities.log_utils.init_log(session);
-
-    % ===================== task loop =====================
     fprintf('\nExperiment started for participant %s\n', string(session.participant));
 
-    for b = 1:numel(session.blocks)
-        block = session.blocks(b);
+    experimentStartTime = prepare_experiment( ...
+    window, windowRect, session, keys, config);
 
-        fprintf('\n==============================\n');
-        fprintf('Preparing block %d / %d | family: %s\n', ...
-            b, numel(session.blocks), string(block.family));
-        fprintf('==============================\n');
+    for blockIndex = 1:numel(session.blocks)
+        block = session.blocks(blockIndex);
+    
+        utilities.message.print_block_prepare( ...
+            blockIndex, numel(session.blocks), block);
 
-        % ---------- participant ready ----------
-        utilities.screen_utils.message_screen( ...
-            w, rect, ...
-            sprintf('Block %d / %d\n\nPress any response button when ready for scan.', ...
-            b, numel(session.blocks)));
+        utilities.screen.block_progress_screen( ...
+            window, windowRect, blockIndex, numel(session.blocks));
+    
+        blockTrials = run_block( ...
+            window, windowRect, block, textureCache, keys, config, experimentStartTime);
+    
+        experimentLog.trials = [experimentLog.trials; blockTrials]; %#ok<AGROW>
 
-        fprintf('Waiting for participant readiness...\n');
-        utilities.screen_utils.wait_key(responseKeys, keyEsc);
-        fprintf('Participant ready.\n');
+        blockSummary = utilities.log.summarize_trials(blockTrials);
+        utilities.message.print_block_summary(blockIndex, blockSummary);
 
-        % ---------- wait for scanner trigger ----------
-        utilities.screen_utils.message_screen(w, rect, 'Waiting for scanner...');
-        fprintf('Waiting for scanner trigger key "%s"...\n', cfg.trigger_key_name);
-
-        if cfg.use_scanner_trigger
-            [~, scan_t0] = utilities.screen_utils.wait_key(keyTrigger, keyEsc);
-        else
-            scan_t0 = GetSecs();
-        end
-
-        fprintf('Scanner trigger received. Block %d started at %.4f\n', b, scan_t0);
-
-        if cfg.eyelink_flag
-            utilities.eyelink_utils.msg('BLOCK_START %d FAMILY %s', ...
-                b, char(string(block.family)));
-            utilities.eyelink_utils.start_recording();
-        end
-
-        % ---------- phases ----------
-        for ph = 1:numel(block.phases)
-            phase = block.phases(ph);
-            phaseName = string(phase.phase);
-
-            if phaseName == "phase_start"
-                if ph > 1
-                    utilities.screen_utils.fixation_screen( ...
-                        w, rect, cfg.REST_TIME);
-                end
-
-                [trial, log] = run_phase_start( ...
-                    w, rect, texCache, ...
-                    block, phase, b, ph, ...
-                    responseKeys, keyEsc, scan_t0, log, cfg);
-
-                utilities.log_utils.print_trial(trial);
-
-                continue
-            end
-
-            if ~isfield(phase, 'trials') || isempty(phase.trials)
-                fprintf('Skipping empty phase: %s\n', phaseName);
-                continue
-            end
-
-            for t = 1:numel(phase.trials)
-                tr = phase.trials(t);
-
-                trialId = sprintf('%d_%d_%d', b, ph, t);
-                
-
-                if cfg.eyelink_flag
-                    utilities.eyelink_utils.msg('TRIALID %s', trialId);
-                end
-
-                [resp, rt, tOn] = utilities.screen_utils.twoimg_screen( ...
-                    w, rect, phase, tr, texCache, keySame, keyDiff, keyEsc);
-
-                trial = utilities.log_utils.make_trial( ...
-                    block, phase, ph, t, tr, resp, rt, tOn, scan_t0);
-
-                log.trials(end+1, 1) = trial; %#ok<AGROW>
-
-                utilities.log_utils.print_trial(trial);
-            end
-        end
-
-        if cfg.eyelink_flag
-            utilities.eyelink_utils.msg('BLOCK_END %d', b);
-            utilities.eyelink_utils.stop_recording();
-        end
+        utilities.screen.block_score_screen( ...
+        window, windowRect, blockIndex, numel(session.blocks), blockSummary);
     end
 
-    % ===================== finish =====================
-    utilities.log_utils.save_log(log, sessionPath, session);
 
-    if cfg.eyelink_flag
-        utilities.eyelink_utils.close(session.participant, fileparts(sessionPath));
+    utilities.log.save_log(experimentLog, sessionPath, session);
+
+    if config.eyelink_flag
+        fprintf('[EyeLink] Stopping recording...\n');
+        utilities.eyelink.stop_recording();
+        utilities.eyelink.close(session.participant, fileparts(sessionPath));
     end
 
     Screen('CloseAll');
     fprintf('\nExperiment finished successfully.\n');
 
-catch ME
-    utilities.eyelink_utils.emergency_shutdown();
+catch errorInfo
+    utilities.eyelink.emergency_shutdown();
     try Screen('CloseAll'); end %#ok<TRYNC>
-    rethrow(ME);
+    rethrow(errorInfo);
 end
 
 end
 
 
-function [trial, log] = run_phase_start( ...
-    w, rect, texCache, ...
-    block, phase, b, ph, ...
-    responseKeys, keyEsc, scan_t0, log, cfg)
+% ========================================================================
+% Local experiment-flow functions
+% ========================================================================
+
+
+function blockTrials = run_block(window, windowRect, block, textureCache, keys, config, scanStartTime)
+
+trialTemplate = utilities.log.trial_template();
+blockTrials = repmat(trialTemplate, 0, 1);
+
+for phaseIndex = 1:numel(block.phases)
+    phase = block.phases(phaseIndex);
+
+    if string(phase.phase) == "phase_start"
+        
+        if phaseIndex > 1 
+            utilities.screen.fixation_screen(window, windowRect, config.REST_TIME); end
+
+        trial = run_phase_start( ...
+            window, windowRect, block, phase, phaseIndex, textureCache, keys, config, scanStartTime);
+
+        blockTrials(end+1, 1) = trial; %#ok<AGROW>
+        utilities.message.print_trial(trial);
+        continue
+    end
+
+    phaseTrials = run_decision_phase( ...
+        window, windowRect, block, phase, phaseIndex, textureCache, keys, config, scanStartTime);
+
+    blockTrials = [blockTrials; phaseTrials]; %#ok<AGROW>
+end
+utilities.screen.fixation_screen(window, windowRect, config.REST_TIME);
+end
+
+
+function trial = run_phase_start(w, rect, block, phase, ph, texCache, keys, cfg, scan_t0)
 
 if isfield(phase, 'trial') && ~isempty(phase.trial)
     tr0 = phase.trial(1);
@@ -174,18 +103,103 @@ else
     tr0 = struct();
 end
 
-trialId = sprintf('%d_%d_%d', b, ph, 0);
+trialId = utilities.message.make_trial_id(block.block_id, ph, 0);
+utilities.message.eyelink_trial_id(cfg, trialId);
 
-if cfg.eyelink_flag
-    utilities.eyelink_utils.msg('TRIALID %s', trialId);
-end
+[resp, rt, tOn] = utilities.screen.rule_start_screen( ...
+    w, rect, phase, tr0, texCache, keys.response, keys.escape);
 
-[resp, rt, tOn] = utilities.screen_utils.rule_start_screen( ...
-    w, rect, phase, tr0, texCache, responseKeys, keyEsc);
-
-trial = utilities.log_utils.make_trial( ...
+trial = utilities.log.make_trial( ...
     block, phase, ph, 0, tr0, resp, rt, tOn, scan_t0);
 
-log.trials(end+1, 1) = trial;
+end
+
+
+function phaseTrials = run_decision_phase(window, windowRect, block, phase, phaseIndex, textureCache, keys, config, experimentStartTime)
+
+trialTemplate = utilities.log.trial_template();
+phaseTrials = repmat(trialTemplate, 0, 1);
+
+for trialIndex = 1:numel(phase.trials)
+    trialData = phase.trials(trialIndex);
+
+    trialId = utilities.message.make_trial_id(block.block_id, phaseIndex, trialIndex);
+    utilities.message.eyelink_trial_id(config, trialId);
+
+    [resp, rt, tOn] = utilities.screen.twoimg_screen( ...
+        window, windowRect, phase, trialData, textureCache, ...
+        keys.sameResponse, keys.differentResponse, keys.escape);
+
+    trial = utilities.log.make_trial( ...
+        block, phase, phaseIndex, trialIndex, trialData, resp, rt, tOn, experimentStartTime);
+
+    phaseTrials(end+1, 1) = trial; %#ok<AGROW>
+    utilities.message.print_trial(trial);
+end
 
 end
+
+
+function experimentStartTime = prepare_experiment(window, windowRect, session, keys, config)
+
+fprintf('\n==============================\n');
+fprintf('Experiment setup\n');
+fprintf('Participant: %s\n', string(session.participant));
+fprintf('==============================\n');
+
+utilities.screen.message_screen( ...
+    window, windowRect, ...
+    sprintf(['Experiment setup' ...
+             'Press any response button when ready.']));
+
+if config.eyelink_flag
+    fprintf('[EyeLink] Opening connection...\n');
+
+    eyelinkDefaults = utilities.eyelink.setup( ...
+        window, windowRect, config.DUMMY_MODE, session.participant);
+
+    fprintf('[EyeLink] Calibration screen active. Complete calibration on tracker PC.\n');
+    utilities.eyelink.calibrate(eyelinkDefaults);
+
+    fprintf('[EyeLink] Starting recording...\n');
+    utilities.eyelink.start_recording();
+
+    utilities.screen.message_screen( ...
+    window, windowRect, ...
+    sprintf(['Eye tracker calibration is complete.\n\n' ...
+             'Press any response button when ready for the scan.']));
+else
+    utilities.screen.message_screen( ...
+    window, windowRect, ...
+    sprintf(['Eye tracker calibration is disabled.\n\n' ...
+             'Press any response button when ready for the scan.']));
+
+    fprintf('[EyeLink] Disabled.\n');
+end
+
+fprintf('[Participant] Waiting for readiness button press...\n');
+utilities.screen.wait_key(keys.response, keys.escape);
+fprintf('[Participant] Ready.\n');
+
+utilities.screen.message_screen( ...
+    window, windowRect, ...
+    'Waiting for scanner...');
+
+fprintf('[Scanner] Waiting for trigger key "%s"...\n', config.trigger_key_name);
+
+if config.use_scanner_trigger
+    [~, experimentStartTime] = utilities.screen.wait_key( ...
+        keys.scannerTrigger, keys.escape);
+else
+    experimentStartTime = GetSecs();
+end
+
+fprintf('[Scanner] First trigger received.\n');
+fprintf('[Experiment] Start time: %.4f\n\n', experimentStartTime);
+
+if config.eyelink_flag
+    utilities.eyelink.msg('EXPERIMENT_START %.4f', experimentStartTime);
+end
+
+end
+

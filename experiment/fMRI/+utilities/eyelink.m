@@ -1,4 +1,4 @@
-classdef eyelink_utils
+classdef eyelink
 methods(Static)
 
 function el = setup(w, rect, dummyMode, participant)
@@ -29,7 +29,7 @@ function el = setup(w, rect, dummyMode, participant)
     Eyelink('command', 'screen_pixel_coords = %ld %ld %ld %ld', x0, y0, x1, y1);
     Eyelink('message', 'DISPLAY_COORDS %ld %ld %ld %ld', x0, y0, x1, y1);
 
-    edfFile = utilities.eyelink_utils.make_edf_name(participant);
+    edfFile = utilities.eyelink.make_edf_name(participant);
 
     status = Eyelink('Openfile', edfFile);
 
@@ -73,7 +73,7 @@ function close(participant, outDir)
         outDir = pwd;
     end
 
-    edfFile = utilities.eyelink_utils.make_edf_name(participant);
+    edfFile = utilities.eyelink.make_edf_name(participant);
 
     Eyelink('Command', 'set_idle_mode');
     WaitSecs(0.05);

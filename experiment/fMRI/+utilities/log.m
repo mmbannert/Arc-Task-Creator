@@ -1,11 +1,11 @@
-classdef log_utils
+classdef log
 methods(Static)
 
 function log = init_log(session)
     log = struct();
     log.participant = string(session.participant);
     log.started_at = datestr(now, 30);
-    log.trials = repmat(utilities.log_utils.trial_template(), 0, 1);
+    log.trials = repmat(utilities.log.trial_template(), 0, 1);
 end
 
 
@@ -37,30 +37,30 @@ end
 
 
 function trial = make_trial(block, phase, ph, t, tr, resp, rt, tOn, t0)
-    trial = utilities.log_utils.trial_template();
+    trial = utilities.log.trial_template();
 
     trial.block_id = block.block_id;
     trial.block_family = string(block.family);
-    trial.trial_family = utilities.log_utils.trial_family(block, tr);
-    trial.uid = sprintf('%d_%d_%d', block.block_id, ph, t);
+    trial.trial_family = utilities.log.trial_family(block, tr);
+    trial.uid = utilities.message.make_trial_id(block.block_id, ph, t);
 
     trial.phase = string(phase.phase);
     trial.phase_index = ph;
     trial.trial_index = t;
 
-    trial.bg = utilities.log_utils.get_field_str(phase, 'bg');
-    trial.hint = utilities.log_utils.get_field_str(phase, 'hint');
-    trial.tip = utilities.log_utils.get_field_str(phase, 'tip');
+    trial.bg = utilities.log.get_field_str(phase, 'bg');
+    trial.hint = utilities.log.get_field_str(phase, 'hint');
+    trial.tip = utilities.log.get_field_str(phase, 'tip');
 
-    trial.rule = utilities.log_utils.get_field_str(tr, 'rule');
+    trial.rule = utilities.log.get_field_str(tr, 'rule');
 
-    trial.ids = utilities.log_utils.get_stimulus_ids(tr);
-    trial.seeds = utilities.log_utils.get_stimulus_seeds(tr);
-    trial.imgs = utilities.log_utils.get_field_strarr(tr, 'imgs');
+    trial.ids = utilities.log.get_stimulus_ids(tr);
+    trial.seeds = utilities.log.get_stimulus_seeds(tr);
+    trial.imgs = utilities.log.get_field_strarr(tr, 'imgs');
 
-    trial.correct = utilities.log_utils.get_field_str(tr, 'correct');
+    trial.correct = utilities.log.get_field_str(tr, 'correct');
     trial.resp = string(resp);
-    trial.is_correct = utilities.log_utils.score(trial.resp, trial.correct);
+    trial.is_correct = utilities.log.score(trial.resp, trial.correct);
 
     trial.rt = rt;
     trial.stim_onset_abs = tOn;
@@ -113,11 +113,11 @@ function ids = get_stimulus_ids(tr)
         return
     end
 
-    stim = utilities.session_utils.force_struct_array(tr.stimuli);
+    stim = utilities.session.force_struct_array(tr.stimuli);
     ids = strings(numel(stim), 1);
 
     for i = 1:numel(stim)
-        ids(i) = utilities.log_utils.get_field_str(stim(i), 'id');
+        ids(i) = utilities.log.get_field_str(stim(i), 'id');
     end
 end
 
@@ -129,7 +129,7 @@ function seeds = get_stimulus_seeds(tr)
         return
     end
 
-    stim = utilities.session_utils.force_struct_array(tr.stimuli);
+    stim = utilities.session.force_struct_array(tr.stimuli);
     seeds = nan(numel(stim), 1);
 
     for i = 1:numel(stim)
@@ -139,27 +139,30 @@ function seeds = get_stimulus_seeds(tr)
     end
 end
 
+function summary = summarize_trials(trials)
 
-function print_trial(trial)
+    hasAnswer = arrayfun(@(trial) ~isempty(trial.is_correct), trials);
 
-    correctStr = "NA";
+    decisionTrials = trials(hasAnswer);
 
-    if ~isempty(trial.is_correct)
-        correctStr = string(trial.is_correct);
+    summary.decisionCount = numel(decisionTrials);
+
+    if summary.decisionCount == 0
+        summary.correctCount = 0;
+        summary.accuracyPercent = NaN;
+        summary.meanRt = NaN;
+        return
     end
 
-    fprintf( ...
-        '[Block %d | %-11s | Trial %02d] ID=%s rule=%s resp=%s rt=%.3f correct=%s onset=%.3f\n', ...
-        trial.block_id, ...
-        string(trial.phase), ...
-        trial.trial_index, ...
-        trial.uid, ...
-        string(trial.rule), ...
-        string(trial.resp), ...
-        trial.rt, ...
-        correctStr, ...
-        trial.stim_onset_rel);
+    correctness = [decisionTrials.is_correct];
+    reactionTimes = [decisionTrials.rt];
+
+    summary.correctCount = sum(correctness);
+    summary.accuracyPercent = 100 * summary.correctCount / summary.decisionCount;
+    summary.meanRt = mean(reactionTimes, 'omitnan');
+
 end
+
 
 
 function save_log(log, sessionPath, session)

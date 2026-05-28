@@ -119,6 +119,60 @@ function fixation_screen(w, rect, seconds)
     WaitSecs('UntilTime', flipTime + seconds);
 end
 
+function scannerSync = scanner_sync_screen( ...
+    window, windowRect, scannerTriggerKey, escapeKey, config)
+
+    numberOfDummyTriggers = config.n_dummies;
+
+    scannerSync.TR = config.TR;
+    scannerSync.n_dummies = numberOfDummyTriggers;
+
+    scannerSync.trigger_times_abs = ...
+        nan(numberOfDummyTriggers + 1, 1);
+
+    if config.wait_for_experimenter_trigger
+        utilities.screen.message_screen(window, windowRect, 'Waiting for experimenter...');
+        fprintf('[Scanner] Waiting for experimenter trigger...\n');
+        utilities.screen.wait_key(scannerTriggerKey, escapeKey);
+    end
+
+    utilities.screen.fixation_screen(window, windowRect, 0);
+
+    fprintf('[Scanner] Waiting for %d dummy triggers...\n', ...
+        numberOfDummyTriggers);
+
+    for triggerIndex = 1:(numberOfDummyTriggers + 1)
+
+        [~, triggerTime] = utilities.screen.wait_key( ...
+            scannerTriggerKey, escapeKey);
+
+        scannerSync.trigger_times_abs(triggerIndex) = triggerTime;
+
+        if triggerIndex <= numberOfDummyTriggers
+            fprintf( ...
+                '[Scanner] Received scanner trigger %d/%d\n', ...
+                triggerIndex, numberOfDummyTriggers);
+        else
+            fprintf('[Scanner] Start trigger received.\n');
+        end
+    end
+
+    scannerSync.first_trigger_abs = ...
+        scannerSync.trigger_times_abs(1);
+
+    scannerSync.experiment_start_abs = ...
+        scannerSync.trigger_times_abs(end);
+
+    scannerSync.trigger_times_rel = ...
+        scannerSync.trigger_times_abs - ...
+        scannerSync.first_trigger_abs;
+
+    scannerSync.experiment_start_rel = ...
+        scannerSync.experiment_start_abs - ...
+        scannerSync.first_trigger_abs;
+
+end
+
 
 function [resp, rt, tOn] = rule_start_screen(w, rect, phase, trialData, textureCache, validKeys, escapeKey)
     utilities.screen.draw_trial_screen(w, rect, phase, trialData, textureCache, "");

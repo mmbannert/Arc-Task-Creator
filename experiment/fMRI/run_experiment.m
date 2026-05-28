@@ -12,20 +12,21 @@ try
     textureCache = utilities.session.preload_textures(session, sessionPath, window);
     experimentLog = utilities.log.init_log(session);
 
-    experimentStartTime = prepare_experiment(window, windowRect, session, keys, config);
+    [experimentStartTime, scannerSync] = prepare_experiment(window, windowRect, session, keys, config);
+    experimentLog.scanner_sync = scannerSync;
 
     for blockIndex = 1:numel(session.blocks)
         block = session.blocks(blockIndex);
     
         utilities.message.print_block_prepare(blockIndex, numel(session.blocks), block);
-        utilities.screen.block_progress_screen(window, windowRect, blockIndex, numel(session.blocks));
+        % utilities.screen.block_progress_screen(window, windowRect, blockIndex, numel(session.blocks));
     
         blockTrials = run_block(window, windowRect, block, textureCache, keys, config, experimentStartTime);
         experimentLog.trials = [experimentLog.trials; blockTrials]; %#ok<AGROW>
 
         blockSummary = utilities.log.summarize_trials(blockTrials);
         utilities.message.print_block_summary(blockIndex, blockSummary);
-        utilities.screen.block_score_screen(window, blockSummary);
+        % utilities.screen.block_score_screen(window, blockSummary);
 
     end
 
@@ -133,7 +134,7 @@ end
 end
 
 
-function experimentStartTime = prepare_experiment(window, windowRect, session, keys, config)
+function [experimentStartTime, scannerSync] = prepare_experiment(window, windowRect, session, keys, config)
 
 fprintf('\n==============================\n');
 fprintf('Experiment setup\n');
@@ -181,9 +182,12 @@ utilities.screen.message_screen( ...
 fprintf('[Scanner] Waiting for trigger key "%s"...\n', config.trigger_key_name);
 
 if config.use_scanner_trigger
-    [~, experimentStartTime] = utilities.screen.wait_key( ...
-        keys.scannerTrigger, keys.escape);
+    scannerSync = utilities.screen.scanner_sync_screen( ...
+        window, windowRect, keys.scannerTrigger, keys.escape, config);
+
+    experimentStartTime = scannerSync.experiment_start_abs;
 else
+    scannerSync = [];
     experimentStartTime = GetSecs();
 end
 

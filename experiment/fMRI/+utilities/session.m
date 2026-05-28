@@ -27,8 +27,6 @@ function config = default_config()
     config.TR = 2.0;
     config.dummy_seconds = 10;
     config.n_dummies = ceil(config.dummy_seconds / config.TR);
-    config.wait_for_experimenter_trigger = true;
-    config.record_all_triggers = true;  % log scanner triggers throughout run
 end
 
 function keys = setup_keys(session, config)

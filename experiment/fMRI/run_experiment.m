@@ -20,7 +20,7 @@ try
     
         utilities.message.print_block_prepare(blockIndex, numel(session.blocks), block);
         blockTrials = run_block(window, windowRect, block, textureCache, keys, config, experimentStartTime);
-        experimentLog.trials = [experimentLog.trials; blockTrials]; %#ok<AGROW>
+        experimentLog.trials = [experimentLog.trials; blockTrials];
 
         blockSummary = utilities.log.summarize_trials(blockTrials);
         utilities.message.print_block_summary(blockIndex, blockSummary);

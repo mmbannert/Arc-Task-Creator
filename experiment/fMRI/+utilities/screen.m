@@ -109,19 +109,9 @@ function scannerSync = scanner_sync_screen( ...
     scannerSync.TR = config.TR;
     scannerSync.n_dummies = numberOfDummyTriggers;
 
-    scannerSync.trigger_times_abs = ...
-        nan(numberOfDummyTriggers + 1, 1);
+    scannerSync.trigger_times_abs = nan(numberOfDummyTriggers + 1, 1);
 
-    if config.wait_for_experimenter_trigger
-        utilities.screen.message_screen(window, windowRect, 'Waiting for experimenter...');
-        fprintf('[Scanner] Waiting for experimenter trigger...\n');
-        utilities.screen.wait_key(scannerTriggerKey, escapeKey);
-    end
-
-    utilities.screen.fixation_screen(window, windowRect, 0);
-
-    fprintf('[Scanner] Waiting for %d dummy triggers...\n', ...
-        numberOfDummyTriggers);
+    utilities.screen.message_screen(window, windowRect, 'Waiting for the scanner...');
 
     for triggerIndex = 1:(numberOfDummyTriggers + 1)
 
@@ -138,6 +128,8 @@ function scannerSync = scanner_sync_screen( ...
             fprintf('[Scanner] Start trigger received.\n');
         end
     end
+
+    utilities.screen.fixation_screen(window, windowRect, 0);
 
     scannerSync.first_trigger_abs = ...
         scannerSync.trigger_times_abs(1);
@@ -293,9 +285,6 @@ function [hint, tip] = phase_text(phase)
         elseif parentPhase == "application"
             hint = "Memorize this rule";
             tip = "←   Memorized      Memorized   →";
-        else
-            hint = "";
-            tip = "";
         end
 
     elseif phaseName == "inference"
@@ -305,10 +294,6 @@ function [hint, tip] = phase_text(phase)
     elseif phaseName == "application"
         hint = "Memorized rule";
         tip = "←   Same          Different   →";
-
-    else
-        hint = "";
-        tip = "";
     end
 end
 

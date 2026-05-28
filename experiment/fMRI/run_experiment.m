@@ -19,15 +19,11 @@ try
         block = session.blocks(blockIndex);
     
         utilities.message.print_block_prepare(blockIndex, numel(session.blocks), block);
-        % utilities.screen.block_progress_screen(window, windowRect, blockIndex, numel(session.blocks));
-    
         blockTrials = run_block(window, windowRect, block, textureCache, keys, config, experimentStartTime);
         experimentLog.trials = [experimentLog.trials; blockTrials]; %#ok<AGROW>
 
         blockSummary = utilities.log.summarize_trials(blockTrials);
         utilities.message.print_block_summary(blockIndex, blockSummary);
-        % utilities.screen.block_score_screen(window, blockSummary);
-
     end
 
     utilities.log.save_log(experimentLog, sessionPath, session);
@@ -56,33 +52,32 @@ end
 
 
 function blockTrials = run_block(window, windowRect, block, textureCache, keys, config, scanStartTime)
-
-trialTemplate = utilities.log.trial_template();
-blockTrials = repmat(trialTemplate, 0, 1);
-
-for phaseIndex = 1:numel(block.phases)
-    phase = block.phases(phaseIndex);
-
-    if string(phase.phase) == "phase_start"
-        
-        if phaseIndex > 1 % Therefore just before rule memorization 
-            utilities.screen.fixation_screen(window, windowRect, config.REST_TIME); end
-
-        trial = run_phase_start( ...
+    trialTemplate = utilities.log.trial_template();
+    blockTrials = repmat(trialTemplate, 0, 1);
+    
+    for phaseIndex = 1:numel(block.phases)
+        phase = block.phases(phaseIndex);
+    
+        if string(phase.phase) == "phase_start"
+            
+            if phaseIndex > 1 % Therefore just before rule memorization 
+                utilities.screen.fixation_screen(window, windowRect, config.REST_TIME); end
+    
+            trial = run_phase_start( ...
+                window, windowRect, block, phase, phaseIndex, textureCache, keys, config, scanStartTime);
+    
+            blockTrials(end+1, 1) = trial; %#ok<AGROW>
+            utilities.message.print_trial(trial);
+            continue
+        end
+    
+        phaseTrials = run_decision_phase( ...
             window, windowRect, block, phase, phaseIndex, textureCache, keys, config, scanStartTime);
-
-        blockTrials(end+1, 1) = trial; %#ok<AGROW>
-        utilities.message.print_trial(trial);
-        continue
+    
+        blockTrials = [blockTrials; phaseTrials]; %#ok<AGROW>
     end
-
-    phaseTrials = run_decision_phase( ...
-        window, windowRect, block, phase, phaseIndex, textureCache, keys, config, scanStartTime);
-
-    blockTrials = [blockTrials; phaseTrials]; %#ok<AGROW>
-end
-
-utilities.screen.fixation_screen(window, windowRect, config.REST_TIME);
+    
+    utilities.screen.fixation_screen(window, windowRect, config.REST_TIME);
 end
 
 

@@ -79,24 +79,6 @@ function message_screen(w, rect, text) %#ok<INUSD>
     utilities.screen.text_screen(w, text, [], 34, false);
 end
 
-
-function block_progress_screen(w, rect, blockIndex, numberOfBlocks) %#ok<INUSD>
-    utilities.screen.text_screen( ...
-        w, ...
-        sprintf('Block %d / %d', blockIndex, numberOfBlocks), ...
-        2, 42, true);
-end
-
-
-function block_score_screen(w, summary)
-    utilities.screen.text_screen( ...
-        w, ...
-        sprintf('Block finished\n\n%d / %d correct\n\n', ...
-            summary.correctCount, summary.decisionCount), ...
-        5, 38, true);
-end
-
-
 function fixation_screen(w, rect, seconds)
     utilities.screen.clear_screen(w);
 

@@ -7,13 +7,13 @@ function log = init_log(session)
     log.participant = string(session.participant);
     log.started_at = string(datetime("now", "Format", "yyyyMMdd'T'HHmmss"));
 
-    log.session_info = struct();
-    log.session_info.number_of_decision_trials_per_phase = session.number_of_decision_trials_per_phase;
-    log.session_info.number_of_trials_per_block = session.number_of_trials_per_block;
-    log.session_info.number_of_family_blocks = session.number_of_family_blocks;
-    log.session_info.number_of_mix_blocks = session.number_of_mix_blocks;
-    log.session_info.number_of_trials_total = session.number_of_trials_total;
-    log.session_info.keys = session.keys;
+    log.session = struct();
+    log.session.number_of_decision_trials_per_phase = session.number_of_decision_trials_per_phase;
+    log.session.number_of_trials_per_block = session.number_of_trials_per_block;
+    log.session.number_of_family_blocks = session.number_of_family_blocks;
+    log.session.number_of_mix_blocks = session.number_of_mix_blocks;
+    log.session.number_of_trials_total = session.number_of_trials_total;
+    log.session.keys = session.keys;
 
     log.trials = repmat(utilities.log.trial_template(), 0, 1);
 end
@@ -243,7 +243,7 @@ function print_trial(trial)
     end
 
     fprintf( ...
-        '%s [Block %d | %-11s | Trial %02d] ID=%s rule=%s resp=%s rt=%.3f correct=%s onset=%.3f\n', ...
+        '%s [Block %d | %-17s | Trial %02d] ID=%s rule=%s resp=%s rt=%.3f correct=%s onset=%.3f\n', ...
         marker, ...
         trial.block_id, ...
         char(string(trial.phase)), ...

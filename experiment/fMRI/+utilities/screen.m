@@ -147,69 +147,96 @@ function scannerSync = scanner_sync_screen( ...
 
 end
 
-function [resp, rt, tOn, allResponses, allRts] = trial_screen( ...
+
+function [resp, rt, tOn, allResponses, allRts, scannerSync] = trial_screen( ...
     w, rect, phase, trialData, textureCache, ...
-    sameKey, differentKey, escapeKey, duration)
+    sameKey, differentKey, escapeKey, duration, ...
+    scannerTriggerKey, scannerSync, experimentStartTime)
 
     utilities.screen.draw_trial_screen(w, rect, phase, trialData, textureCache, "");
     tOn = Screen('Flip', w);
 
-    [resp, rt, allResponses, allRts] = utilities.screen.collect_responses( ...
+    [resp, rt, allResponses, allRts, scannerSync] = utilities.screen.collect_responses( ...
         w, rect, phase, trialData, textureCache, ...
-        tOn, duration, sameKey, differentKey, escapeKey);
+        tOn, duration, sameKey, differentKey, escapeKey, ...
+        scannerTriggerKey, scannerSync, experimentStartTime);
 end
 
 
-function [firstResponse, firstRt, allResponses, allRts] = collect_responses( ...
+function [firstResponse, firstRt, allResponses, allRts, scannerSync] = collect_responses( ...
     w, rect, phase, trialData, textureCache, ...
-    tOn, duration, sameKey, differentKey, escapeKey)
+    tOn, duration, sameKey, differentKey, escapeKey, ...
+    scannerTriggerKey, scannerSync, experimentStartTime)
 
     firstResponse = "timeout";
     firstRt = NaN;
 
-    allResponses = strings(0,1);
+    allResponses = strings(0, 1);
     allRts = [];
 
     deadline = tOn + duration;
-    previousDown = false;
+
+    previousResponseDown = false;
+    previousScannerDown = false;
 
     while GetSecs() < deadline
 
         [isDown, keyTime, keyCode] = KbCheck;
 
-        if isDown && ~previousDown
+        if ~isDown
+            previousResponseDown = false;
+            previousScannerDown = false;
+            WaitSecs(0.001);
+            continue
+        end
 
-            if keyCode(escapeKey)
-                error('Experiment aborted with ESC.');
+        if keyCode(escapeKey)
+            error('Experiment aborted with ESC.');
+        end
+
+        % ---- scanner trigger logging ----
+        scannerDown = false;
+
+        if ~isempty(scannerSync) && ~isempty(scannerTriggerKey)
+            scannerDown = keyCode(scannerTriggerKey);
+        end
+
+        if scannerDown && ~previousScannerDown
+            scannerSync.trigger_times(end+1, 1) = ...
+                keyTime - experimentStartTime; %#ok<AGROW>
+        end
+
+        previousScannerDown = scannerDown;
+
+        % ---- participant response logging ----
+        responseDown = keyCode(sameKey) || keyCode(differentKey);
+
+        if responseDown && ~previousResponseDown
+
+            currentResponse = "same";
+
+            if keyCode(differentKey)
+                currentResponse = "different";
             end
 
-            if keyCode(sameKey) || keyCode(differentKey)
+            currentRt = keyTime - tOn;
 
-                currentResponse = "same";
+            allResponses(end+1, 1) = currentResponse; %#ok<AGROW>
+            allRts(end+1, 1) = currentRt; %#ok<AGROW>
 
-                if keyCode(differentKey)
-                    currentResponse = "different";
-                end
+            if firstResponse == "timeout"
+                firstResponse = currentResponse;
+                firstRt = currentRt;
 
-                currentRt = keyTime - tOn;
+                utilities.screen.draw_trial_screen( ...
+                    w, rect, phase, trialData, textureCache, currentResponse);
 
-                allResponses(end+1,1) = currentResponse; %#ok<AGROW>
-                allRts(end+1,1) = currentRt; %#ok<AGROW>
-
-                if firstResponse == "timeout"
-
-                    firstResponse = currentResponse;
-                    firstRt = currentRt;
-
-                    utilities.screen.draw_trial_screen( ...
-                        w, rect, phase, trialData, textureCache, currentResponse);
-
-                    Screen('Flip', w);
-                end
+                Screen('Flip', w);
             end
         end
 
-        previousDown = isDown;
+        previousResponseDown = responseDown;
+
         WaitSecs(0.001);
     end
 end

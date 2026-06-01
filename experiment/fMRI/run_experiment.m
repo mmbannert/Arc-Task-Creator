@@ -21,8 +21,7 @@ try
 
         blockTrials = run_block(block);
 
-        experimentLog.trials = [experimentLog.trials; blockTrials]; %#ok<AGROW>
-
+        experimentLog.trials = [experimentLog.trials; blockTrials];
         blockSummary = utilities.log.summarize_trials(blockTrials);
         utilities.log.print_block_summary(blockIndex, blockSummary);
     end
@@ -47,7 +46,6 @@ catch errorInfo
     try Screen('CloseAll'); end %#ok<TRYNC>
     rethrow(errorInfo);
 end
-
 
 % ========================================================================
 % Nested experiment-flow functions

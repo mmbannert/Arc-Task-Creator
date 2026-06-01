@@ -12,7 +12,7 @@ function config = default_config()
 
     % ---- screen config ----
     config.use_windowed_mode = true;  % false in production
-    config.window_rect = [100 100 900 900];
+    config.window_rect = [700 0 1800 1100]; % originally [100 100 900 900], I think [X_start Y_start X_end Y_end]
     config.resolution = [1400 1400];
     config.bg_color = [0 0 0];
     config.verbosity = 1; 

@@ -67,6 +67,12 @@ function msg(varargin)
     Eyelink('Message', varargin{:});
 end
 
+function eyelink_trial_id(cfg, trialId)
+    % This dirty trick eliminates flag checking in run_experiment
+    if cfg.eyelink_flag
+        utilities.eyelink.msg('TRIALID %s', trialId);
+    end
+end
 
 function close(participant, outDir)
     if isempty(outDir) || outDir == ""

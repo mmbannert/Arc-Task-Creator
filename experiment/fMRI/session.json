@@ -1,5 +1,11 @@
 {
   "participant": "p002",
+  "seed": 2,
+  "number_of_family_blocks": 5,
+  "number_of_mix_blocks": 0,
+  "number_of_decision_trials_per_phase": 1,
+  "number_of_trials_per_block": 4,
+  "number_of_trials_total": 20,
   "keys": {
     "same": "3#",
     "different": "4$"
@@ -10,9 +16,8 @@
       "family": "expansion",
       "phases": [
         {
-          "phase": "phase_start",
+          "phase": "inference_start",
           "bg": "cyan",
-          "parent_phase": "inference",
           "trial": [
             {
               "imgs": [
@@ -128,9 +133,8 @@
           ]
         },
         {
-          "phase": "phase_start",
+          "phase": "application_start",
           "bg": "yellow",
-          "parent_phase": "application",
           "trial": [
             {
               "imgs": [
@@ -252,9 +256,8 @@
       "family": "attraction",
       "phases": [
         {
-          "phase": "phase_start",
+          "phase": "inference_start",
           "bg": "cyan",
-          "parent_phase": "inference",
           "trial": [
             {
               "imgs": [
@@ -364,9 +367,8 @@
           ]
         },
         {
-          "phase": "phase_start",
+          "phase": "application_start",
           "bg": "yellow",
-          "parent_phase": "application",
           "trial": [
             {
               "imgs": [
@@ -476,9 +478,8 @@
       "family": "occlusion",
       "phases": [
         {
-          "phase": "phase_start",
+          "phase": "inference_start",
           "bg": "cyan",
-          "parent_phase": "inference",
           "trial": [
             {
               "imgs": [
@@ -582,9 +583,8 @@
           ]
         },
         {
-          "phase": "phase_start",
+          "phase": "application_start",
           "bg": "yellow",
-          "parent_phase": "application",
           "trial": [
             {
               "imgs": [
@@ -694,9 +694,8 @@
       "family": "recoloring",
       "phases": [
         {
-          "phase": "phase_start",
+          "phase": "inference_start",
           "bg": "cyan",
-          "parent_phase": "inference",
           "trial": [
             {
               "imgs": [
@@ -806,9 +805,8 @@
           ]
         },
         {
-          "phase": "phase_start",
+          "phase": "application_start",
           "bg": "yellow",
-          "parent_phase": "application",
           "trial": [
             {
               "imgs": [
@@ -922,9 +920,8 @@
       "family": "arithmetic",
       "phases": [
         {
-          "phase": "phase_start",
+          "phase": "inference_start",
           "bg": "cyan",
-          "parent_phase": "inference",
           "trial": [
             {
               "imgs": [
@@ -1044,9 +1041,8 @@
           ]
         },
         {
-          "phase": "phase_start",
+          "phase": "application_start",
           "bg": "yellow",
-          "parent_phase": "application",
           "trial": [
             {
               "imgs": [

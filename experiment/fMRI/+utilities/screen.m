@@ -147,19 +147,7 @@ function scannerSync = scanner_sync_screen( ...
 
 end
 
-
-function [resp, rt, tOn] = rule_start_screen(w, rect, phase, trialData, textureCache, validKeys, escapeKey)
-    utilities.screen.draw_trial_screen(w, rect, phase, trialData, textureCache, "");
-    tOn = Screen('Flip', w);
-
-    [~, responseTime] = utilities.screen.wait_key(validKeys, escapeKey);
-
-    resp = "ready";
-    rt = responseTime - tOn;
-end
-
-
-function [resp, rt, tOn, allResponses, allRts] = decision_screen( ...
+function [resp, rt, tOn, allResponses, allRts] = trial_screen( ...
     w, rect, phase, trialData, textureCache, ...
     sameKey, differentKey, escapeKey, duration)
 
@@ -238,7 +226,7 @@ end
 
 
 function draw_header(w, rect, phase, selectedResponse)
-    [hint, tip] = utilities.screen.phase_text(phase);
+    [hint, leftText, rightText] = utilities.screen.phase_text(phase);
 
     Screen('TextStyle', w, 1);
     Screen('TextSize', w, 38);
@@ -247,21 +235,17 @@ function draw_header(w, rect, phase, selectedResponse)
     Screen('TextStyle', w, 0);
     Screen('TextSize', w, 30);
 
-    if string(phase.phase) == "inference" || string(phase.phase) == "application"
-        utilities.screen.draw_decision_tip(w, rect, selectedResponse);
-    else
-        DrawFormattedText(w, char(tip), 'center', rect(4) * 0.18, [1 1 1]);
-    end
+    utilities.screen.draw_response_tip( ...
+        w, rect, selectedResponse, leftText, rightText);
 end
 
 
-function draw_decision_tip(w, rect, selectedResponse)
+
+function draw_response_tip(w, rect, selectedResponse, leftText, rightText)
     y = rect(4) * 0.18;
 
     leftColor = [1 1 1];
     rightColor = [1 1 1];
-    leftText = '←   Same';
-    rightText = 'Different   →';
 
     if selectedResponse == "same"
         leftColor = [1 1 0];
@@ -269,31 +253,40 @@ function draw_decision_tip(w, rect, selectedResponse)
         rightColor = [1 1 0];
     end
 
-    DrawFormattedText(w, leftText, rect(3) * 0.35, y, leftColor);
-    DrawFormattedText(w, rightText, rect(3) * 0.57, y, rightColor);
+    centerX = rect(3) / 2;
+    gap = rect(3) * 0.08;
+
+    DrawFormattedText(w, char(leftText), 'right', y, leftColor, [], [], [], [], [], [0 0 centerX - gap rect(4)]);
+    DrawFormattedText(w, char(rightText), centerX + gap, y, rightColor);
 end
 
-function [hint, tip] = phase_text(phase)
+
+
+
+
+function [hint, leftText, rightText] = phase_text(phase)
     phaseName = string(phase.phase);
 
-    if phaseName == "phase_start"
-        parentPhase = string(phase.parent_phase);
-
-        if parentPhase == "inference"
+    switch phaseName
+        case "inference_start"
             hint = "First rule";
-            tip = "←   Ready          Ready   →";
-        elseif parentPhase == "application"
+            leftText = "←   Ready";
+            rightText = "Ready   →";
+
+        case "application_start"
             hint = "Memorize this rule";
-            tip = "←   Memorized      Memorized   →";
-        end
+            leftText = "←   Memorized";
+            rightText = "Memorized   →";
 
-    elseif phaseName == "inference"
-        hint = "Previous rule";
-        tip = "←   Same          Different   →";
+        case "inference"
+            hint = "Previous rule";
+            leftText = "←   Same";
+            rightText = "Different   →";
 
-    elseif phaseName == "application"
-        hint = "Memorized rule";
-        tip = "←   Same          Different   →";
+        case "application"
+            hint = "Memorized rule";
+            leftText = "←   Same";
+            rightText = "Different   →";
     end
 end
 
@@ -337,15 +330,6 @@ end
 
 function clear_screen(w)
     Screen('FillRect', w, [0.15 0.15 0.15]);
-end
-
-
-function text = optional_string(structData, fieldName)
-    text = "";
-
-    if isfield(structData, fieldName) && ~isempty(structData.(fieldName))
-        text = string(structData.(fieldName));
-    end
 end
 
 

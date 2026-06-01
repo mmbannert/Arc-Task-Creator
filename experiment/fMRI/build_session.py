@@ -189,9 +189,8 @@ def build_session(
         start_family, start_rule = rule_path[0]
         first, second = pick_pair(pools[start_family][start_rule], used_stimulus_ids)
         phase_start = {
-            "phase": "phase_start",
+            "phase": f"{phase_name}_start",
             "bg": background,
-            "parent_phase": phase_name,
             "trial": [make_trial_entry(start_family, start_rule, first, second, correct=None)],
         }
 
@@ -252,7 +251,23 @@ def build_session(
         blocks.append(build_block(next_block_id, restrict_family=None))
         next_block_id += 1
 
-    session = {"participant": participant, "keys": keys, "blocks": blocks}
+    number_of_family_blocks = len(families)
+    number_of_blocks = number_of_family_blocks + number_of_mix_blocks
+    number_of_trials_per_block = 2 + 2 * number_of_decision_trials_per_phase
+    number_of_trials_total = number_of_blocks * number_of_trials_per_block
+
+    session = {
+        "participant": participant,
+        "seed": seed,
+        "number_of_decision_trials_per_phase": number_of_decision_trials_per_phase,
+        "number_of_trials_per_block": number_of_trials_per_block,
+        "number_of_family_blocks": number_of_family_blocks,
+        "number_of_mix_blocks": number_of_mix_blocks,
+        "number_of_trials_total": number_of_trials_total,
+        "keys": keys,
+        "blocks": blocks,
+    }
+
     session_file_path.write_text(json.dumps(session, ensure_ascii=False, indent=2), encoding="utf-8")
 
 

@@ -3,8 +3,18 @@ methods(Static)
 
 function log = init_log(session)
     log = struct();
+
     log.participant = string(session.participant);
-    log.started_at = datestr(now, 30);
+    log.started_at = string(datetime("now", "Format", "yyyyMMdd'T'HHmmss"));
+
+    log.session_info = struct();
+    log.session_info.number_of_decision_trials_per_phase = session.number_of_decision_trials_per_phase;
+    log.session_info.number_of_trials_per_block = session.number_of_trials_per_block;
+    log.session_info.number_of_family_blocks = session.number_of_family_blocks;
+    log.session_info.number_of_mix_blocks = session.number_of_mix_blocks;
+    log.session_info.number_of_trials_total = session.number_of_trials_total;
+    log.session_info.keys = session.keys;
+
     log.trials = repmat(utilities.log.trial_template(), 0, 1);
 end
 
@@ -26,7 +36,6 @@ function trialTemplate = trial_template()
         'rt', [], ...
         'all_responses', strings(0, 1), ...
         'all_rts', [], ...
-        'stim_onset_abs', [], ...
         'stim_onset_rel', [], ...
         'stimulus_info', [] ...
     );
@@ -48,7 +57,7 @@ function trial = make_trial( ...
     trial.block_id = block.block_id;
     trial.block_family = string(block.family);
     trial.trial_family = utilities.log.trial_family(block, trialData);
-    trial.uid = utilities.message.make_trial_id(block.block_id, phaseIndex, trialIndex);
+    trial.uid = utilities.log.make_trial_id(block.block_id, phaseIndex, trialIndex);
 
     trial.phase = string(phase.phase);
     trial.phase_index = phaseIndex;
@@ -59,14 +68,14 @@ function trial = make_trial( ...
     trial.imgs = utilities.log.get_field_strarr(trialData, 'imgs');
 
     trial.correct = utilities.log.get_field_str(trialData, 'correct');
-    trial.resp = string(response);
-    trial.is_correct = utilities.log.score(trial.resp, trial.correct);
 
+    trial.resp = utilities.log.normalize_response(phase, string(response));
+    trial.all_responses = utilities.log.normalize_responses(phase, allResponses);    trial.all_rts = allReactionTimes;
     trial.rt = reactionTime;
-    trial.all_responses = allResponses;
-    trial.all_rts = allReactionTimes;
 
-    trial.stim_onset_abs = stimulusOnsetTime;
+    trial.is_correct = utilities.log.score(trial.resp, trial.correct);
+    
+
     trial.stim_onset_rel = stimulusOnsetTime - experimentStartTime;
 
     trial.stimulus_info = trialData;
@@ -185,5 +194,81 @@ function save_log(log, sessionPath, session)
     fprintf('Saved log: %s\n', outPath);
 end
 
+function trialId = make_trial_id(blockId, phaseIndex, trialIndex)
+    trialId = sprintf('%d_%d_%d', blockId, phaseIndex, trialIndex);
 end
+
+
+function resp = normalize_response(phase, resp)
+    phaseName = string(phase.phase);
+
+    if resp == "timeout"
+        return
+    end
+
+    switch phaseName
+        case "inference_start"
+            resp = "ready";
+
+        case "application_start"
+            resp = "memorized";
+    end
+end
+
+function responses = normalize_responses(phase, responses)
+    for i = 1:numel(responses)
+        responses(i) = utilities.log.normalize_response(phase, responses(i));
+    end
+end
+
+
+function print_block_prepare(b, nBlocks, block)
+    fprintf('\n==============================\n');
+    fprintf('Preparing block %d / %d | family: %s\n', ...
+        b, nBlocks, string(block.family));
+    fprintf('==============================\n');
+end
+
+
+function print_trial(trial)
+    if isempty(trial.is_correct)
+        correctStr = 'NA';
+        marker = '   ';
+    elseif trial.is_correct
+        correctStr = 'true';
+        marker = '   ';
+    else
+        correctStr = 'FALSE';
+        marker = ' ! ';
+    end
+
+    fprintf( ...
+        '%s [Block %d | %-11s | Trial %02d] ID=%s rule=%s resp=%s rt=%.3f correct=%s onset=%.3f\n', ...
+        marker, ...
+        trial.block_id, ...
+        char(string(trial.phase)), ...
+        trial.trial_index, ...
+        char(trial.uid), ...
+        char(string(trial.rule)), ...
+        char(string(trial.resp)), ...
+        trial.rt, ...
+        correctStr, ...
+        trial.stim_onset_rel);
+end
+
+
+function print_block_summary(blockIndex, summary)
+    fprintf('\n[Block %d summary]\n', blockIndex);
+    fprintf('Trials:   %d decision trials\n', summary.decisionCount);
+    fprintf('Correct:  %d\n', summary.correctCount);
+    fprintf('Accuracy: %.1f%%\n', summary.accuracyPercent);
+    fprintf('Mean RT:  %.3f s\n\n', summary.meanRt);
+end
+
+end
+
+
+
+
+
 end

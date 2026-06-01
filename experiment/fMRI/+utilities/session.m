@@ -7,8 +7,8 @@ function config = default_config()
 
     % ---- general config ----
     config.SKIP_SYNC_TESTS = 0;
-    config.REST_TIME = 1; % 10 or 15 in production 
-    config.DECISION_TIME_LIMIT = 1; % 10 in production
+    config.REST_TIME = 2; % 10 or 15 in production 
+    config.RESPONSE_TIME_LIMIT = 2; % 10 in production
 
     % ---- screen config ----
     config.use_windowed_mode = true;  % false in production

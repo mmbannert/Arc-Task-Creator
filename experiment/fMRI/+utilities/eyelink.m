@@ -1,8 +1,8 @@
 classdef eyelink
 methods(Static)
 
-function el = setup(w, rect, dummyMode, participant)
-    if ~EyelinkInit(dummyMode, 1)
+function el = setup(w, rect, participant)
+    if ~EyelinkInit(0, 1)
         error('EyelinkInit failed.');
     end
 
@@ -37,7 +37,7 @@ function el = setup(w, rect, dummyMode, participant)
         error('Could not create EDF file: %s', edfFile);
     end
 
-    if Eyelink('IsConnected') ~= 1 && ~dummyMode
+    if Eyelink('IsConnected') ~= 1
         error('EyeLink is not connected.');
     end
 end

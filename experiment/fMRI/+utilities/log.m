@@ -223,7 +223,7 @@ end
 
 
 function print_block_prepare(b, nBlocks, block)
-    fprintf('\n==============================\n');
+    fprintf('==============================\n');
     fprintf('Preparing block %d / %d | family: %s\n', ...
         b, nBlocks, string(block.family));
     fprintf('==============================\n');
@@ -266,9 +266,6 @@ function print_block_summary(blockIndex, summary)
 end
 
 end
-
-
-
 
 
 end

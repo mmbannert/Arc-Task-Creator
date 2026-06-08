@@ -86,12 +86,12 @@ function trial = run_trial(block, phase, phaseIndex, trialIndex, trialData)
     utilities.eyelink.eyelink_trial_id(config, trialId);
 
     [response, reactionTime, stimulusOnsetTime, ...
-        allResponses, allReactionTimes, scannerSync] = ...
-        utilities.screen.trial_screen( ...
-            window, windowRect, phase, trialData, textureCache, ...
-            keys.sameResponse, keys.differentResponse, keys.escape, ...
-            config.RESPONSE_TIME_LIMIT, ...
-            keys.scannerTrigger, scannerSync, experimentStartTime);
+    allResponses, allReactionTimes] = ...
+    utilities.screen.trial_screen( ...
+        window, windowRect, phase, trialData, textureCache, ...
+        keys.sameResponse, keys.differentResponse, keys.escape, ...
+        config.RESPONSE_TIME_LIMIT);
+
 
     trial = utilities.log.make_trial( ...
         block, phase, phaseIndex, trialIndex, trialData, ...
@@ -102,7 +102,7 @@ end
 
 function [experimentStartTime, scannerSync] = prepare_experiment()
 
-    fprintf('\n==============================\n');
+    fprintf('==============================\n');
     fprintf('Experiment setup\n');
     fprintf('Participant: %s\n', string(session.participant));
     fprintf('==============================\n');
@@ -116,7 +116,7 @@ function [experimentStartTime, scannerSync] = prepare_experiment()
         fprintf('[EyeLink] Opening connection...\n');
 
         eyelinkDefaults = utilities.eyelink.setup( ...
-            window, windowRect, config.DUMMY_MODE, session.participant);
+            window, windowRect, session.participant);
 
         fprintf('[EyeLink] Calibration screen active. Complete calibration on tracker PC.\n');
         utilities.eyelink.calibrate(eyelinkDefaults);
@@ -150,21 +150,15 @@ function [experimentStartTime, scannerSync] = prepare_experiment()
 
         utilities.screen.message_screen(window, windowRect, 'Waiting for scanner...');
 
-        fprintf('[Scanner] Waiting for trigger key "%s"...\n', config.trigger_key_name);
-        fprintf('[Scanner] Waiting for %d dummy triggers + 1 start trigger...\n', ...
+        fprintf('[Scanner] Waiting for %d dummy triggers...\n', ...
             config.n_dummies);
 
-        for triggerIndex = 1:(config.n_dummies + 1)
+        for triggerIndex = 1:(config.n_dummies)
             [~, triggerTime] = utilities.screen.wait_key(keys.scannerTrigger, keys.escape);
 
             scannerSync.trigger_times(end+1, 1) = triggerTime; %#ok<AGROW>
 
-            if triggerIndex <= config.n_dummies
-                fprintf('[Scanner] Received dummy trigger %d/%d\n', ...
-                    triggerIndex, config.n_dummies);
-            else
-                fprintf('[Scanner] Start trigger received.\n');
-            end
+            fprintf('[Scanner] Received dummy trigger %d/%d\n', triggerIndex, config.n_dummies);
         end
 
         experimentStartTime = triggerTime;

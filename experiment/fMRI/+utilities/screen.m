@@ -3,7 +3,7 @@ methods(Static)
 
 function [w, rect] = setup_window(config)
     Screen('Preference', 'SkipSyncTests', config.SKIP_SYNC_TESTS);
-    Screen('Preference', 'Verbosity', config.verbosity);
+    Screen('Preference', 'Verbosity', 1);
     AssertOpenGL;
 
     PsychImaging('PrepareConfiguration');
@@ -148,25 +148,22 @@ function scannerSync = scanner_sync_screen( ...
 end
 
 
-function [resp, rt, tOn, allResponses, allRts, scannerSync] = trial_screen( ...
+function [resp, rt, tOn, allResponses, allRts] = trial_screen( ...
     w, rect, phase, trialData, textureCache, ...
-    sameKey, differentKey, escapeKey, duration, ...
-    scannerTriggerKey, scannerSync, experimentStartTime)
+    sameKey, differentKey, escapeKey, duration)
 
     utilities.screen.draw_trial_screen(w, rect, phase, trialData, textureCache, "");
     tOn = Screen('Flip', w);
 
-    [resp, rt, allResponses, allRts, scannerSync] = utilities.screen.collect_responses( ...
+    [resp, rt, allResponses, allRts] = utilities.screen.collect_responses( ...
         w, rect, phase, trialData, textureCache, ...
-        tOn, duration, sameKey, differentKey, escapeKey, ...
-        scannerTriggerKey, scannerSync, experimentStartTime);
+        tOn, duration, sameKey, differentKey, escapeKey);
 end
 
 
-function [firstResponse, firstRt, allResponses, allRts, scannerSync] = collect_responses( ...
+function [firstResponse, firstRt, allResponses, allRts] = collect_responses( ...
     w, rect, phase, trialData, textureCache, ...
-    tOn, duration, sameKey, differentKey, escapeKey, ...
-    scannerTriggerKey, scannerSync, experimentStartTime)
+    tOn, duration, sameKey, differentKey, escapeKey)
 
     firstResponse = "timeout";
     firstRt = NaN;
@@ -175,17 +172,13 @@ function [firstResponse, firstRt, allResponses, allRts, scannerSync] = collect_r
     allRts = [];
 
     deadline = tOn + duration;
-
     previousResponseDown = false;
-    previousScannerDown = false;
 
     while GetSecs() < deadline
-
         [isDown, keyTime, keyCode] = KbCheck;
 
         if ~isDown
             previousResponseDown = false;
-            previousScannerDown = false;
             WaitSecs(0.001);
             continue
         end
@@ -194,25 +187,9 @@ function [firstResponse, firstRt, allResponses, allRts, scannerSync] = collect_r
             error('Experiment aborted with ESC.');
         end
 
-        % ---- scanner trigger logging ----
-        scannerDown = false;
-
-        if ~isempty(scannerSync) && ~isempty(scannerTriggerKey)
-            scannerDown = keyCode(scannerTriggerKey);
-        end
-
-        if scannerDown && ~previousScannerDown
-            scannerSync.trigger_times(end+1, 1) = ...
-                keyTime - experimentStartTime; %#ok<AGROW>
-        end
-
-        previousScannerDown = scannerDown;
-
-        % ---- participant response logging ----
         responseDown = keyCode(sameKey) || keyCode(differentKey);
 
         if responseDown && ~previousResponseDown
-
             currentResponse = "same";
 
             if keyCode(differentKey)
@@ -236,7 +213,6 @@ function [firstResponse, firstRt, allResponses, allRts, scannerSync] = collect_r
         end
 
         previousResponseDown = responseDown;
-
         WaitSecs(0.001);
     end
 end

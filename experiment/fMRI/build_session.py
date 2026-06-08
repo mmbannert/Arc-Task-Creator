@@ -15,7 +15,7 @@ from pathlib import Path
 def build_session(
         out_root: str = "out",
         session_path: str = "session.json",
-        participant: str = "p002",
+        participant: str = "p000",
         seed: int = 3,
         number_of_mix_blocks: int = 0,
         number_of_decision_trials_per_phase: int = 4,

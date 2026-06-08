@@ -156,6 +156,7 @@ def generate_float(size_range=(2, 6)):
 
 
 def generate_falling_dots(n_objects=(3, 10)):
+    """    Unused in experiment    """
     grid_input, _ = make_grids()
 
     n = rand_between(*n_objects)

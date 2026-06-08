@@ -263,10 +263,6 @@ function draw_response_tip(w, rect, selectedResponse, leftText, rightText)
     DrawFormattedText(w, char(rightText), centerX + gap, y, rightColor);
 end
 
-
-
-
-
 function [hint, leftText, rightText] = phase_text(phase)
     phaseName = string(phase.phase);
 

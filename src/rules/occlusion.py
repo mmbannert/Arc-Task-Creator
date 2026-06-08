@@ -4,7 +4,7 @@ from config import COLORS, GRID_SIZE
 from rules._common import make_params, make_grids
 
 
-def generate_occlusion_mirror_x(size_range=(2, 5),):
+def generate_occlusion_mirror_x(size_range=(2, 5)):
     grid_input, _, _ = generate_occlusion_reversal(size_range=size_range)
 
     grid_output = grid_input.copy()
@@ -108,7 +108,9 @@ def generate_occlusion_reversal(size_range=(2, 5)):
     grid_input, grid_output = make_grids()
     rows, cols = GRID_SIZE
 
-    w, h = random.randint(*size_range), random.randint(*size_range)
+    w, h = 0, 0
+    while w == h:  # we want non-squares to easily distinguish rotation from mirror
+        w, h = random.randint(*size_range), random.randint(*size_range)
 
     # Random position for back block (x and y of bottom left corner of the back block)
     x1 = random.randint(min(size_range), cols - w - min(size_range))

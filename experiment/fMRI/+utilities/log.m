@@ -8,6 +8,7 @@ function log = init_log(session)
     log.started_at = string(datetime("now", "Format", "yyyyMMdd'T'HHmmss"));
 
     log.session = struct();
+    log.session.seed = session.seed;
     log.session.number_of_decision_trials_per_phase = session.number_of_decision_trials_per_phase;
     log.session.number_of_trials_per_block = session.number_of_trials_per_block;
     log.session.number_of_family_blocks = session.number_of_family_blocks;
@@ -174,7 +175,6 @@ function summary = summarize_trials(trials)
     summary.meanRt = mean(reactionTimes, 'omitnan');
 
 end
-
 
 
 function save_log(log, sessionPath, session)

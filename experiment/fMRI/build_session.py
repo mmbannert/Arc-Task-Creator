@@ -55,7 +55,7 @@ def build_session(
     rng.shuffle(families)  # so that family blocks are shuffled
 
     # Hardcoded UI bits (MATLAB runner uses these strings directly)
-    keys = {"same": "3#", "different": "4$"}
+    keys = {"same": "3#", "different": "4$"}  # TODO: other way around for mpi
     inference_background = "yellow"
     application_background = "cyan"
 

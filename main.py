@@ -19,12 +19,12 @@ from src.rules.arithmetic import (
 )
 
 from src.rules.expansion import (
-    generate_cross_expansion_single_step,
-    generate_cross_expansion_ray,
+    generate_star_expansion_single_step,
+    generate_star_expansion_ray,
     generate_plus_expansion_single_step,
     generate_plus_expansion_ray,
     generate_3arm_star_expansion_ray,
-    generate_star_expansion_ray
+    generate_8_arm_star_expansion_ray
 )
 
 from src.rules.occlusion import (
@@ -40,28 +40,28 @@ from src.rules.attraction import (
     generate_size_attraction,
     generate_color_repulsion,
     generate_falling_blocks,
-    generate_float, generate_falling_dots,
+    generate_float,
+    generate_falling_dots,
 )
 
-"""
-For testing
+
+def main(N):
+    rules = {
         "occlusion.occlusion_reversal": generate_occlusion_reversal,
         "occlusion.occlusion_mirror_x": generate_occlusion_mirror_x,
         "occlusion.occlusion_mirror_y": generate_occlusion_mirror_y,
         "occlusion.occlusion_rotate_90": generate_occlusion_rotate_90,
         "occlusion.occlusion_rotate_180": generate_occlusion_rotate_180,
-        "attraction.color": generate_color_attraction,
-        "attraction.size": generate_size_attraction,
+        "attraction.color_attraction": generate_color_attraction,
+        "attraction.size_attraction": generate_size_attraction,
         "attraction.falling_blocks": generate_falling_blocks,
         "attraction.float": generate_float,
-        "attraction.repulsion": generate_repulsion,
-        "attraction.falling_dots": generate_falling_dots,
-        "expansion.cross_step": generate_cross_expansion_single_step,
-        "expansion.cross_ray": generate_cross_expansion_ray,
+        "attraction.color_repulsion": generate_color_repulsion,
+        "expansion.star_step": generate_star_expansion_single_step,
+        "expansion.star_ray": generate_star_expansion_ray,
         "expansion.plus_step": generate_plus_expansion_single_step,
         "expansion.plus_ray": generate_plus_expansion_ray,
-        "expansion.3arm_star_ray": generate_3arm_star_expansion_ray,   
-        "expansion.star_ray": generate_star_expansion_ray,
+        "expansion.3arm_star_ray": generate_3arm_star_expansion_ray,
         "arithmetic.dot_majority_recolor": generate_dot_majority_recolor,
         "arithmetic.dot_minority_recolor": generate_dot_minority_recolor,
         "arithmetic.cross_plus_majority_recolor": generate_cross_plus_majority_recolor,
@@ -70,12 +70,6 @@ For testing
         "recoloring.dot_neighbor_recolor": generate_dot_neighbor_recolor,
         "recoloring.cross_plus_shape_fixed_recolor": generate_cross_plus_shape_fixed_recolor,
         "recoloring.cross_plus_cyclic_recolor": generate_cross_plus_cyclic_recolor,
-"""
-
-
-def main(N):
-    rules = {
-        "expansion.star_ray": generate_star_expansion_ray,
     }
 
     for name, gen in rules.items():
@@ -122,4 +116,4 @@ def _generate_stimulus(rule: str, gen, out_root: str = "out") -> None:
 
 
 if __name__ == "__main__":
-    main(10)
+    main(30)

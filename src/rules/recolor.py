@@ -44,27 +44,32 @@ def generate_dot_neighbor_recolor(grid_size=(12, 12), block_num=(4, 8), colors=(
     grid_input, grid_output = Grid(rows, cols), Grid(rows, cols)
 
     n_objects = rand_between(*block_num)
-    positions = []
-    occupied = set()
 
     def neighbors(x, y):
-        neighbor_positions = []
-        for dx in (-1, 0, 1):
-            for dy in (-1, 0, 1):
-                if dx == 0 and dy == 0:
-                    continue
-                nx, ny = x + dx, y + dy
-                if 0 <= nx < cols and 0 <= ny < rows:
-                    neighbor_positions.append((nx, ny))
-        return neighbor_positions
+        return [
+            (x + dx, y + dy)
+            for dx in (-1, 0, 1) for dy in (-1, 0, 1)
+            if (dx, dy) != (0, 0) and 0 <= x + dx < cols and 0 <= y + dy < rows
+        ]
 
-    while len(positions) < n_objects:
-        if not positions or random.random() < 0.5:
-            pos = (random.randrange(cols), random.randrange(rows))
-        else:
-            x, y = random.choice(positions)
-            pos = random.choice(neighbors(x, y))
+    all_positions = [(x, y) for x in range(cols) for y in range(rows)]
+    random.shuffle(all_positions)
 
+    # Pick one guaranteed adjacent pair and one guaranteed isolated dot
+    pairs = [(a, b) for a in all_positions for b in neighbors(*a) if a < b]
+    guaranteed_pair = random.choice(pairs)
+
+    isolated = [p for p in all_positions if p not in guaranteed_pair
+                and not any(n in set(guaranteed_pair) for n in neighbors(*p))]
+    guaranteed_isolated = random.choice(isolated)
+
+    occupied = set(guaranteed_pair) | {guaranteed_isolated}
+    positions = list(occupied)
+
+    # Fill remaining freely
+    for pos in all_positions:
+        if len(positions) >= n_objects:
+            break
         if pos not in occupied:
             positions.append(pos)
             occupied.add(pos)
@@ -73,7 +78,7 @@ def generate_dot_neighbor_recolor(grid_size=(12, 12), block_num=(4, 8), colors=(
         grid_input.fill_cell(x, y, random.choice(colors))
 
     for x, y in positions:
-        has_neighbor = any((nx, ny) in occupied for nx, ny in neighbors(x, y))
+        has_neighbor = any(n in occupied for n in neighbors(x, y))
         grid_output.fill_cell(x, y, colors[0] if has_neighbor else colors[1])
 
     params = {
@@ -82,7 +87,7 @@ def generate_dot_neighbor_recolor(grid_size=(12, 12), block_num=(4, 8), colors=(
         "stimulus": "dots",
         "grid_size": grid_size,
         "colors": colors,
-        "n_objects": n_objects
+        "n_objects": len(positions)
     }
 
     return grid_input, grid_output, params

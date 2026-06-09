@@ -6,15 +6,15 @@ function config = default_config()
     config = struct();
 
     % ---- general config ----
-    config.SKIP_SYNC_TESTS = 0; % 1 in production
+    config.SKIP_SYNC_TESTS = 1; % 1 in production
     config.REST_TIME = 1; % 10 in production 
     config.RESPONSE_TIME_LIMIT = 1; % 10 in production
 
     % ---- screen config ----
-    config.use_windowed_mode = true;  % false in production
+    config.use_windowed_mode = false;  % false in production
     config.window_rect = [700 0 1800 1100]; % originally [100 100 900 900], I think [X_start Y_start X_end Y_end]
     config.resolution = [1400 1400];
-    config.bg_color = [0 0 0];
+    config.bg_color = [25 25 25]; % for grayish background
 
     % ---- EyeLink config ----
     config.eyelink_flag = 0;  % 1 in production

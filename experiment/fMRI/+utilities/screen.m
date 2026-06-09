@@ -79,6 +79,7 @@ function message_screen(w, rect, text) %#ok<INUSD>
     utilities.screen.text_screen(w, text, [], 34, false);
 end
 
+
 function fixation_screen(w, rect, seconds)
     utilities.screen.clear_screen(w);
 
@@ -99,52 +100,6 @@ function fixation_screen(w, rect, seconds)
 
     flipTime = Screen('Flip', w);
     WaitSecs('UntilTime', flipTime + seconds);
-end
-
-function scannerSync = scanner_sync_screen( ...
-    window, windowRect, scannerTriggerKey, escapeKey, config)
-
-    numberOfDummyTriggers = config.n_dummies;
-
-    scannerSync.TR = config.TR;
-    scannerSync.n_dummies = numberOfDummyTriggers;
-
-    scannerSync.trigger_times_abs = nan(numberOfDummyTriggers + 1, 1);
-
-    utilities.screen.message_screen(window, windowRect, 'Waiting for the scanner...');
-
-    for triggerIndex = 1:(numberOfDummyTriggers + 1)
-
-        [~, triggerTime] = utilities.screen.wait_key( ...
-            scannerTriggerKey, escapeKey);
-
-        scannerSync.trigger_times_abs(triggerIndex) = triggerTime;
-
-        if triggerIndex <= numberOfDummyTriggers
-            fprintf( ...
-                '[Scanner] Received scanner trigger %d/%d\n', ...
-                triggerIndex, numberOfDummyTriggers);
-        else
-            fprintf('[Scanner] Start trigger received.\n');
-        end
-    end
-
-    utilities.screen.fixation_screen(window, windowRect, 0);
-
-    scannerSync.first_trigger_abs = ...
-        scannerSync.trigger_times_abs(1);
-
-    scannerSync.experiment_start_abs = ...
-        scannerSync.trigger_times_abs(end);
-
-    scannerSync.trigger_times_rel = ...
-        scannerSync.trigger_times_abs - ...
-        scannerSync.first_trigger_abs;
-
-    scannerSync.experiment_start_rel = ...
-        scannerSync.experiment_start_abs - ...
-        scannerSync.first_trigger_abs;
-
 end
 
 
@@ -328,7 +283,7 @@ end
 
 
 function clear_screen(w)
-    Screen('FillRect', w, [0.15 0.15 0.15]);
+    Screen('FillRect', w, [0.15 0.15 0.15]); % Makes background grayish
 end
 
 

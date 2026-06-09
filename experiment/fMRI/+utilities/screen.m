@@ -8,7 +8,22 @@ function [w, rect] = setup_window(config)
 
     PsychImaging('PrepareConfiguration');
     screenId = max(Screen('Screens'));
-    PsychImaging('AddTask', 'General', 'UsePanelFitter', config.resolution, 'Aspect');
+    
+    % Compute size of virtual window if eye-tracker occludes bottom
+    % quarter.
+    square_win_sz = .75 * config.native_resolution(2);
+    % Size of margin on left and right
+    margin_sz = (config.native_resolution(1) - square_win_sz) / 2;
+    dst_rect = [ ...
+        margin_sz, ...
+        config.native_resolution(2) - square_win_sz, ...
+        config.native_resolution(1) - margin_sz, ...
+        config.native_resolution(2)];
+    src_rect = [0, 0, config.resolution(1), config.resolution(2)];
+
+
+    PsychImaging('AddTask', 'General', 'UsePanelFitter', config.resolution, 'Custom', ...
+        src_rect, dst_rect);
 
     if config.use_windowed_mode
         [w, rect] = PsychImaging('OpenWindow', screenId, config.bg_color, config.window_rect);

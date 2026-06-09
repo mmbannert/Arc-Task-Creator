@@ -8,11 +8,13 @@ function [w, rect] = setup_window(config)
 
     PsychImaging('PrepareConfiguration');
     screenId = max(Screen('Screens'));
-    PsychImaging('AddTask', 'General', 'UsePanelFitter', config.resolution, 'Aspect');
-
+    
     if config.use_windowed_mode
         [w, rect] = PsychImaging('OpenWindow', screenId, config.bg_color, config.window_rect);
     else
+        srcRect = [0, 0, 1400, 1400];
+        dstRect = [420, 420, 1500, 1500]; % left bottom right top ?! whyyy :(
+        PsychImaging('AddTask', 'General', 'UsePanelFitter', config.resolution, 'Custom', srcRect, dstRect);
         [w, rect] = PsychImaging('OpenWindow', screenId, config.bg_color);
     end
 

@@ -69,7 +69,6 @@ function trial = make_trial( ...
     trial.all_responses = utilities.log.normalize_responses(phase, allResponses);    trial.all_rts = allReactionTimes;
     trial.rt = reactionTime;
     trial.is_correct = utilities.log.score(trial.resp, trial.correct);
-    
 
     trial.stim_onset_rel = stimulusOnsetTime - experimentStartTime;
     trial.stimulus_info = trialData;
@@ -110,11 +109,8 @@ end
 
 
 function summary = summarize_trials(trials)
-
     hasAnswer = arrayfun(@(trial) ~isempty(trial.is_correct), trials);
-
     decisionTrials = trials(hasAnswer);
-
     summary.decisionCount = numel(decisionTrials);
 
     if summary.decisionCount == 0
@@ -130,7 +126,6 @@ function summary = summarize_trials(trials)
     summary.correctCount = sum(correctness);
     summary.accuracyPercent = 100 * summary.correctCount / summary.decisionCount;
     summary.meanRt = mean(reactionTimes, 'omitnan');
-
 end
 
 

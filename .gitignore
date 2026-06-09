@@ -1,6 +1,6 @@
 # Temporarily ignore generated datasets
 # experiment/fMRI/out/ included again
-out/
+/out/
 
 
 # Byte-compiled / optimized / DLL files
@@ -70,4 +70,3 @@ venv.bak/
 # MyPy
 .mypy_cache/
 .dmypy.json
-.pyre/

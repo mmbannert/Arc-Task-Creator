@@ -13,7 +13,7 @@ function [w, rect] = setup_window(config)
         [w, rect] = PsychImaging('OpenWindow', screenId, config.bg_color, config.window_rect);
     else
         srcRect = [0, 0, 1400, 1400];
-        dstRect = [420, 420, 1500, 1500]; % left bottom right top ?! whyyy :(
+        dstRect = [420, 320, 1500, 1400]; % left bottom right top ?! whyyy :(
         PsychImaging('AddTask', 'General', 'UsePanelFitter', config.resolution, 'Custom', srcRect, dstRect);
         [w, rect] = PsychImaging('OpenWindow', screenId, config.bg_color);
     end

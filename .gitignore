@@ -1,5 +1,4 @@
-# Temporarily ignore generated datasets
-# experiment/fMRI/out/ included again
+# Ignore generated datasets at the root, but not experiment/fMRI/out/
 /out/
 
 

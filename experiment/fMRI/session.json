@@ -6,10 +6,6 @@
   "number_of_family_blocks": 5,
   "number_of_mix_blocks": 0,
   "number_of_trials_total": 50,
-  "keys": {
-    "same": "3#",
-    "different": "4$"
-  },
   "blocks": [
     {
       "block_id": 1,
@@ -21,15 +17,15 @@
           "trial": [
             {
               "imgs": [
-                "out/arithmetic.dot_minority_recolor/arithmetic.dot_minority_recolor.t14.combined.png",
-                "out/arithmetic.dot_minority_recolor/arithmetic.dot_minority_recolor.t15.combined.png"
+                "out/arithmetic.dot_minority_recolor/arithmetic.dot_minority_recolor.t20.combined.png",
+                "out/arithmetic.dot_minority_recolor/arithmetic.dot_minority_recolor.t2.combined.png"
               ],
               "family": "arithmetic",
               "rule": "dot_minority_recolor",
               "stimuli": [
                 {
-                  "id": "arithmetic.dot_minority_recolor.t14",
-                  "seed": 2220635574,
+                  "id": "arithmetic.dot_minority_recolor.t20",
+                  "seed": 2190146529,
                   "params": {
                     "event": "recoloring",
                     "condition": [
@@ -37,21 +33,18 @@
                       "counting"
                     ],
                     "stimulus": "dots",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
                     ],
-                    "n_objects": 9,
-                    "counting_type": "hard"
+                    "n_objects": 4,
+                    "counting_type": "soft",
+                    "target": "minority"
                   }
                 },
                 {
-                  "id": "arithmetic.dot_minority_recolor.t15",
-                  "seed": 2434447382,
+                  "id": "arithmetic.dot_minority_recolor.t2",
+                  "seed": 2583492825,
                   "params": {
                     "event": "recoloring",
                     "condition": [
@@ -59,16 +52,13 @@
                       "counting"
                     ],
                     "stimulus": "dots",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
-                      "red",
-                      "blue"
+                      "blue",
+                      "red"
                     ],
-                    "n_objects": 9,
-                    "counting_type": "hard"
+                    "n_objects": 8,
+                    "counting_type": "soft",
+                    "target": "minority"
                   }
                 }
               ]
@@ -81,15 +71,180 @@
           "trials": [
             {
               "imgs": [
-                "out/arithmetic.dot_majority_recolor/arithmetic.dot_majority_recolor.t18.combined.png",
-                "out/arithmetic.dot_majority_recolor/arithmetic.dot_majority_recolor.t15.combined.png"
+                "out/arithmetic.cross_plus_majority_recolor/arithmetic.cross_plus_majority_recolor.t29.combined.png",
+                "out/arithmetic.cross_plus_majority_recolor/arithmetic.cross_plus_majority_recolor.t27.combined.png"
+              ],
+              "family": "arithmetic",
+              "rule": "cross_plus_majority_recolor",
+              "stimuli": [
+                {
+                  "id": "arithmetic.cross_plus_majority_recolor.t29",
+                  "seed": 1763345793,
+                  "params": {
+                    "event": "recoloring",
+                    "condition": [
+                      "shape",
+                      "counting"
+                    ],
+                    "stimulus": "cross_plus",
+                    "colors": [
+                      "red",
+                      "blue",
+                      "gray"
+                    ],
+                    "n_objects": 4,
+                    "counting_type": "soft",
+                    "target": "majority",
+                    "target_shape": "plus",
+                    "majority_shape": "plus"
+                  }
+                },
+                {
+                  "id": "arithmetic.cross_plus_majority_recolor.t27",
+                  "seed": 2715565476,
+                  "params": {
+                    "event": "recoloring",
+                    "condition": [
+                      "shape",
+                      "counting"
+                    ],
+                    "stimulus": "cross_plus",
+                    "colors": [
+                      "red",
+                      "blue",
+                      "gray"
+                    ],
+                    "n_objects": 4,
+                    "counting_type": "soft",
+                    "target": "majority",
+                    "target_shape": "plus",
+                    "majority_shape": "plus"
+                  }
+                }
+              ],
+              "correct": "different"
+            },
+            {
+              "imgs": [
+                "out/arithmetic.cross_plus_majority_recolor/arithmetic.cross_plus_majority_recolor.t6.combined.png",
+                "out/arithmetic.cross_plus_majority_recolor/arithmetic.cross_plus_majority_recolor.t25.combined.png"
+              ],
+              "family": "arithmetic",
+              "rule": "cross_plus_majority_recolor",
+              "stimuli": [
+                {
+                  "id": "arithmetic.cross_plus_majority_recolor.t6",
+                  "seed": 1386635151,
+                  "params": {
+                    "event": "recoloring",
+                    "condition": [
+                      "shape",
+                      "counting"
+                    ],
+                    "stimulus": "cross_plus",
+                    "colors": [
+                      "red",
+                      "blue",
+                      "gray"
+                    ],
+                    "n_objects": 5,
+                    "counting_type": "hard",
+                    "target": "majority",
+                    "target_shape": "plus",
+                    "majority_shape": "plus"
+                  }
+                },
+                {
+                  "id": "arithmetic.cross_plus_majority_recolor.t25",
+                  "seed": 2810298047,
+                  "params": {
+                    "event": "recoloring",
+                    "condition": [
+                      "shape",
+                      "counting"
+                    ],
+                    "stimulus": "cross_plus",
+                    "colors": [
+                      "red",
+                      "blue",
+                      "gray"
+                    ],
+                    "n_objects": 3,
+                    "counting_type": "soft",
+                    "target": "majority",
+                    "target_shape": "cross",
+                    "majority_shape": "cross"
+                  }
+                }
+              ],
+              "correct": "same"
+            },
+            {
+              "imgs": [
+                "out/arithmetic.cross_plus_majority_recolor/arithmetic.cross_plus_majority_recolor.t14.combined.png",
+                "out/arithmetic.cross_plus_majority_recolor/arithmetic.cross_plus_majority_recolor.t16.combined.png"
+              ],
+              "family": "arithmetic",
+              "rule": "cross_plus_majority_recolor",
+              "stimuli": [
+                {
+                  "id": "arithmetic.cross_plus_majority_recolor.t14",
+                  "seed": 3507773432,
+                  "params": {
+                    "event": "recoloring",
+                    "condition": [
+                      "shape",
+                      "counting"
+                    ],
+                    "stimulus": "cross_plus",
+                    "colors": [
+                      "red",
+                      "blue",
+                      "gray"
+                    ],
+                    "n_objects": 4,
+                    "counting_type": "soft",
+                    "target": "majority",
+                    "target_shape": "plus",
+                    "majority_shape": "plus"
+                  }
+                },
+                {
+                  "id": "arithmetic.cross_plus_majority_recolor.t16",
+                  "seed": 1344637296,
+                  "params": {
+                    "event": "recoloring",
+                    "condition": [
+                      "shape",
+                      "counting"
+                    ],
+                    "stimulus": "cross_plus",
+                    "colors": [
+                      "red",
+                      "blue",
+                      "gray"
+                    ],
+                    "n_objects": 3,
+                    "counting_type": "soft",
+                    "target": "majority",
+                    "target_shape": "plus",
+                    "majority_shape": "plus"
+                  }
+                }
+              ],
+              "correct": "same"
+            },
+            {
+              "imgs": [
+                "out/arithmetic.dot_majority_recolor/arithmetic.dot_majority_recolor.t25.combined.png",
+                "out/arithmetic.dot_majority_recolor/arithmetic.dot_majority_recolor.t11.combined.png"
               ],
               "family": "arithmetic",
               "rule": "dot_majority_recolor",
               "stimuli": [
                 {
-                  "id": "arithmetic.dot_majority_recolor.t18",
-                  "seed": 1271756108,
+                  "id": "arithmetic.dot_majority_recolor.t25",
+                  "seed": 1931274992,
                   "params": {
                     "event": "recoloring",
                     "condition": [
@@ -97,21 +252,18 @@
                       "counting"
                     ],
                     "stimulus": "dots",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
                     ],
-                    "n_objects": 8,
-                    "counting_type": "soft"
+                    "n_objects": 11,
+                    "counting_type": "hard",
+                    "target": "majority"
                   }
                 },
                 {
-                  "id": "arithmetic.dot_majority_recolor.t15",
-                  "seed": 4243038511,
+                  "id": "arithmetic.dot_majority_recolor.t11",
+                  "seed": 405065473,
                   "params": {
                     "event": "recoloring",
                     "condition": [
@@ -119,185 +271,17 @@
                       "counting"
                     ],
                     "stimulus": "dots",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
-                      "red",
-                      "blue"
+                      "blue",
+                      "red"
                     ],
-                    "n_objects": 7,
-                    "counting_type": "soft"
+                    "n_objects": 6,
+                    "counting_type": "soft",
+                    "target": "majority"
                   }
                 }
               ],
               "correct": "different"
-            },
-            {
-              "imgs": [
-                "out/arithmetic.cross_plus_minority_recolor/arithmetic.cross_plus_minority_recolor.t6.combined.png",
-                "out/arithmetic.cross_plus_minority_recolor/arithmetic.cross_plus_minority_recolor.t25.combined.png"
-              ],
-              "family": "arithmetic",
-              "rule": "cross_plus_minority_recolor",
-              "stimuli": [
-                {
-                  "id": "arithmetic.cross_plus_minority_recolor.t6",
-                  "seed": 633579715,
-                  "params": {
-                    "event": "recoloring",
-                    "condition": [
-                      "shape",
-                      "counting"
-                    ],
-                    "stimulus": "cross_plus",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
-                    "colors": [
-                      "red",
-                      "blue"
-                    ],
-                    "n_objects": 2,
-                    "counting_type": "soft"
-                  }
-                },
-                {
-                  "id": "arithmetic.cross_plus_minority_recolor.t25",
-                  "seed": 4225903079,
-                  "params": {
-                    "event": "recoloring",
-                    "condition": [
-                      "shape",
-                      "counting"
-                    ],
-                    "stimulus": "cross_plus",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
-                    "colors": [
-                      "red",
-                      "blue"
-                    ],
-                    "n_objects": 2,
-                    "counting_type": "soft"
-                  }
-                }
-              ],
-              "correct": "different"
-            },
-            {
-              "imgs": [
-                "out/arithmetic.cross_plus_minority_recolor/arithmetic.cross_plus_minority_recolor.t12.combined.png",
-                "out/arithmetic.cross_plus_minority_recolor/arithmetic.cross_plus_minority_recolor.t28.combined.png"
-              ],
-              "family": "arithmetic",
-              "rule": "cross_plus_minority_recolor",
-              "stimuli": [
-                {
-                  "id": "arithmetic.cross_plus_minority_recolor.t12",
-                  "seed": 815643415,
-                  "params": {
-                    "event": "recoloring",
-                    "condition": [
-                      "shape",
-                      "counting"
-                    ],
-                    "stimulus": "cross_plus",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
-                    "colors": [
-                      "red",
-                      "blue"
-                    ],
-                    "n_objects": 3,
-                    "counting_type": "soft"
-                  }
-                },
-                {
-                  "id": "arithmetic.cross_plus_minority_recolor.t28",
-                  "seed": 644125417,
-                  "params": {
-                    "event": "recoloring",
-                    "condition": [
-                      "shape",
-                      "counting"
-                    ],
-                    "stimulus": "cross_plus",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
-                    "colors": [
-                      "red",
-                      "blue"
-                    ],
-                    "n_objects": 4,
-                    "counting_type": "soft"
-                  }
-                }
-              ],
-              "correct": "same"
-            },
-            {
-              "imgs": [
-                "out/arithmetic.cross_plus_minority_recolor/arithmetic.cross_plus_minority_recolor.t2.combined.png",
-                "out/arithmetic.cross_plus_minority_recolor/arithmetic.cross_plus_minority_recolor.t30.combined.png"
-              ],
-              "family": "arithmetic",
-              "rule": "cross_plus_minority_recolor",
-              "stimuli": [
-                {
-                  "id": "arithmetic.cross_plus_minority_recolor.t2",
-                  "seed": 1801811695,
-                  "params": {
-                    "event": "recoloring",
-                    "condition": [
-                      "shape",
-                      "counting"
-                    ],
-                    "stimulus": "cross_plus",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
-                    "colors": [
-                      "red",
-                      "blue"
-                    ],
-                    "n_objects": 5,
-                    "counting_type": "soft"
-                  }
-                },
-                {
-                  "id": "arithmetic.cross_plus_minority_recolor.t30",
-                  "seed": 2569039553,
-                  "params": {
-                    "event": "recoloring",
-                    "condition": [
-                      "shape",
-                      "counting"
-                    ],
-                    "stimulus": "cross_plus",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
-                    "colors": [
-                      "red",
-                      "blue"
-                    ],
-                    "n_objects": 4,
-                    "counting_type": "soft"
-                  }
-                }
-              ],
-              "correct": "same"
             }
           ]
         },
@@ -307,15 +291,15 @@
           "trial": [
             {
               "imgs": [
-                "out/arithmetic.cross_plus_minority_recolor/arithmetic.cross_plus_minority_recolor.t26.combined.png",
-                "out/arithmetic.cross_plus_minority_recolor/arithmetic.cross_plus_minority_recolor.t19.combined.png"
+                "out/arithmetic.cross_plus_majority_recolor/arithmetic.cross_plus_majority_recolor.t23.combined.png",
+                "out/arithmetic.cross_plus_majority_recolor/arithmetic.cross_plus_majority_recolor.t19.combined.png"
               ],
               "family": "arithmetic",
-              "rule": "cross_plus_minority_recolor",
+              "rule": "cross_plus_majority_recolor",
               "stimuli": [
                 {
-                  "id": "arithmetic.cross_plus_minority_recolor.t26",
-                  "seed": 2455717316,
+                  "id": "arithmetic.cross_plus_majority_recolor.t23",
+                  "seed": 4096064022,
                   "params": {
                     "event": "recoloring",
                     "condition": [
@@ -323,21 +307,21 @@
                       "counting"
                     ],
                     "stimulus": "cross_plus",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
-                      "blue"
+                      "blue",
+                      "gray"
                     ],
-                    "n_objects": 1,
-                    "counting_type": "soft"
+                    "n_objects": 4,
+                    "counting_type": "soft",
+                    "target": "majority",
+                    "target_shape": "plus",
+                    "majority_shape": "plus"
                   }
                 },
                 {
-                  "id": "arithmetic.cross_plus_minority_recolor.t19",
-                  "seed": 588944070,
+                  "id": "arithmetic.cross_plus_majority_recolor.t19",
+                  "seed": 222088999,
                   "params": {
                     "event": "recoloring",
                     "condition": [
@@ -345,16 +329,16 @@
                       "counting"
                     ],
                     "stimulus": "cross_plus",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
-                      "blue"
+                      "blue",
+                      "gray"
                     ],
-                    "n_objects": 6,
-                    "counting_type": "soft"
+                    "n_objects": 3,
+                    "counting_type": "soft",
+                    "target": "majority",
+                    "target_shape": "cross",
+                    "majority_shape": "cross"
                   }
                 }
               ]
@@ -367,15 +351,15 @@
           "trials": [
             {
               "imgs": [
-                "out/arithmetic.cross_plus_minority_recolor/arithmetic.cross_plus_minority_recolor.t4.combined.png",
-                "out/arithmetic.cross_plus_minority_recolor/arithmetic.cross_plus_minority_recolor.t7.combined.png"
+                "out/arithmetic.cross_plus_majority_recolor/arithmetic.cross_plus_majority_recolor.t13.combined.png",
+                "out/arithmetic.cross_plus_majority_recolor/arithmetic.cross_plus_majority_recolor.t8.combined.png"
               ],
               "family": "arithmetic",
-              "rule": "cross_plus_minority_recolor",
+              "rule": "cross_plus_majority_recolor",
               "stimuli": [
                 {
-                  "id": "arithmetic.cross_plus_minority_recolor.t4",
-                  "seed": 3098476126,
+                  "id": "arithmetic.cross_plus_majority_recolor.t13",
+                  "seed": 343309227,
                   "params": {
                     "event": "recoloring",
                     "condition": [
@@ -383,21 +367,21 @@
                       "counting"
                     ],
                     "stimulus": "cross_plus",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
-                      "blue"
+                      "blue",
+                      "gray"
                     ],
                     "n_objects": 3,
-                    "counting_type": "soft"
+                    "counting_type": "soft",
+                    "target": "majority",
+                    "target_shape": "plus",
+                    "majority_shape": "plus"
                   }
                 },
                 {
-                  "id": "arithmetic.cross_plus_minority_recolor.t7",
-                  "seed": 336925397,
+                  "id": "arithmetic.cross_plus_majority_recolor.t8",
+                  "seed": 2747190323,
                   "params": {
                     "event": "recoloring",
                     "condition": [
@@ -405,16 +389,16 @@
                       "counting"
                     ],
                     "stimulus": "cross_plus",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
-                      "blue"
+                      "blue",
+                      "gray"
                     ],
-                    "n_objects": 1,
-                    "counting_type": "soft"
+                    "n_objects": 3,
+                    "counting_type": "soft",
+                    "target": "majority",
+                    "target_shape": "plus",
+                    "majority_shape": "plus"
                   }
                 }
               ],
@@ -422,37 +406,70 @@
             },
             {
               "imgs": [
-                "out/arithmetic.dot_majority_recolor/arithmetic.dot_majority_recolor.t1.combined.png",
-                "out/arithmetic.dot_majority_recolor/arithmetic.dot_majority_recolor.t20.combined.png"
+                "out/arithmetic.cross_plus_majority_recolor/arithmetic.cross_plus_majority_recolor.t1.combined.png",
+                "out/arithmetic.cross_plus_majority_recolor/arithmetic.cross_plus_majority_recolor.t10.combined.png"
               ],
               "family": "arithmetic",
-              "rule": "dot_majority_recolor",
+              "rule": "cross_plus_majority_recolor",
               "stimuli": [
                 {
-                  "id": "arithmetic.dot_majority_recolor.t1",
-                  "seed": 3086093263,
+                  "id": "arithmetic.cross_plus_majority_recolor.t1",
+                  "seed": 1109083355,
                   "params": {
                     "event": "recoloring",
                     "condition": [
-                      "color",
+                      "shape",
                       "counting"
                     ],
-                    "stimulus": "dots",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
+                    "stimulus": "cross_plus",
                     "colors": [
                       "red",
-                      "blue"
+                      "blue",
+                      "gray"
                     ],
-                    "n_objects": 11,
-                    "counting_type": "hard"
+                    "n_objects": 5,
+                    "counting_type": "hard",
+                    "target": "majority",
+                    "target_shape": "cross",
+                    "majority_shape": "cross"
                   }
                 },
                 {
-                  "id": "arithmetic.dot_majority_recolor.t20",
-                  "seed": 3684894030,
+                  "id": "arithmetic.cross_plus_majority_recolor.t10",
+                  "seed": 3227210944,
+                  "params": {
+                    "event": "recoloring",
+                    "condition": [
+                      "shape",
+                      "counting"
+                    ],
+                    "stimulus": "cross_plus",
+                    "colors": [
+                      "red",
+                      "blue",
+                      "gray"
+                    ],
+                    "n_objects": 3,
+                    "counting_type": "soft",
+                    "target": "majority",
+                    "target_shape": "plus",
+                    "majority_shape": "plus"
+                  }
+                }
+              ],
+              "correct": "same"
+            },
+            {
+              "imgs": [
+                "out/arithmetic.dot_minority_recolor/arithmetic.dot_minority_recolor.t30.combined.png",
+                "out/arithmetic.dot_minority_recolor/arithmetic.dot_minority_recolor.t22.combined.png"
+              ],
+              "family": "arithmetic",
+              "rule": "dot_minority_recolor",
+              "stimuli": [
+                {
+                  "id": "arithmetic.dot_minority_recolor.t30",
+                  "seed": 736809319,
                   "params": {
                     "event": "recoloring",
                     "condition": [
@@ -460,16 +477,32 @@
                       "counting"
                     ],
                     "stimulus": "dots",
-                    "grid_size": [
-                      12,
-                      12
+                    "colors": [
+                      "blue",
+                      "red"
                     ],
+                    "n_objects": 8,
+                    "counting_type": "soft",
+                    "target": "minority"
+                  }
+                },
+                {
+                  "id": "arithmetic.dot_minority_recolor.t22",
+                  "seed": 271754871,
+                  "params": {
+                    "event": "recoloring",
+                    "condition": [
+                      "color",
+                      "counting"
+                    ],
+                    "stimulus": "dots",
                     "colors": [
                       "red",
                       "blue"
                     ],
                     "n_objects": 6,
-                    "counting_type": "soft"
+                    "counting_type": "soft",
+                    "target": "minority"
                   }
                 }
               ],
@@ -477,15 +510,15 @@
             },
             {
               "imgs": [
-                "out/arithmetic.dot_majority_recolor/arithmetic.dot_majority_recolor.t17.combined.png",
-                "out/arithmetic.dot_majority_recolor/arithmetic.dot_majority_recolor.t24.combined.png"
+                "out/arithmetic.dot_majority_recolor/arithmetic.dot_majority_recolor.t14.combined.png",
+                "out/arithmetic.dot_majority_recolor/arithmetic.dot_majority_recolor.t6.combined.png"
               ],
               "family": "arithmetic",
               "rule": "dot_majority_recolor",
               "stimuli": [
                 {
-                  "id": "arithmetic.dot_majority_recolor.t17",
-                  "seed": 3590113,
+                  "id": "arithmetic.dot_majority_recolor.t14",
+                  "seed": 2885170962,
                   "params": {
                     "event": "recoloring",
                     "condition": [
@@ -493,76 +526,18 @@
                       "counting"
                     ],
                     "stimulus": "dots",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
-                    "colors": [
-                      "red",
-                      "blue"
-                    ],
-                    "n_objects": 8,
-                    "counting_type": "soft"
-                  }
-                },
-                {
-                  "id": "arithmetic.dot_majority_recolor.t24",
-                  "seed": 1492057319,
-                  "params": {
-                    "event": "recoloring",
-                    "condition": [
-                      "color",
-                      "counting"
-                    ],
-                    "stimulus": "dots",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
-                    "colors": [
-                      "red",
-                      "blue"
-                    ],
-                    "n_objects": 7,
-                    "counting_type": "hard"
-                  }
-                }
-              ],
-              "correct": "same"
-            },
-            {
-              "imgs": [
-                "out/arithmetic.dot_minority_recolor/arithmetic.dot_minority_recolor.t13.combined.png",
-                "out/arithmetic.dot_minority_recolor/arithmetic.dot_minority_recolor.t6.combined.png"
-              ],
-              "family": "arithmetic",
-              "rule": "dot_minority_recolor",
-              "stimuli": [
-                {
-                  "id": "arithmetic.dot_minority_recolor.t13",
-                  "seed": 600101247,
-                  "params": {
-                    "event": "recoloring",
-                    "condition": [
-                      "color",
-                      "counting"
-                    ],
-                    "stimulus": "dots",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
                     ],
                     "n_objects": 11,
-                    "counting_type": "hard"
+                    "counting_type": "hard",
+                    "target": "majority"
                   }
                 },
                 {
-                  "id": "arithmetic.dot_minority_recolor.t6",
-                  "seed": 4227121524,
+                  "id": "arithmetic.dot_majority_recolor.t6",
+                  "seed": 49419158,
                   "params": {
                     "event": "recoloring",
                     "condition": [
@@ -570,16 +545,13 @@
                       "counting"
                     ],
                     "stimulus": "dots",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
                     ],
-                    "n_objects": 5,
-                    "counting_type": "hard"
+                    "n_objects": 3,
+                    "counting_type": "soft",
+                    "target": "majority"
                   }
                 }
               ],
@@ -607,44 +579,30 @@
               "stimuli": [
                 {
                   "id": "expansion.star_step.t28",
-                  "seed": 4223854287,
+                  "seed": 1362469777,
                   "params": {
                     "event": "expansion",
                     "condition": "shape",
-                    "stimulus": [
-                      "dots",
-                      "star"
-                    ],
-                    "grid_size": [
-                      12,
-                      12
-                    ],
+                    "stimulus": "step_expansion",
                     "colors": [
                       "red",
                       "blue"
                     ],
-                    "n_objects": 1
+                    "n_objects": 3
                   }
                 },
                 {
                   "id": "expansion.star_step.t3",
-                  "seed": 1926494423,
+                  "seed": 3177665674,
                   "params": {
                     "event": "expansion",
                     "condition": "shape",
-                    "stimulus": [
-                      "dots",
-                      "star"
-                    ],
-                    "grid_size": [
-                      12,
-                      12
-                    ],
+                    "stimulus": "step_expansion",
                     "colors": [
                       "red",
                       "blue"
                     ],
-                    "n_objects": 1
+                    "n_objects": 4
                   }
                 }
               ]
@@ -657,26 +615,19 @@
           "trials": [
             {
               "imgs": [
-                "out/expansion.3arm_star_full/expansion.3arm_star_full.t14.combined.png",
-                "out/expansion.3arm_star_full/expansion.3arm_star_full.t22.combined.png"
+                "out/expansion.3arm_star_ray/expansion.3arm_star_ray.t14.combined.png",
+                "out/expansion.3arm_star_ray/expansion.3arm_star_ray.t22.combined.png"
               ],
               "family": "expansion",
-              "rule": "3arm_star_full",
+              "rule": "3arm_star_ray",
               "stimuli": [
                 {
-                  "id": "expansion.3arm_star_full.t14",
-                  "seed": 3105399357,
+                  "id": "expansion.3arm_star_ray.t14",
+                  "seed": 535543535,
                   "params": {
                     "event": "expansion",
                     "condition": "shape",
-                    "stimulus": [
-                      "dots",
-                      "star"
-                    ],
-                    "grid_size": [
-                      12,
-                      12
-                    ],
+                    "stimulus": "ray_expansion",
                     "colors": [
                       "red",
                       "blue"
@@ -685,24 +636,17 @@
                   }
                 },
                 {
-                  "id": "expansion.3arm_star_full.t22",
-                  "seed": 638812794,
+                  "id": "expansion.3arm_star_ray.t22",
+                  "seed": 2145640770,
                   "params": {
                     "event": "expansion",
                     "condition": "shape",
-                    "stimulus": [
-                      "dots",
-                      "star"
-                    ],
-                    "grid_size": [
-                      12,
-                      12
-                    ],
+                    "stimulus": "ray_expansion",
                     "colors": [
                       "red",
                       "blue"
                     ],
-                    "n_objects": 2
+                    "n_objects": 1
                   }
                 }
               ],
@@ -718,39 +662,25 @@
               "stimuli": [
                 {
                   "id": "expansion.plus_step.t5",
-                  "seed": 204417896,
+                  "seed": 3298952368,
                   "params": {
                     "event": "expansion",
                     "condition": "shape",
-                    "stimulus": [
-                      "dots",
-                      "plus"
-                    ],
-                    "grid_size": [
-                      12,
-                      12
-                    ],
+                    "stimulus": "step_expansion",
                     "colors": [
                       "red",
                       "blue"
                     ],
-                    "n_objects": 1
+                    "n_objects": 4
                   }
                 },
                 {
                   "id": "expansion.plus_step.t9",
-                  "seed": 2185021236,
+                  "seed": 359351096,
                   "params": {
                     "event": "expansion",
                     "condition": "shape",
-                    "stimulus": [
-                      "dots",
-                      "plus"
-                    ],
-                    "grid_size": [
-                      12,
-                      12
-                    ],
+                    "stimulus": "step_expansion",
                     "colors": [
                       "red",
                       "blue"
@@ -771,44 +701,30 @@
               "stimuli": [
                 {
                   "id": "expansion.plus_step.t30",
-                  "seed": 3030854749,
+                  "seed": 4078021692,
                   "params": {
                     "event": "expansion",
                     "condition": "shape",
-                    "stimulus": [
-                      "dots",
-                      "plus"
-                    ],
-                    "grid_size": [
-                      12,
-                      12
-                    ],
-                    "colors": [
-                      "red",
-                      "blue"
-                    ],
-                    "n_objects": 1
-                  }
-                },
-                {
-                  "id": "expansion.plus_step.t3",
-                  "seed": 3998301344,
-                  "params": {
-                    "event": "expansion",
-                    "condition": "shape",
-                    "stimulus": [
-                      "dots",
-                      "plus"
-                    ],
-                    "grid_size": [
-                      12,
-                      12
-                    ],
+                    "stimulus": "step_expansion",
                     "colors": [
                       "red",
                       "blue"
                     ],
                     "n_objects": 3
+                  }
+                },
+                {
+                  "id": "expansion.plus_step.t3",
+                  "seed": 3020965552,
+                  "params": {
+                    "event": "expansion",
+                    "condition": "shape",
+                    "stimulus": "step_expansion",
+                    "colors": [
+                      "red",
+                      "blue"
+                    ],
+                    "n_objects": 2
                   }
                 }
               ],
@@ -824,44 +740,30 @@
               "stimuli": [
                 {
                   "id": "expansion.plus_step.t23",
-                  "seed": 1589564841,
+                  "seed": 3930527075,
                   "params": {
                     "event": "expansion",
                     "condition": "shape",
-                    "stimulus": [
-                      "dots",
-                      "plus"
-                    ],
-                    "grid_size": [
-                      12,
-                      12
-                    ],
-                    "colors": [
-                      "red",
-                      "blue"
-                    ],
-                    "n_objects": 3
-                  }
-                },
-                {
-                  "id": "expansion.plus_step.t25",
-                  "seed": 3064037946,
-                  "params": {
-                    "event": "expansion",
-                    "condition": "shape",
-                    "stimulus": [
-                      "dots",
-                      "plus"
-                    ],
-                    "grid_size": [
-                      12,
-                      12
-                    ],
+                    "stimulus": "step_expansion",
                     "colors": [
                       "red",
                       "blue"
                     ],
                     "n_objects": 1
+                  }
+                },
+                {
+                  "id": "expansion.plus_step.t25",
+                  "seed": 1529460155,
+                  "params": {
+                    "event": "expansion",
+                    "condition": "shape",
+                    "stimulus": "step_expansion",
+                    "colors": [
+                      "red",
+                      "blue"
+                    ],
+                    "n_objects": 3
                   }
                 }
               ],
@@ -875,52 +777,38 @@
           "trial": [
             {
               "imgs": [
-                "out/expansion.plus_full/expansion.plus_full.t5.combined.png",
-                "out/expansion.plus_full/expansion.plus_full.t21.combined.png"
+                "out/expansion.plus_ray/expansion.plus_ray.t5.combined.png",
+                "out/expansion.plus_ray/expansion.plus_ray.t21.combined.png"
               ],
               "family": "expansion",
-              "rule": "plus_full",
+              "rule": "plus_ray",
               "stimuli": [
                 {
-                  "id": "expansion.plus_full.t5",
-                  "seed": 1275752599,
+                  "id": "expansion.plus_ray.t5",
+                  "seed": 2344918483,
                   "params": {
                     "event": "expansion",
                     "condition": "shape",
-                    "stimulus": [
-                      "dots",
-                      "plus"
+                    "stimulus": "ray_expansion",
+                    "colors": [
+                      "red",
+                      "blue"
                     ],
-                    "grid_size": [
-                      12,
-                      12
-                    ],
+                    "n_objects": 3
+                  }
+                },
+                {
+                  "id": "expansion.plus_ray.t21",
+                  "seed": 3476876676,
+                  "params": {
+                    "event": "expansion",
+                    "condition": "shape",
+                    "stimulus": "ray_expansion",
                     "colors": [
                       "red",
                       "blue"
                     ],
                     "n_objects": 2
-                  }
-                },
-                {
-                  "id": "expansion.plus_full.t21",
-                  "seed": 3482778647,
-                  "params": {
-                    "event": "expansion",
-                    "condition": "shape",
-                    "stimulus": [
-                      "dots",
-                      "plus"
-                    ],
-                    "grid_size": [
-                      12,
-                      12
-                    ],
-                    "colors": [
-                      "red",
-                      "blue"
-                    ],
-                    "n_objects": 1
                   }
                 }
               ]
@@ -941,44 +829,69 @@
               "stimuli": [
                 {
                   "id": "expansion.plus_step.t14",
-                  "seed": 3545482320,
+                  "seed": 2660828294,
                   "params": {
                     "event": "expansion",
                     "condition": "shape",
-                    "stimulus": [
-                      "dots",
-                      "plus"
+                    "stimulus": "step_expansion",
+                    "colors": [
+                      "red",
+                      "blue"
                     ],
-                    "grid_size": [
-                      12,
-                      12
-                    ],
+                    "n_objects": 1
+                  }
+                },
+                {
+                  "id": "expansion.plus_step.t2",
+                  "seed": 1196316035,
+                  "params": {
+                    "event": "expansion",
+                    "condition": "shape",
+                    "stimulus": "step_expansion",
                     "colors": [
                       "red",
                       "blue"
                     ],
                     "n_objects": 4
                   }
-                },
+                }
+              ],
+              "correct": "different"
+            },
+            {
+              "imgs": [
+                "out/expansion.3arm_star_ray/expansion.3arm_star_ray.t2.combined.png",
+                "out/expansion.3arm_star_ray/expansion.3arm_star_ray.t18.combined.png"
+              ],
+              "family": "expansion",
+              "rule": "3arm_star_ray",
+              "stimuli": [
                 {
-                  "id": "expansion.plus_step.t2",
-                  "seed": 1452314104,
+                  "id": "expansion.3arm_star_ray.t2",
+                  "seed": 2357493113,
                   "params": {
                     "event": "expansion",
                     "condition": "shape",
-                    "stimulus": [
-                      "dots",
-                      "plus"
-                    ],
-                    "grid_size": [
-                      12,
-                      12
-                    ],
+                    "stimulus": "ray_expansion",
                     "colors": [
                       "red",
                       "blue"
                     ],
-                    "n_objects": 3
+                    "n_objects": 1
+                  }
+                },
+                {
+                  "id": "expansion.3arm_star_ray.t18",
+                  "seed": 1643223801,
+                  "params": {
+                    "event": "expansion",
+                    "condition": "shape",
+                    "stimulus": "ray_expansion",
+                    "colors": [
+                      "red",
+                      "blue"
+                    ],
+                    "n_objects": 1
                   }
                 }
               ],
@@ -986,105 +899,38 @@
             },
             {
               "imgs": [
-                "out/expansion.3arm_star_full/expansion.3arm_star_full.t2.combined.png",
-                "out/expansion.3arm_star_full/expansion.3arm_star_full.t18.combined.png"
+                "out/expansion.3arm_star_ray/expansion.3arm_star_ray.t19.combined.png",
+                "out/expansion.3arm_star_ray/expansion.3arm_star_ray.t7.combined.png"
               ],
               "family": "expansion",
-              "rule": "3arm_star_full",
+              "rule": "3arm_star_ray",
               "stimuli": [
                 {
-                  "id": "expansion.3arm_star_full.t2",
-                  "seed": 1495258373,
+                  "id": "expansion.3arm_star_ray.t19",
+                  "seed": 2227119852,
                   "params": {
                     "event": "expansion",
                     "condition": "shape",
-                    "stimulus": [
-                      "dots",
-                      "star"
-                    ],
-                    "grid_size": [
-                      12,
-                      12
-                    ],
-                    "colors": [
-                      "red",
-                      "blue"
-                    ],
-                    "n_objects": 3
-                  }
-                },
-                {
-                  "id": "expansion.3arm_star_full.t18",
-                  "seed": 618821975,
-                  "params": {
-                    "event": "expansion",
-                    "condition": "shape",
-                    "stimulus": [
-                      "dots",
-                      "star"
-                    ],
-                    "grid_size": [
-                      12,
-                      12
-                    ],
-                    "colors": [
-                      "red",
-                      "blue"
-                    ],
-                    "n_objects": 3
-                  }
-                }
-              ],
-              "correct": "different"
-            },
-            {
-              "imgs": [
-                "out/expansion.3arm_star_full/expansion.3arm_star_full.t19.combined.png",
-                "out/expansion.3arm_star_full/expansion.3arm_star_full.t7.combined.png"
-              ],
-              "family": "expansion",
-              "rule": "3arm_star_full",
-              "stimuli": [
-                {
-                  "id": "expansion.3arm_star_full.t19",
-                  "seed": 1125070246,
-                  "params": {
-                    "event": "expansion",
-                    "condition": "shape",
-                    "stimulus": [
-                      "dots",
-                      "star"
-                    ],
-                    "grid_size": [
-                      12,
-                      12
-                    ],
-                    "colors": [
-                      "red",
-                      "blue"
-                    ],
-                    "n_objects": 3
-                  }
-                },
-                {
-                  "id": "expansion.3arm_star_full.t7",
-                  "seed": 2355269486,
-                  "params": {
-                    "event": "expansion",
-                    "condition": "shape",
-                    "stimulus": [
-                      "dots",
-                      "star"
-                    ],
-                    "grid_size": [
-                      12,
-                      12
-                    ],
+                    "stimulus": "ray_expansion",
                     "colors": [
                       "red",
                       "blue"
                     ],
                     "n_objects": 2
+                  }
+                },
+                {
+                  "id": "expansion.3arm_star_ray.t7",
+                  "seed": 1166896521,
+                  "params": {
+                    "event": "expansion",
+                    "condition": "shape",
+                    "stimulus": "ray_expansion",
+                    "colors": [
+                      "red",
+                      "blue"
+                    ],
+                    "n_objects": 1
                   }
                 }
               ],
@@ -1092,47 +938,33 @@
             },
             {
               "imgs": [
-                "out/expansion.3arm_star_full/expansion.3arm_star_full.t27.combined.png",
-                "out/expansion.3arm_star_full/expansion.3arm_star_full.t24.combined.png"
+                "out/expansion.3arm_star_ray/expansion.3arm_star_ray.t27.combined.png",
+                "out/expansion.3arm_star_ray/expansion.3arm_star_ray.t24.combined.png"
               ],
               "family": "expansion",
-              "rule": "3arm_star_full",
+              "rule": "3arm_star_ray",
               "stimuli": [
                 {
-                  "id": "expansion.3arm_star_full.t27",
-                  "seed": 3143154853,
+                  "id": "expansion.3arm_star_ray.t27",
+                  "seed": 968088249,
                   "params": {
                     "event": "expansion",
                     "condition": "shape",
-                    "stimulus": [
-                      "dots",
-                      "star"
-                    ],
-                    "grid_size": [
-                      12,
-                      12
-                    ],
+                    "stimulus": "ray_expansion",
                     "colors": [
                       "red",
                       "blue"
                     ],
-                    "n_objects": 3
+                    "n_objects": 1
                   }
                 },
                 {
-                  "id": "expansion.3arm_star_full.t24",
-                  "seed": 2748142793,
+                  "id": "expansion.3arm_star_ray.t24",
+                  "seed": 3269542039,
                   "params": {
                     "event": "expansion",
                     "condition": "shape",
-                    "stimulus": [
-                      "dots",
-                      "star"
-                    ],
-                    "grid_size": [
-                      12,
-                      12
-                    ],
+                    "stimulus": "ray_expansion",
                     "colors": [
                       "red",
                       "blue"
@@ -1165,15 +997,11 @@
               "stimuli": [
                 {
                   "id": "occlusion.occlusion_mirror_y.t7",
-                  "seed": 2777886868,
+                  "seed": 1058261045,
                   "params": {
                     "event": "mirror",
                     "condition": "shape",
                     "stimulus": "occluding_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -1183,15 +1011,11 @@
                 },
                 {
                   "id": "occlusion.occlusion_mirror_y.t25",
-                  "seed": 791973170,
+                  "seed": 2031128242,
                   "params": {
                     "event": "mirror",
                     "condition": "shape",
                     "stimulus": "occluding_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -1217,15 +1041,11 @@
               "stimuli": [
                 {
                   "id": "occlusion.occlusion_mirror_x.t4",
-                  "seed": 3692801217,
+                  "seed": 1131268897,
                   "params": {
                     "event": "mirror",
                     "condition": "shape",
                     "stimulus": "occluding_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -1235,15 +1055,11 @@
                 },
                 {
                   "id": "occlusion.occlusion_mirror_x.t23",
-                  "seed": 3658610539,
+                  "seed": 457026876,
                   "params": {
                     "event": "mirror",
                     "condition": "shape",
                     "stimulus": "occluding_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -1264,15 +1080,11 @@
               "stimuli": [
                 {
                   "id": "occlusion.occlusion_reversal.t4",
-                  "seed": 3430584063,
+                  "seed": 3722394403,
                   "params": {
                     "event": "occlusion_reversal",
                     "condition": "shape",
                     "stimulus": "occluding_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -1282,15 +1094,11 @@
                 },
                 {
                   "id": "occlusion.occlusion_reversal.t7",
-                  "seed": 2795287908,
+                  "seed": 4128221810,
                   "params": {
                     "event": "occlusion_reversal",
                     "condition": "shape",
                     "stimulus": "occluding_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -1311,15 +1119,11 @@
               "stimuli": [
                 {
                   "id": "occlusion.occlusion_reversal.t11",
-                  "seed": 862388328,
+                  "seed": 903436571,
                   "params": {
                     "event": "occlusion_reversal",
                     "condition": "shape",
                     "stimulus": "occluding_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -1329,15 +1133,11 @@
                 },
                 {
                   "id": "occlusion.occlusion_reversal.t2",
-                  "seed": 4041706262,
+                  "seed": 3959632402,
                   "params": {
                     "event": "occlusion_reversal",
                     "condition": "shape",
                     "stimulus": "occluding_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -1358,15 +1158,11 @@
               "stimuli": [
                 {
                   "id": "occlusion.occlusion_reversal.t9",
-                  "seed": 2998528530,
+                  "seed": 1806979233,
                   "params": {
                     "event": "occlusion_reversal",
                     "condition": "shape",
                     "stimulus": "occluding_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -1376,15 +1172,11 @@
                 },
                 {
                   "id": "occlusion.occlusion_reversal.t3",
-                  "seed": 2546695292,
+                  "seed": 2308859568,
                   "params": {
                     "event": "occlusion_reversal",
                     "condition": "shape",
                     "stimulus": "occluding_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -1411,15 +1203,11 @@
               "stimuli": [
                 {
                   "id": "occlusion.occlusion_mirror_y.t16",
-                  "seed": 2550945806,
+                  "seed": 1351625404,
                   "params": {
                     "event": "mirror",
                     "condition": "shape",
                     "stimulus": "occluding_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -1429,15 +1217,11 @@
                 },
                 {
                   "id": "occlusion.occlusion_mirror_y.t18",
-                  "seed": 2694462421,
+                  "seed": 2233045684,
                   "params": {
                     "event": "mirror",
                     "condition": "shape",
                     "stimulus": "occluding_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -1463,15 +1247,11 @@
               "stimuli": [
                 {
                   "id": "occlusion.occlusion_mirror_x.t10",
-                  "seed": 2600495450,
+                  "seed": 1473564536,
                   "params": {
                     "event": "mirror",
                     "condition": "shape",
                     "stimulus": "occluding_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -1481,15 +1261,11 @@
                 },
                 {
                   "id": "occlusion.occlusion_mirror_x.t2",
-                  "seed": 839272248,
+                  "seed": 2317734031,
                   "params": {
                     "event": "mirror",
                     "condition": "shape",
                     "stimulus": "occluding_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -1510,15 +1286,11 @@
               "stimuli": [
                 {
                   "id": "occlusion.occlusion_mirror_x.t30",
-                  "seed": 2900255122,
+                  "seed": 167560972,
                   "params": {
                     "event": "mirror",
                     "condition": "shape",
                     "stimulus": "occluding_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -1528,15 +1300,11 @@
                 },
                 {
                   "id": "occlusion.occlusion_mirror_x.t26",
-                  "seed": 572025289,
+                  "seed": 2282455480,
                   "params": {
                     "event": "mirror",
                     "condition": "shape",
                     "stimulus": "occluding_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -1557,15 +1325,11 @@
               "stimuli": [
                 {
                   "id": "occlusion.occlusion_rotate_90.t12",
-                  "seed": 3809362647,
+                  "seed": 1195941194,
                   "params": {
                     "event": "rotation",
                     "condition": "shape",
                     "stimulus": "occluding_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -1575,15 +1339,11 @@
                 },
                 {
                   "id": "occlusion.occlusion_rotate_90.t9",
-                  "seed": 1922554610,
+                  "seed": 4189278603,
                   "params": {
                     "event": "rotation",
                     "condition": "shape",
                     "stimulus": "occluding_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -1604,15 +1364,11 @@
               "stimuli": [
                 {
                   "id": "occlusion.occlusion_rotate_90.t23",
-                  "seed": 3396843659,
+                  "seed": 3453729173,
                   "params": {
                     "event": "rotation",
                     "condition": "shape",
                     "stimulus": "occluding_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -1622,15 +1378,11 @@
                 },
                 {
                   "id": "occlusion.occlusion_rotate_90.t3",
-                  "seed": 2841675786,
+                  "seed": 783260070,
                   "params": {
                     "event": "rotation",
                     "condition": "shape",
                     "stimulus": "occluding_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -1663,26 +1415,7 @@
               "stimuli": [
                 {
                   "id": "recoloring.cross_plus_cyclic_recolor.t8",
-                  "seed": 2735039368,
-                  "params": {
-                    "event": "recoloring",
-                    "condition": "color",
-                    "stimulus": "cross_plus",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
-                    "colors": [
-                      "gray",
-                      "red",
-                      "blue"
-                    ],
-                    "n_objects": 2
-                  }
-                },
-                {
-                  "id": "recoloring.cross_plus_cyclic_recolor.t16",
-                  "seed": 849937485,
+                  "seed": 3175911373,
                   "params": {
                     "event": "recoloring",
                     "condition": "color",
@@ -1697,6 +1430,25 @@
                       "blue"
                     ],
                     "n_objects": 6
+                  }
+                },
+                {
+                  "id": "recoloring.cross_plus_cyclic_recolor.t16",
+                  "seed": 2602043510,
+                  "params": {
+                    "event": "recoloring",
+                    "condition": "color",
+                    "stimulus": "cross_plus",
+                    "grid_size": [
+                      12,
+                      12
+                    ],
+                    "colors": [
+                      "gray",
+                      "red",
+                      "blue"
+                    ],
+                    "n_objects": 4
                   }
                 }
               ]
@@ -1717,7 +1469,7 @@
               "stimuli": [
                 {
                   "id": "recoloring.dot_inversion_recolor.t8",
-                  "seed": 713377500,
+                  "seed": 134339791,
                   "params": {
                     "event": "recoloring",
                     "condition": "color",
@@ -1730,12 +1482,12 @@
                       "red",
                       "blue"
                     ],
-                    "n_objects": 6
+                    "n_objects": 9
                   }
                 },
                 {
                   "id": "recoloring.dot_inversion_recolor.t3",
-                  "seed": 2776368740,
+                  "seed": 2517271406,
                   "params": {
                     "event": "recoloring",
                     "condition": "color",
@@ -1748,7 +1500,7 @@
                       "red",
                       "blue"
                     ],
-                    "n_objects": 7
+                    "n_objects": 5
                   }
                 }
               ],
@@ -1764,7 +1516,7 @@
               "stimuli": [
                 {
                   "id": "recoloring.dot_inversion_recolor.t17",
-                  "seed": 4137654209,
+                  "seed": 2552383092,
                   "params": {
                     "event": "recoloring",
                     "condition": "color",
@@ -1777,12 +1529,12 @@
                       "red",
                       "blue"
                     ],
-                    "n_objects": 5
+                    "n_objects": 8
                   }
                 },
                 {
                   "id": "recoloring.dot_inversion_recolor.t28",
-                  "seed": 1170847770,
+                  "seed": 845283132,
                   "params": {
                     "event": "recoloring",
                     "condition": "color",
@@ -1795,7 +1547,7 @@
                       "red",
                       "blue"
                     ],
-                    "n_objects": 9
+                    "n_objects": 6
                   }
                 }
               ],
@@ -1811,7 +1563,7 @@
               "stimuli": [
                 {
                   "id": "recoloring.dot_inversion_recolor.t22",
-                  "seed": 1085958539,
+                  "seed": 1706106233,
                   "params": {
                     "event": "recoloring",
                     "condition": "color",
@@ -1824,12 +1576,12 @@
                       "red",
                       "blue"
                     ],
-                    "n_objects": 3
+                    "n_objects": 9
                   }
                 },
                 {
                   "id": "recoloring.dot_inversion_recolor.t6",
-                  "seed": 2874079731,
+                  "seed": 183377175,
                   "params": {
                     "event": "recoloring",
                     "condition": "color",
@@ -1842,7 +1594,7 @@
                       "red",
                       "blue"
                     ],
-                    "n_objects": 3
+                    "n_objects": 12
                   }
                 }
               ],
@@ -1858,7 +1610,7 @@
               "stimuli": [
                 {
                   "id": "recoloring.dot_neighbor_recolor.t25",
-                  "seed": 2805995107,
+                  "seed": 2214179918,
                   "params": {
                     "event": "recoloring",
                     "condition": [
@@ -1874,12 +1626,12 @@
                       "red",
                       "blue"
                     ],
-                    "n_objects": 7
+                    "n_objects": 5
                   }
                 },
                 {
                   "id": "recoloring.dot_neighbor_recolor.t11",
-                  "seed": 3220106154,
+                  "seed": 1416480319,
                   "params": {
                     "event": "recoloring",
                     "condition": [
@@ -1917,7 +1669,7 @@
               "stimuli": [
                 {
                   "id": "recoloring.cross_plus_shape_fixed_recolor.t5",
-                  "seed": 2456224388,
+                  "seed": 2809174239,
                   "params": {
                     "event": "recoloring",
                     "condition": "shape",
@@ -1931,12 +1683,12 @@
                       "red",
                       "blue"
                     ],
-                    "n_objects": 2
+                    "n_objects": 3
                   }
                 },
                 {
                   "id": "recoloring.cross_plus_shape_fixed_recolor.t13",
-                  "seed": 338245981,
+                  "seed": 1656561026,
                   "params": {
                     "event": "recoloring",
                     "condition": "shape",
@@ -1971,7 +1723,7 @@
               "stimuli": [
                 {
                   "id": "recoloring.cross_plus_shape_fixed_recolor.t21",
-                  "seed": 205073333,
+                  "seed": 2297868010,
                   "params": {
                     "event": "recoloring",
                     "condition": "shape",
@@ -1985,12 +1737,12 @@
                       "red",
                       "blue"
                     ],
-                    "n_objects": 3
+                    "n_objects": 4
                   }
                 },
                 {
                   "id": "recoloring.cross_plus_shape_fixed_recolor.t22",
-                  "seed": 4287766419,
+                  "seed": 3132652864,
                   "params": {
                     "event": "recoloring",
                     "condition": "shape",
@@ -2004,7 +1756,7 @@
                       "red",
                       "blue"
                     ],
-                    "n_objects": 5
+                    "n_objects": 6
                   }
                 }
               ],
@@ -2020,26 +1772,7 @@
               "stimuli": [
                 {
                   "id": "recoloring.cross_plus_shape_fixed_recolor.t2",
-                  "seed": 3024691917,
-                  "params": {
-                    "event": "recoloring",
-                    "condition": "shape",
-                    "stimulus": "cross_plus",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
-                    "colors": [
-                      "gray",
-                      "red",
-                      "blue"
-                    ],
-                    "n_objects": 5
-                  }
-                },
-                {
-                  "id": "recoloring.cross_plus_shape_fixed_recolor.t30",
-                  "seed": 1940546212,
+                  "seed": 1831081419,
                   "params": {
                     "event": "recoloring",
                     "condition": "shape",
@@ -2055,6 +1788,25 @@
                     ],
                     "n_objects": 2
                   }
+                },
+                {
+                  "id": "recoloring.cross_plus_shape_fixed_recolor.t30",
+                  "seed": 2828138376,
+                  "params": {
+                    "event": "recoloring",
+                    "condition": "shape",
+                    "stimulus": "cross_plus",
+                    "grid_size": [
+                      12,
+                      12
+                    ],
+                    "colors": [
+                      "gray",
+                      "red",
+                      "blue"
+                    ],
+                    "n_objects": 3
+                  }
                 }
               ],
               "correct": "same"
@@ -2069,7 +1821,7 @@
               "stimuli": [
                 {
                   "id": "recoloring.dot_inversion_recolor.t10",
-                  "seed": 3455220089,
+                  "seed": 3666748635,
                   "params": {
                     "event": "recoloring",
                     "condition": "color",
@@ -2082,12 +1834,12 @@
                       "red",
                       "blue"
                     ],
-                    "n_objects": 3
+                    "n_objects": 7
                   }
                 },
                 {
                   "id": "recoloring.dot_inversion_recolor.t4",
-                  "seed": 3961547839,
+                  "seed": 230811851,
                   "params": {
                     "event": "recoloring",
                     "condition": "color",
@@ -2100,7 +1852,7 @@
                       "red",
                       "blue"
                     ],
-                    "n_objects": 6
+                    "n_objects": 10
                   }
                 }
               ],
@@ -2116,7 +1868,7 @@
               "stimuli": [
                 {
                   "id": "recoloring.dot_neighbor_recolor.t28",
-                  "seed": 2946260207,
+                  "seed": 650744954,
                   "params": {
                     "event": "recoloring",
                     "condition": [
@@ -2132,12 +1884,12 @@
                       "red",
                       "blue"
                     ],
-                    "n_objects": 5
+                    "n_objects": 6
                   }
                 },
                 {
                   "id": "recoloring.dot_neighbor_recolor.t30",
-                  "seed": 387033954,
+                  "seed": 2110805752,
                   "params": {
                     "event": "recoloring",
                     "condition": [
@@ -2173,15 +1925,15 @@
           "trial": [
             {
               "imgs": [
-                "out/attraction.color/attraction.color.t13.combined.png",
-                "out/attraction.color/attraction.color.t11.combined.png"
+                "out/attraction.color_attraction/attraction.color_attraction.t11.combined.png",
+                "out/attraction.color_attraction/attraction.color_attraction.t13.combined.png"
               ],
               "family": "attraction",
-              "rule": "color",
+              "rule": "color_attraction",
               "stimuli": [
                 {
-                  "id": "attraction.color.t13",
-                  "seed": 2101004041,
+                  "id": "attraction.color_attraction.t11",
+                  "seed": 3872736563,
                   "params": {
                     "event": "attraction",
                     "condition": [
@@ -2189,10 +1941,6 @@
                       "movement"
                     ],
                     "stimulus": "big_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -2202,8 +1950,8 @@
                   }
                 },
                 {
-                  "id": "attraction.color.t11",
-                  "seed": 253121352,
+                  "id": "attraction.color_attraction.t13",
+                  "seed": 454644063,
                   "params": {
                     "event": "attraction",
                     "condition": [
@@ -2211,10 +1959,6 @@
                       "movement"
                     ],
                     "stimulus": "big_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -2233,23 +1977,19 @@
           "trials": [
             {
               "imgs": [
-                "out/attraction.gravity/attraction.gravity.t6.combined.png",
-                "out/attraction.gravity/attraction.gravity.t22.combined.png"
+                "out/attraction.falling_blocks/attraction.falling_blocks.t6.combined.png",
+                "out/attraction.falling_blocks/attraction.falling_blocks.t22.combined.png"
               ],
               "family": "attraction",
-              "rule": "gravity",
+              "rule": "falling_blocks",
               "stimuli": [
                 {
-                  "id": "attraction.gravity.t6",
-                  "seed": 3106808667,
+                  "id": "attraction.falling_blocks.t6",
+                  "seed": 2966148903,
                   "params": {
-                    "event": "attraction",
+                    "event": "falling",
                     "condition": "movement",
                     "stimulus": "big_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -2258,16 +1998,12 @@
                   }
                 },
                 {
-                  "id": "attraction.gravity.t22",
-                  "seed": 2318263369,
+                  "id": "attraction.falling_blocks.t22",
+                  "seed": 738149754,
                   "params": {
-                    "event": "attraction",
+                    "event": "falling",
                     "condition": "movement",
                     "stimulus": "big_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -2280,26 +2016,19 @@
             },
             {
               "imgs": [
-                "out/attraction.repulsion/attraction.repulsion.t29.combined.png",
-                "out/attraction.repulsion/attraction.repulsion.t15.combined.png"
+                "out/attraction.float/attraction.float.t29.combined.png",
+                "out/attraction.float/attraction.float.t15.combined.png"
               ],
               "family": "attraction",
-              "rule": "repulsion",
+              "rule": "float",
               "stimuli": [
                 {
-                  "id": "attraction.repulsion.t29",
-                  "seed": 3395625128,
+                  "id": "attraction.float.t29",
+                  "seed": 3988753240,
                   "params": {
-                    "event": "attraction",
-                    "condition": [
-                      "color",
-                      "movement"
-                    ],
+                    "event": "floating",
+                    "condition": "movement",
                     "stimulus": "big_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -2308,19 +2037,12 @@
                   }
                 },
                 {
-                  "id": "attraction.repulsion.t15",
-                  "seed": 1465677857,
+                  "id": "attraction.float.t15",
+                  "seed": 3205356161,
                   "params": {
-                    "event": "attraction",
-                    "condition": [
-                      "color",
-                      "movement"
-                    ],
+                    "event": "floating",
+                    "condition": "movement",
                     "stimulus": "big_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -2333,26 +2055,19 @@
             },
             {
               "imgs": [
-                "out/attraction.repulsion/attraction.repulsion.t13.combined.png",
-                "out/attraction.repulsion/attraction.repulsion.t5.combined.png"
+                "out/attraction.float/attraction.float.t13.combined.png",
+                "out/attraction.float/attraction.float.t5.combined.png"
               ],
               "family": "attraction",
-              "rule": "repulsion",
+              "rule": "float",
               "stimuli": [
                 {
-                  "id": "attraction.repulsion.t13",
-                  "seed": 170821703,
+                  "id": "attraction.float.t13",
+                  "seed": 1867689195,
                   "params": {
-                    "event": "attraction",
-                    "condition": [
-                      "color",
-                      "movement"
-                    ],
+                    "event": "floating",
+                    "condition": "movement",
                     "stimulus": "big_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -2361,19 +2076,12 @@
                   }
                 },
                 {
-                  "id": "attraction.repulsion.t5",
-                  "seed": 1880416223,
+                  "id": "attraction.float.t5",
+                  "seed": 1706709503,
                   "params": {
-                    "event": "attraction",
-                    "condition": [
-                      "color",
-                      "movement"
-                    ],
+                    "event": "floating",
+                    "condition": "movement",
                     "stimulus": "big_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -2386,26 +2094,19 @@
             },
             {
               "imgs": [
-                "out/attraction.repulsion/attraction.repulsion.t23.combined.png",
-                "out/attraction.repulsion/attraction.repulsion.t9.combined.png"
+                "out/attraction.float/attraction.float.t23.combined.png",
+                "out/attraction.float/attraction.float.t9.combined.png"
               ],
               "family": "attraction",
-              "rule": "repulsion",
+              "rule": "float",
               "stimuli": [
                 {
-                  "id": "attraction.repulsion.t23",
-                  "seed": 2338168986,
+                  "id": "attraction.float.t23",
+                  "seed": 753502540,
                   "params": {
-                    "event": "attraction",
-                    "condition": [
-                      "color",
-                      "movement"
-                    ],
+                    "event": "floating",
+                    "condition": "movement",
                     "stimulus": "big_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -2414,19 +2115,12 @@
                   }
                 },
                 {
-                  "id": "attraction.repulsion.t9",
-                  "seed": 471007107,
+                  "id": "attraction.float.t9",
+                  "seed": 710055824,
                   "params": {
-                    "event": "attraction",
-                    "condition": [
-                      "color",
-                      "movement"
-                    ],
+                    "event": "floating",
+                    "condition": "movement",
                     "stimulus": "big_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -2445,15 +2139,15 @@
           "trial": [
             {
               "imgs": [
-                "out/attraction.size/attraction.size.t19.combined.png",
-                "out/attraction.size/attraction.size.t20.combined.png"
+                "out/attraction.size_attraction/attraction.size_attraction.t6.combined.png",
+                "out/attraction.size_attraction/attraction.size_attraction.t19.combined.png"
               ],
               "family": "attraction",
-              "rule": "size",
+              "rule": "size_attraction",
               "stimuli": [
                 {
-                  "id": "attraction.size.t19",
-                  "seed": 506071694,
+                  "id": "attraction.size_attraction.t6",
+                  "seed": 128810472,
                   "params": {
                     "event": "attraction",
                     "condition": [
@@ -2461,20 +2155,17 @@
                       "movement"
                     ],
                     "stimulus": "big_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
                     ],
-                    "n_objects": 2
+                    "n_objects": 2,
+                    "bigger_block": "red"
                   }
                 },
                 {
-                  "id": "attraction.size.t20",
-                  "seed": 2926548481,
+                  "id": "attraction.size_attraction.t19",
+                  "seed": 1124315738,
                   "params": {
                     "event": "attraction",
                     "condition": [
@@ -2482,15 +2173,12 @@
                       "movement"
                     ],
                     "stimulus": "big_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
                     ],
-                    "n_objects": 2
+                    "n_objects": 2,
+                    "bigger_block": "blue"
                   }
                 }
               ]
@@ -2503,23 +2191,19 @@
           "trials": [
             {
               "imgs": [
-                "out/attraction.gravity/attraction.gravity.t14.combined.png",
-                "out/attraction.gravity/attraction.gravity.t27.combined.png"
+                "out/attraction.falling_blocks/attraction.falling_blocks.t14.combined.png",
+                "out/attraction.falling_blocks/attraction.falling_blocks.t27.combined.png"
               ],
               "family": "attraction",
-              "rule": "gravity",
+              "rule": "falling_blocks",
               "stimuli": [
                 {
-                  "id": "attraction.gravity.t14",
-                  "seed": 1570996043,
+                  "id": "attraction.falling_blocks.t14",
+                  "seed": 1814834871,
                   "params": {
-                    "event": "attraction",
+                    "event": "falling",
                     "condition": "movement",
                     "stimulus": "big_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -2528,16 +2212,12 @@
                   }
                 },
                 {
-                  "id": "attraction.gravity.t27",
-                  "seed": 1424084259,
+                  "id": "attraction.falling_blocks.t27",
+                  "seed": 1177142865,
                   "params": {
-                    "event": "attraction",
+                    "event": "falling",
                     "condition": "movement",
                     "stimulus": "big_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -2550,23 +2230,19 @@
             },
             {
               "imgs": [
-                "out/attraction.gravity/attraction.gravity.t15.combined.png",
-                "out/attraction.gravity/attraction.gravity.t1.combined.png"
+                "out/attraction.falling_blocks/attraction.falling_blocks.t15.combined.png",
+                "out/attraction.falling_blocks/attraction.falling_blocks.t1.combined.png"
               ],
               "family": "attraction",
-              "rule": "gravity",
+              "rule": "falling_blocks",
               "stimuli": [
                 {
-                  "id": "attraction.gravity.t15",
-                  "seed": 1980252583,
+                  "id": "attraction.falling_blocks.t15",
+                  "seed": 2591951053,
                   "params": {
-                    "event": "attraction",
+                    "event": "falling",
                     "condition": "movement",
                     "stimulus": "big_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -2575,16 +2251,12 @@
                   }
                 },
                 {
-                  "id": "attraction.gravity.t1",
-                  "seed": 3157071066,
+                  "id": "attraction.falling_blocks.t1",
+                  "seed": 3739102887,
                   "params": {
-                    "event": "attraction",
+                    "event": "falling",
                     "condition": "movement",
                     "stimulus": "big_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -2597,23 +2269,19 @@
             },
             {
               "imgs": [
-                "out/attraction.gravity/attraction.gravity.t4.combined.png",
-                "out/attraction.gravity/attraction.gravity.t24.combined.png"
+                "out/attraction.falling_blocks/attraction.falling_blocks.t4.combined.png",
+                "out/attraction.falling_blocks/attraction.falling_blocks.t24.combined.png"
               ],
               "family": "attraction",
-              "rule": "gravity",
+              "rule": "falling_blocks",
               "stimuli": [
                 {
-                  "id": "attraction.gravity.t4",
-                  "seed": 1485998755,
+                  "id": "attraction.falling_blocks.t4",
+                  "seed": 1812023815,
                   "params": {
-                    "event": "attraction",
+                    "event": "falling",
                     "condition": "movement",
                     "stimulus": "big_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -2622,16 +2290,12 @@
                   }
                 },
                 {
-                  "id": "attraction.gravity.t24",
-                  "seed": 3749100050,
+                  "id": "attraction.falling_blocks.t24",
+                  "seed": 2272272802,
                   "params": {
-                    "event": "attraction",
+                    "event": "falling",
                     "condition": "movement",
                     "stimulus": "big_blocks",
-                    "grid_size": [
-                      12,
-                      12
-                    ],
                     "colors": [
                       "red",
                       "blue"
@@ -2644,23 +2308,22 @@
             },
             {
               "imgs": [
-                "out/attraction.float/attraction.float.t23.combined.png",
-                "out/attraction.float/attraction.float.t25.combined.png"
+                "out/attraction.color_repulsion/attraction.color_repulsion.t23.combined.png",
+                "out/attraction.color_repulsion/attraction.color_repulsion.t25.combined.png"
               ],
               "family": "attraction",
-              "rule": "float",
+              "rule": "color_repulsion",
               "stimuli": [
                 {
-                  "id": "attraction.float.t23",
-                  "seed": 3988149392,
+                  "id": "attraction.color_repulsion.t23",
+                  "seed": 28042614,
                   "params": {
-                    "event": "attraction",
-                    "condition": "movement",
-                    "stimulus": "big_blocks",
-                    "grid_size": [
-                      12,
-                      12
+                    "event": "repulsion",
+                    "condition": [
+                      "color",
+                      "movement"
                     ],
+                    "stimulus": "big_blocks",
                     "colors": [
                       "red",
                       "blue"
@@ -2669,16 +2332,15 @@
                   }
                 },
                 {
-                  "id": "attraction.float.t25",
-                  "seed": 2748306107,
+                  "id": "attraction.color_repulsion.t25",
+                  "seed": 3271755105,
                   "params": {
-                    "event": "attraction",
-                    "condition": "movement",
-                    "stimulus": "big_blocks",
-                    "grid_size": [
-                      12,
-                      12
+                    "event": "repulsion",
+                    "condition": [
+                      "color",
+                      "movement"
                     ],
+                    "stimulus": "big_blocks",
                     "colors": [
                       "red",
                       "blue"

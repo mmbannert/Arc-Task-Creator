@@ -6,8 +6,8 @@ function config = default_config()
 
     % ---- general config ----
     config.SKIP_SYNC_TESTS = 1; % 1 in production
-    config.REST_TIME = 1; % 10 in production 
-    config.RESPONSE_TIME_LIMIT = 1; % 10 in production
+    config.REST_TIME = 10; % 10 in production 
+    config.RESPONSE_TIME_LIMIT = 10; % 10 in production
 
     % ---- screen config ----
     config.use_windowed_mode = false;  % false in production
@@ -20,7 +20,7 @@ function config = default_config()
     config.keys.different = '4$'; % right button
 
     % ---- EyeLink config ----
-    config.eyelink_flag = 0;  % 1 in production
+    config.eyelink_flag = 1;  % 1 in production
 
     % ---- scanner config ----
     config.use_scanner_trigger = true;

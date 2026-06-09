@@ -6,11 +6,11 @@ config = utilities.session.default_config();
 
 try
     session = utilities.session.load_session(sessionPath);
-    keys = utilities.session.setup_keys(session, config);
+    keys = utilities.session.setup_keys(config);
     [window, windowRect] = utilities.screen.setup_window(config);
     textureCache = utilities.session.preload_textures(session, sessionPath, window);
 
-    experimentLog = utilities.log.init_log(session);
+    experimentLog = utilities.log.init_log(session, config);
     [experimentStartTime, scannerSync] = prepare_experiment();
     experimentLog.experiment_start_abs = experimentStartTime;
 
@@ -48,7 +48,7 @@ catch errorInfo
 end
 
 % ========================================================================
-% Nested experiment-flow functions
+% Experiment-flow functions
 % ========================================================================
 
 function blockTrials = run_block(block)

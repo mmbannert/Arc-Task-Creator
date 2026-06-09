@@ -7,33 +7,22 @@ function el = setup(w, rect, participant)
     end
 
     el = EyelinkInitDefaults(w);
-
     [~, vs] = Eyelink('GetTrackerVersion');
     fprintf('Running experiment on tracker: %s\n', vs);
-
-    x0 = rect(1);
-    y0 = rect(2);
-    x1 = rect(3) - 1;
-    y1 = rect(4) - 1;
 
     Eyelink('command', 'calibration_type = HV13');
     Eyelink('command', 'calibration_area_proportion = 0.41 0.41');
     Eyelink('command', 'validation_area_proportion = 0.41 0.41');
-
     Eyelink('command', 'file_event_filter = LEFT,RIGHT,FIXATION,SACCADE,BLINK,MESSAGE');
     Eyelink('command', 'file_sample_data = LEFT,RIGHT,GAZE,AREA');
-
     Eyelink('command', 'link_event_filter = LEFT,RIGHT,FIXATION,SACCADE,BLINK,MESSAGE,BUTTON,INPUT');
     Eyelink('command', 'link_sample_data = LEFT,RIGHT,GAZE,AREA');
-
-    Eyelink('command', 'screen_pixel_coords = %ld %ld %ld %ld', x0, y0, x1, y1);
-    Eyelink('message', 'DISPLAY_COORDS %ld %ld %ld %ld', x0, y0, x1, y1);
+    Eyelink('command', 'screen_pixel_coords = %ld %ld %ld %ld', rect(1), rect(2), rect(3)-1, rect(4)-1);
+    Eyelink('message', 'DISPLAY_COORDS %ld %ld %ld %ld', rect(1), rect(2), rect(3)-1, rect(4)-1);
 
     edfFile = utilities.eyelink.make_edf_name(participant);
 
-    status = Eyelink('Openfile', edfFile);
-
-    if status ~= 0
+    if Eyelink('Openfile', edfFile) ~= 0
         error('Could not create EDF file: %s', edfFile);
     end
 
@@ -68,7 +57,7 @@ function msg(varargin)
 end
 
 function eyelink_trial_id(cfg, trialId)
-    % This dirty trick eliminates flag checking in run_experiment
+    % null-object pattern to eliminate flag checking in run_experiment
     if cfg.eyelink_flag
         utilities.eyelink.msg('TRIALID %s', trialId);
     end
@@ -97,17 +86,9 @@ end
 
 
 function emergency_shutdown()
-    try
-        Eyelink('StopRecording');
-    end
-
-    try
-        Eyelink('CloseFile');
-    end
-
-    try
-        Eyelink('Shutdown');
-    end
+    try Eyelink('StopRecording'); catch, end
+    try Eyelink('CloseFile');     catch, end
+    try Eyelink('Shutdown');      catch, end
 end
 
 
@@ -120,7 +101,6 @@ function edfFile = make_edf_name(participant)
     end
 
     p = p(1:min(numel(p), 6));
-
     edfFile = [p '01'];
 end
 

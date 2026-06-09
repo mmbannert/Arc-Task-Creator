@@ -54,8 +54,7 @@ def build_session(
     families = list(pools)
     rng.shuffle(families)  # so that family blocks are shuffled
 
-    # Hardcoded UI bits (MATLAB runner uses these strings directly)
-    keys = {"same": "3#", "different": "4$"}  # TODO: other way around for mpi
+    # Hardcoded (MATLAB runner uses these strings directly)
     inference_background = "yellow"
     application_background = "cyan"
 
@@ -264,7 +263,6 @@ def build_session(
         "number_of_family_blocks": number_of_family_blocks,
         "number_of_mix_blocks": number_of_mix_blocks,
         "number_of_trials_total": number_of_trials_total,
-        "keys": keys,
         "blocks": blocks,
     }
 

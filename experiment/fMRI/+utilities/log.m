@@ -1,7 +1,7 @@
 classdef log
 methods(Static)
 
-function log = init_log(session)
+function log = init_log(session,config)
     log = struct();
 
     log.participant = string(session.participant);
@@ -14,10 +14,11 @@ function log = init_log(session)
     log.session.number_of_family_blocks = session.number_of_family_blocks;
     log.session.number_of_mix_blocks = session.number_of_mix_blocks;
     log.session.number_of_trials_total = session.number_of_trials_total;
-    log.session.keys = session.keys;
+    log.session.keys = config.keys;
 
     log.trials = repmat(utilities.log.trial_template(), 0, 1);
 end
+
 
 function trialTemplate = trial_template()
     trialTemplate = struct( ...
@@ -48,11 +49,6 @@ function trial = make_trial( ...
     trialData, response, reactionTime, stimulusOnsetTime, experimentStartTime, ...
     allResponses, allReactionTimes)
 
-    if nargin < 10
-        allResponses = strings(0, 1);
-        allReactionTimes = [];
-    end
-
     trial = utilities.log.trial_template();
 
     trial.block_id = block.block_id;
@@ -67,18 +63,15 @@ function trial = make_trial( ...
     trial.bg = utilities.log.get_field_str(phase, 'bg');
     trial.rule = utilities.log.get_field_str(trialData, 'rule');
     trial.imgs = utilities.log.get_field_strarr(trialData, 'imgs');
-
     trial.correct = utilities.log.get_field_str(trialData, 'correct');
 
     trial.resp = utilities.log.normalize_response(phase, string(response));
     trial.all_responses = utilities.log.normalize_responses(phase, allResponses);    trial.all_rts = allReactionTimes;
     trial.rt = reactionTime;
-
     trial.is_correct = utilities.log.score(trial.resp, trial.correct);
     
 
     trial.stim_onset_rel = stimulusOnsetTime - experimentStartTime;
-
     trial.stimulus_info = trialData;
 end
 
@@ -94,7 +87,6 @@ end
 
 function is_correct = score(resp, correct)
     is_correct = [];
-
     if correct == "same" || correct == "different"
         is_correct = (resp == correct);
     end
@@ -103,7 +95,6 @@ end
 
 function out = get_field_str(s, field)
     out = "";
-
     if isstruct(s) && isfield(s, field) && ~isempty(s.(field))
         out = string(s.(field));
     end
@@ -112,45 +103,11 @@ end
 
 function out = get_field_strarr(s, field)
     out = strings(0, 1);
-
     if isstruct(s) && isfield(s, field) && ~isempty(s.(field))
         out = string(s.(field));
     end
 end
 
-
-function ids = get_stimulus_ids(tr)
-    ids = strings(0, 1);
-
-    if ~isstruct(tr) || ~isfield(tr, 'stimuli') || isempty(tr.stimuli)
-        return
-    end
-
-    stim = utilities.session.force_struct_array(tr.stimuli);
-    ids = strings(numel(stim), 1);
-
-    for i = 1:numel(stim)
-        ids(i) = utilities.log.get_field_str(stim(i), 'id');
-    end
-end
-
-
-function seeds = get_stimulus_seeds(tr)
-    seeds = [];
-
-    if ~isstruct(tr) || ~isfield(tr, 'stimuli') || isempty(tr.stimuli)
-        return
-    end
-
-    stim = utilities.session.force_struct_array(tr.stimuli);
-    seeds = nan(numel(stim), 1);
-
-    for i = 1:numel(stim)
-        if isfield(stim(i), 'seed') && ~isempty(stim(i).seed)
-            seeds(i) = double(stim(i).seed);
-        end
-    end
-end
 
 function summary = summarize_trials(trials)
 
@@ -185,12 +142,11 @@ function save_log(log, sessionPath, session)
     end
 
     outName = sprintf('log_%s_%s.mat', ...
-        string(session.participant), datestr(now, 30));
+        string(session.participant), ...
+        string(datetime("now", "Format", "yyyyMMdd'T'HHmmss")));
 
     outPath = fullfile(baseDir, outName);
-
     save(outPath, 'log');
-
     fprintf('Saved log: %s\n', outPath);
 end
 
@@ -207,11 +163,8 @@ function resp = normalize_response(phase, resp)
     end
 
     switch phaseName
-        case "inference_start"
-            resp = "ready";
-
-        case "application_start"
-            resp = "memorized";
+        case "inference_start",    resp = "ready";
+        case "application_start",  resp = "memorized";
     end
 end
 
@@ -266,6 +219,4 @@ function print_block_summary(blockIndex, summary)
 end
 
 end
-
-
 end

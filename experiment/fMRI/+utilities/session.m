@@ -1,7 +1,6 @@
 classdef session
 methods(Static)
 
-
 function config = default_config()
     config = struct();
 
@@ -16,6 +15,10 @@ function config = default_config()
     config.resolution = [1400 1400];
     config.bg_color = [25 25 25]; % for grayish background
 
+    % ---- response keys ----
+    config.keys.same      = '3#'; % left button, carefull MPI keyboard has it reversed
+    config.keys.different = '4$'; % right button
+
     % ---- EyeLink config ----
     config.eyelink_flag = 0;  % 1 in production
 
@@ -27,15 +30,15 @@ function config = default_config()
     config.n_dummies = ceil(config.dummy_seconds / config.TR);
 end
 
-function keys = setup_keys(session, config)
+
+function keys = setup_keys(config)
     KbName('UnifyKeyNames');
-
-    keys.sameResponse = KbName(char(session.keys.same));
-    keys.differentResponse = KbName(char(session.keys.different));
-    keys.escape = KbName('ESCAPE');
-    keys.scannerTrigger = KbName(config.trigger_key_name);
-
-    keys.response = [keys.sameResponse keys.differentResponse];
+ 
+    keys.sameResponse      = KbName(config.keys.same);
+    keys.differentResponse = KbName(config.keys.different);
+    keys.escape            = KbName('ESCAPE');
+    keys.scannerTrigger    = KbName(config.trigger_key_name);
+    keys.response          = [keys.sameResponse keys.differentResponse];
 end
 
 
@@ -77,7 +80,6 @@ function texCache = preload_textures(session, sessionPath, w)
     end
 
     allImgs = utilities.session.collect_all_images(session);
-
     texCache = containers.Map();
 
     fprintf('Preloading %d images...\n', numel(allImgs));
@@ -130,6 +132,7 @@ function allImgs = collect_all_images(session)
     allImgs = unique(allImgs, 'stable');
 end
 
+
 function c = to_cellstr(x)
     if isempty(x)
         c = {};
@@ -173,7 +176,6 @@ function a = force_struct_array(x)
         end
     end
 end
-
 
 end
 end

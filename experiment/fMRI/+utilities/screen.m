@@ -47,36 +47,17 @@ function [key, time] = wait_key(validKeys, escapeKey)
 end
 
 
-function text_screen(w, text, duration, fontSize, isBold)
-    if nargin < 5
-        isBold = false;
-    end
-
-    if nargin < 4
-        fontSize = 34;
-    end
-
-    if nargin < 3
-        duration = [];
-    end
-
+function message_screen(w, ~, text)
     utilities.screen.clear_screen(w);
-
-    Screen('TextStyle', w, double(isBold));
-    Screen('TextSize', w, fontSize);
-
+    Screen('TextStyle', w, 0);
+    Screen('TextSize', w, 34);
     DrawFormattedText(w, char(string(text)), 'center', 'center', [1 1 1]);
-
-    flipTime = Screen('Flip', w);
-
-    if ~isempty(duration)
-        WaitSecs('UntilTime', flipTime + duration);
-    end
+    Screen('Flip', w);
 end
 
 
-function message_screen(w, rect, text) %#ok<INUSD>
-    utilities.screen.text_screen(w, text, [], 34, false);
+function clear_screen(w)
+    Screen('FillRect', w, [0.15 0.15 0.15]); % for light grayish background
 end
 
 
@@ -107,7 +88,7 @@ function [resp, rt, tOn, allResponses, allRts] = trial_screen( ...
     w, rect, phase, trialData, textureCache, ...
     sameKey, differentKey, escapeKey, duration)
 
-    utilities.screen.draw_trial_screen(w, rect, phase, trialData, textureCache, "");
+    utilities.screen.draw_trial(w, rect, phase, trialData, textureCache, "");
     tOn = Screen('Flip', w);
 
     [resp, rt, allResponses, allRts] = utilities.screen.collect_responses( ...
@@ -119,68 +100,52 @@ end
 function [firstResponse, firstRt, allResponses, allRts] = collect_responses( ...
     w, rect, phase, trialData, textureCache, ...
     tOn, duration, sameKey, differentKey, escapeKey)
-
-    firstResponse = "timeout";
-    firstRt = NaN;
-
-    allResponses = strings(0, 1);
-    allRts = [];
-
-    deadline = tOn + duration;
+ 
+    firstResponse        = "timeout";
+    firstRt              = NaN;
+    allResponses         = strings(0, 1);
+    allRts               = [];
+    deadline             = tOn + duration;
     previousResponseDown = false;
-
+ 
     while GetSecs() < deadline
         [isDown, keyTime, keyCode] = KbCheck;
-
+ 
         if ~isDown
             previousResponseDown = false;
             WaitSecs(0.001);
             continue
         end
-
-        if keyCode(escapeKey)
-            error('Experiment aborted with ESC.');
+ 
+        if keyCode(escapeKey), error('Experiment aborted with ESC.'); end
+ 
+        isNewPress           = (keyCode(sameKey) || keyCode(differentKey)) && ~previousResponseDown;
+        previousResponseDown = keyCode(sameKey) || keyCode(differentKey);
+ 
+        if ~isNewPress, continue; end
+ 
+        responseOptions = ["same", "different"];
+        response        = responseOptions(1 + keyCode(differentKey));
+        rt                  = keyTime - tOn;
+        allResponses(end+1) = response; %#ok<AGROW>
+        allRts(end+1)       = rt;       %#ok<AGROW>
+ 
+        if firstResponse == "timeout"
+            firstResponse = response;
+            firstRt       = rt;
+            utilities.screen.draw_trial(w, rect, phase, trialData, textureCache, response);
+            Screen('Flip', w);
         end
-
-        responseDown = keyCode(sameKey) || keyCode(differentKey);
-
-        if responseDown && ~previousResponseDown
-            currentResponse = "same";
-
-            if keyCode(differentKey)
-                currentResponse = "different";
-            end
-
-            currentRt = keyTime - tOn;
-
-            allResponses(end+1, 1) = currentResponse; %#ok<AGROW>
-            allRts(end+1, 1) = currentRt; %#ok<AGROW>
-
-            if firstResponse == "timeout"
-                firstResponse = currentResponse;
-                firstRt = currentRt;
-
-                utilities.screen.draw_trial_screen( ...
-                    w, rect, phase, trialData, textureCache, currentResponse);
-
-                Screen('Flip', w);
-            end
-        end
-
-        previousResponseDown = responseDown;
-        WaitSecs(0.001);
     end
 end
 
-
-function draw_trial_screen(w, rect, phase, trialData, textureCache, selectedResponse)
+function draw_trial(w, rect, phase, trialData, textureCache, selectedResponse)
     utilities.screen.clear_screen(w);
-
     Screen('FrameRect', w, utilities.screen.phase_bg_rgb(phase.bg), rect, 30);
-
     utilities.screen.draw_header(w, rect, phase, selectedResponse);
     utilities.screen.draw_two_stacked_imgs(w, rect, textureCache, trialData.imgs);
 end
+
 
 
 function draw_header(w, rect, phase, selectedResponse)
@@ -193,8 +158,7 @@ function draw_header(w, rect, phase, selectedResponse)
     Screen('TextStyle', w, 0);
     Screen('TextSize', w, 30);
 
-    utilities.screen.draw_response_tip( ...
-        w, rect, selectedResponse, leftText, rightText);
+    utilities.screen.draw_response_tip(w, rect, selectedResponse, leftText, rightText);
 end
 
 
@@ -258,23 +222,17 @@ function draw_two_stacked_imgs(w, rect, textureCache, imgsField)
     topLimit = rect(4) * 0.22;
     bottomLimit = rect(4) * 0.94;
 
-    stackHeight = 2 * imageHeight + gap;
-
-    if stackHeight > bottomLimit - topLimit
-        scale = (bottomLimit - topLimit) / stackHeight;
-        imageWidth = imageWidth * scale;
-        imageHeight = imageHeight * scale;
-    end
+    scale       = min(1, (bottomLimit - topLimit) / (2 * imageHeight + gap));
+    imageWidth  = imageWidth  * scale;
+    imageHeight = imageHeight * scale;
 
     centerX = rect(3) / 2;
     centerY = (topLimit + bottomLimit) / 2;
 
-    topRect = CenterRectOnPointd( ...
-        [0 0 imageWidth imageHeight], ...
+    topRect = CenterRectOnPointd([0 0 imageWidth imageHeight], ...
         centerX, centerY - imageHeight / 2 - gap / 2);
 
-    bottomRect = CenterRectOnPointd( ...
-        [0 0 imageWidth imageHeight], ...
+    bottomRect = CenterRectOnPointd([0 0 imageWidth imageHeight], ...
         centerX, centerY + imageHeight / 2 + gap / 2);
 
     Screen('DrawTexture', w, topTexture, [], topRect);
@@ -282,21 +240,14 @@ function draw_two_stacked_imgs(w, rect, textureCache, imgsField)
 end
 
 
-function clear_screen(w)
-    Screen('FillRect', w, [0.15 0.15 0.15]); % Makes background grayish
-end
-
 
 function rgb = phase_bg_rgb(bgName)
     luminosity = 0.4;
 
     switch string(bgName)
-        case "yellow"
-            baseRgb = [1 1 0];
-        case "cyan"
-            baseRgb = [0 1 1];
-        otherwise
-            rgb = [0 0 0];
+        case "yellow",        baseRgb = [1 1 0];
+        case "cyan",          baseRgb = [0 1 1];
+        otherwise,            rgb = [0 0 0];
             return
     end
 

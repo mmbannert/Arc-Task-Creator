@@ -14,10 +14,14 @@ function config = default_config()
     config.window_rect = [100 100 900 900]; % [X_start Y_start X_end Y_end]
     config.resolution = [1400 1400];
     config.bg_color = [25 25 25]; % for grayish background
+    
+    % Native resolution of display device
+    config.native_resolution = [1920, 1080];     % in 3T lab
+    % config.native_resolution = [1600, 1200];    % at desktop
 
     % ---- response keys ----
-    config.keys.same      = '3#'; % left button, carefull MPI keyboard has it reversed
-    config.keys.different = '4$'; % right button
+    config.keys.same      = '4$'; % left button '3#', carefull MPI keyboard has it reversed
+    config.keys.different = '3#'; % right button '4$'
 
     % ---- EyeLink config ----
     config.eyelink_flag = 1;  % 1 in production

@@ -172,7 +172,8 @@ function [experimentStartTime, scannerSync] = prepare_experiment()
     fprintf('[Experiment] Start time: %.4f\n\n', experimentStartTime);
 
     if config.eyelink_flag
-        utilities.eyelink.msg('EXPERIMENT_START %.4f', experimentStartTime);
+        % utilities.eyelink.msg('EXPERIMENT_START %.4f', experimentStartTime);
+        utilities.eyelink.msg('EXPERIMENT_START');
     end
 end
 

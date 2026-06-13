@@ -9,10 +9,11 @@ function log = init_log(session,config)
 
     log.session = struct();
     log.session.seed = session.seed;
+
+    log.session.type = session.type;
     log.session.number_of_decision_trials_per_phase = session.number_of_decision_trials_per_phase;
     log.session.number_of_trials_per_block = session.number_of_trials_per_block;
-    log.session.number_of_family_blocks = session.number_of_family_blocks;
-    log.session.number_of_mix_blocks = session.number_of_mix_blocks;
+    log.session.number_of_blocks = session.number_of_blocks;
     log.session.number_of_trials_total = session.number_of_trials_total;
     log.session.keys = config.keys;
 

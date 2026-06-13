@@ -269,7 +269,7 @@ if __name__ == "__main__":
             for family in family_block_sequence(block_num):
                 blocks.append(build_block(next_block_id, restrict_family=family))
                 next_block_id += 1
-        else:
+        else:  # mixup_session
             for _ in range(block_num):
                 blocks.append(build_block(next_block_id, restrict_family=None))
                 next_block_id += 1

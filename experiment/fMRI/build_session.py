@@ -16,11 +16,14 @@ if __name__ == "__main__":
     out_root: str = "out"
     session_path: str = "session.json"
     participant: str = "p01"  # max 3 chars
-    seed: int = int(participant.removeprefix("p")) * 100
-    number_of_mix_blocks: int = 0
+
+    block_num: int = 5  # must be >= 5 to guarantee all families are covered in family sessions.
+    number_of_sessions: int = 8  # alternating: odd = family only, even = mix only
     number_of_decision_trials_per_phase: int = 4
 
-    rng = random.Random(seed)
+    # ------------------------------------------------------------------ #
+    # Setup                                                              #
+    # ------------------------------------------------------------------ #
 
     out_root_path = Path(out_root).resolve()
     session_file_path = Path(session_path).resolve()
@@ -48,7 +51,6 @@ if __name__ == "__main__":
             )
 
     families = list(pools)
-    rng.shuffle(families)  # so that family blocks are shuffled
 
     inference_background = "yellow"
     application_background = "cyan"
@@ -114,12 +116,7 @@ if __name__ == "__main__":
             first, second = pick_pair(pools[family][rule], used_stimulus_ids)
             decision_trials.append(make_trial_entry(family, rule, first, second, correct=correct_label))
 
-        decision_phase = {
-            "phase": phase,
-            "bg": background,
-            "trials": decision_trials,
-        }
-        return [phase_start, decision_phase]
+        return [phase_start, {"phase": phase, "bg": background, "trials": decision_trials}]
 
 
     def build_rule_path(
@@ -238,37 +235,58 @@ if __name__ == "__main__":
         """
         return str(image_path.resolve().relative_to(base_dir)).replace("\\", "/")
 
+    def family_block_sequence(n: int) -> list[str]:
+        """
+        Balanced cycling: every 5 blocks covers each family exactly once, then reshuffles.
+        Guarantees equal family representation in any multiple-of-5 interval.
+        """
+        sequence = []
+        while len(sequence) < n:
+            batch = families[:]
+            rng.shuffle(batch)
+            sequence.extend(batch)
+        return sequence[:n]
 
     # ------------------------------------------------------------------ #
     # Execution                                                          #
     # ------------------------------------------------------------------ #
 
-    # Build the full session: family blocks first (shuffled), then a few mix blocks at the end
-    blocks: list[dict] = []
-    next_block_id = 1
+    for session_index in range(1, number_of_sessions + 1):
+        is_family_session = session_index % 2 == 1  # odd = family, even = mix
 
-    for family in families:
-        blocks.append(build_block(next_block_id, restrict_family=family))
-        next_block_id += 1
+        session_filename = f"session_{session_index:02d}.json"
+        session_file_path = base_dir / session_filename
+        base_dir = session_file_path.parent.resolve()
 
-    for _ in range(number_of_mix_blocks):
-        blocks.append(build_block(next_block_id, restrict_family=None))
-        next_block_id += 1
+        seed = int(participant.removeprefix("p")) * 100 + session_index
+        rng = random.Random(seed)
 
-    number_of_family_blocks = len(families)
-    number_of_blocks = number_of_family_blocks + number_of_mix_blocks
-    number_of_trials_per_block = 2 + 2 * number_of_decision_trials_per_phase
-    number_of_trials_total = number_of_blocks * number_of_trials_per_block
+        blocks = []
+        next_block_id = 1
 
-    session = {
-        "participant": participant,
-        "seed": seed,
-        "number_of_decision_trials_per_phase": number_of_decision_trials_per_phase,
-        "number_of_trials_per_block": number_of_trials_per_block,
-        "number_of_family_blocks": number_of_family_blocks,
-        "number_of_mix_blocks": number_of_mix_blocks,
-        "number_of_trials_total": number_of_trials_total,
-        "blocks": blocks,
-    }
+        if is_family_session:
+            rng.shuffle(families)  # so that family blocks are shuffled
+            for family in family_block_sequence(block_num):
+                blocks.append(build_block(next_block_id, restrict_family=family))
+                next_block_id += 1
+        else:
+            for _ in range(block_num):
+                blocks.append(build_block(next_block_id, restrict_family=None))
+                next_block_id += 1
 
-    session_file_path.write_text(json.dumps(session, ensure_ascii=False, indent=2), encoding="utf-8")
+        number_of_trials_per_block = 2 + 2 * number_of_decision_trials_per_phase
+        number_of_trials_total = block_num * number_of_trials_per_block
+
+        session = {
+            "participant": participant,
+            "seed": seed,
+            "session": session_index,
+            "type": "family" if is_family_session else "mix",
+            "number_of_decision_trials_per_phase": number_of_decision_trials_per_phase,
+            "number_of_trials_per_block": number_of_trials_per_block,
+            "number_of_blocks": block_num,
+            "number_of_trials_total": number_of_trials_total,
+            "blocks": blocks,
+        }
+
+        session_file_path.write_text(json.dumps(session, ensure_ascii=False, indent=2), encoding="utf-8")

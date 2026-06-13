@@ -2,7 +2,7 @@ classdef screen
 methods(Static)
 
 function [w, rect] = setup_window(config)
-    Screen('Preference', 'SkipSyncTests', config.SKIP_SYNC_TESTS);
+    Screen('Preference', 'SkipSyncTests', config.skip_sync_tests);
     Screen('Preference', 'Verbosity', 1);
     AssertOpenGL;
 

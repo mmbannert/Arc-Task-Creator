@@ -5,9 +5,9 @@ function config = default_config()
     config = struct();
 
     % ---- general config ----
-    config.SKIP_SYNC_TESTS = 1; % 1 in production
-    config.REST_TIME = 10; % 10 in production 
-    config.RESPONSE_TIME_LIMIT = 10; % 10 in production
+    config.skip_sync_tests = 1; % 1 in production
+    config.rest_time = 10; % 10 in production 
+    config.response_time_window = 10; % 10 in production
 
     % ---- screen config ----
     config.use_windowed_mode = false;  % false in production
@@ -74,6 +74,7 @@ function session = normalize_session(session)
         end
     end
 end
+
 
 
 function texCache = preload_textures(session, sessionPath, w)

@@ -59,7 +59,7 @@ function blockTrials = run_block(block)
         phase = block.phases(phaseIndex);
 
         if phaseIndex == 1 || phaseIndex == 3
-            utilities.screen.fixation_screen(window, windowRect, config.REST_TIME);
+            utilities.screen.fixation_screen(window, windowRect, config.rest_time);
 
             trial = run_trial(block, phase, phaseIndex, 0, phase.trial(1));
 
@@ -88,7 +88,7 @@ function trial = run_trial(block, phase, phaseIndex, trialIndex, trialData)
     utilities.screen.trial_screen( ...
         window, windowRect, phase, trialData, textureCache, ...
         keys.sameResponse, keys.differentResponse, keys.escape, ...
-        config.RESPONSE_TIME_LIMIT);
+        config.response_time_window);
 
 
     trial = utilities.log.make_trial( ...
@@ -178,3 +178,4 @@ function [experimentStartTime, scannerSync] = prepare_experiment()
 end
 
 end
+

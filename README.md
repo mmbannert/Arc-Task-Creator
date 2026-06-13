@@ -11,9 +11,8 @@ The project generates pairs of grids (an **input** and its corresponding **outpu
 
 - **Expansion** (e.g. star, plus, diagonal, single-step / infinite growth)
 - **Attraction/repulsion** (e.g. pull, push, fall, float)
-- **Occlusion** (e.g. reversal)
-- **Color** (e.g. shape based recoloring)
-- **Mirror/rotate** (e.g. x mirror, y mirror, rotate 90, rotate 180)
+- **Occlusion** (e.g. occlusion reversal, or mirroring/rotation on occluding objects)
+- **Recolor** (e.g. shape based recoloring)
 - **Arithmetic** (e.g. inversion, counting, majority/minority, parity)
 
 Each rule is implemented as a separate function, and families of rules are organized within .py modules.
@@ -23,15 +22,14 @@ Each rule is implemented as a separate function, and families of rules are organ
 ## Repository Structure
 
 ```
-ArcTaskCreator/
-├── experiment/                # Pilot experiment design, data, analysis, Lab.js source files
+ArcRuleGenerator/
+├── experiment/                # fMRI experiment, pilot experiment design, data, analysis, source files
 ├── out/                       # Generated examples organized by rule type
 └── src/
-    ├── tasks/
-    │   ├── arithmetic.py
+    ├── rules/    
     │   ├── attraction.py
-    │   ├── color.py
-    │   ├── mirror_rotate.py
+    │   ├── attraction.py
+    │   ├── recolor.py
     │   ├── expansion.py
     │   └── occlusion.py
     ├── grid.py                # Grid logic and data structure
@@ -43,9 +41,9 @@ ArcTaskCreator/
 
 ## Author & Acknowledgments
 
-**Yavuz Karaca** — University of Tübingen  
+**Yavuz Karaca**, **Dr. Michael Bannert**
 
-Special thanks to **Prof. Dr. Martin V. Butz**, **Dr. Michael Bannert**, and **Prof. Dr. Andreas Bartels** for designing the experimental paradigm in which these tasks are used, but also for their constructive feedback and ideas during the development.
+Special thanks to **Prof. Dr. Martin V. Butz** and **Prof. Dr. Andreas Bartels** for designing the experimental paradigm in which these tasks are used, but also for their constructive feedback and ideas during the development.
 
 
 

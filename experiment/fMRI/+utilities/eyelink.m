@@ -93,15 +93,10 @@ end
 
 
 function edfFile = make_edf_name(participant)
-    p = char(string(participant));
-    p = regexprep(p, '[^A-Za-z0-9]', '');
-
-    if isempty(p)
-        p = 'subj';
-    end
-
-    p = p(1:min(numel(p), 6));
-    edfFile = [p '01'];
+    p = regexprep(char(string(participant)), '[^A-Za-z0-9]', '');
+    if isempty(p), p = 'subj'; end
+    p = p(1:min(numel(p), 3));
+    edfFile = [p '_' char(datetime('now', 'Format', 'HHmm'))];  % e.g. 'p01_0923' for participant 1 at 09:23
 end
 
 end

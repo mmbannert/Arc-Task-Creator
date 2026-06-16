@@ -262,17 +262,14 @@ if __name__ == "__main__":
         rng = random.Random(seed)
 
         blocks = []
-        next_block_id = 1
 
         if is_family_session:
             rng.shuffle(families)  # so that family blocks are shuffled
             for family in family_block_sequence(block_num):
-                blocks.append(build_block(next_block_id, restrict_family=family))
-                next_block_id += 1
+                blocks.append(build_block(session_index, restrict_family=family))
         else:  # mixup_session
             for _ in range(block_num):
-                blocks.append(build_block(next_block_id, restrict_family=None))
-                next_block_id += 1
+                blocks.append(build_block(session_index, restrict_family=None))
 
         number_of_trials_per_block = 2 + 2 * number_of_decision_trials_per_phase
         number_of_trials_total = block_num * number_of_trials_per_block

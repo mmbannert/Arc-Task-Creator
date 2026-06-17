@@ -21,6 +21,8 @@ function el = setup(w, rect, participant)
     Eyelink('message', 'DISPLAY_COORDS %ld %ld %ld %ld', rect(1), rect(2), rect(3)-1, rect(4)-1);
 
     edfFile = utilities.eyelink.make_edf_name(participant);
+    el.edfFile = edfFile;
+
 
     if Eyelink('Openfile', edfFile) ~= 0
         error('Could not create EDF file: %s', edfFile);
@@ -63,12 +65,12 @@ function eyelink_trial_id(cfg, trialId)
     end
 end
 
-function close(participant, outDir)
+function close(el, outDir)
     if isempty(outDir) || outDir == ""
         outDir = pwd;
     end
 
-    edfFile = utilities.eyelink.make_edf_name(participant);
+    edfFile = el.edfFile;
 
     Eyelink('Command', 'set_idle_mode');
     WaitSecs(0.05);

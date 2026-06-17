@@ -11,7 +11,7 @@ try
     textureCache = utilities.session.preload_textures(session, sessionPath, window);
 
     experimentLog = utilities.log.init_log(session, config);
-    [experimentStartTime, scannerSync] = prepare_experiment();
+    [experimentStartTime, scannerSync, eyelink] = prepare_experiment();
     experimentLog.experiment_start_abs = experimentStartTime;
 
     for blockIndex = 1:numel(session.blocks)
@@ -35,7 +35,7 @@ try
     if config.eyelink_flag
         fprintf('[EyeLink] Stopping recording...\n');
         utilities.eyelink.stop_recording();
-        utilities.eyelink.close(session.participant, fileparts(sessionPath));
+        utilities.eyelink.close(eyelink.edfFile, fileparts(sessionPath));
     end
 
     Screen('CloseAll');
@@ -98,7 +98,7 @@ function trial = run_trial(block, phase, phaseIndex, trialIndex, trialData)
 end
 
 
-function [experimentStartTime, scannerSync] = prepare_experiment()
+function [experimentStartTime, scannerSync, eyelink] = prepare_experiment()
 
     fprintf('==============================\n');
     fprintf('Experiment setup\n');
@@ -113,11 +113,11 @@ function [experimentStartTime, scannerSync] = prepare_experiment()
     if config.eyelink_flag
         fprintf('[EyeLink] Opening connection...\n');
 
-        eyelinkDefaults = utilities.eyelink.setup( ...
+        eyelink = utilities.eyelink.setup( ...
             window, windowRect, session.participant);
 
         fprintf('[EyeLink] Calibration screen active. Complete calibration on tracker PC.\n');
-        utilities.eyelink.calibrate(eyelinkDefaults);
+        utilities.eyelink.calibrate(eyelink);
 
         fprintf('[EyeLink] Starting recording...\n');
         utilities.eyelink.start_recording();

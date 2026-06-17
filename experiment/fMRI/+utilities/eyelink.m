@@ -1,12 +1,12 @@
 classdef eyelink
 methods(Static)
 
-function el = setup(w, rect, participant)
+function eyelink = setup(w, rect, participant)
     if ~EyelinkInit(0, 1)
         error('EyelinkInit failed.');
     end
 
-    el = EyelinkInitDefaults(w);
+    eyelink = EyelinkInitDefaults(w);
     [~, vs] = Eyelink('GetTrackerVersion');
     fprintf('Running experiment on tracker: %s\n', vs);
 
@@ -21,7 +21,7 @@ function el = setup(w, rect, participant)
     Eyelink('message', 'DISPLAY_COORDS %ld %ld %ld %ld', rect(1), rect(2), rect(3)-1, rect(4)-1);
 
     edfFile = utilities.eyelink.make_edf_name(participant);
-    el.edfFile = edfFile;
+    eyelink.edfFile = edfFile;
 
 
     if Eyelink('Openfile', edfFile) ~= 0
@@ -65,12 +65,10 @@ function eyelink_trial_id(cfg, trialId)
     end
 end
 
-function close(el, outDir)
+function close(edfFile, outDir)
     if isempty(outDir) || outDir == ""
         outDir = pwd;
     end
-
-    edfFile = el.edfFile;
 
     Eyelink('Command', 'set_idle_mode');
     WaitSecs(0.05);

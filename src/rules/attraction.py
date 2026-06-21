@@ -11,6 +11,8 @@ def generate_color_attraction(size_range=(2, 5)):
     rows, cols = grid_input.rows, grid_input.cols
 
     w1, h1, w2, h2 = (rand_between(*size_range) for _ in range(4))
+    while max(_block_area(w1, h1), _block_area(w2, h2)) < 1.3 * min(_block_area(w1, h1), _block_area(w2, h2)):
+        w1, h1, w2, h2 = (rand_between(*size_range) for _ in range(4))
 
     # Always assume left to right movement direction
     x1 = rand_between(0, cols - w1 - w2 - 1)
@@ -200,3 +202,5 @@ def _random_rotate_pair(grid_input, grid_output):
 
 def _block_area(w, h):
     return w * h
+
+

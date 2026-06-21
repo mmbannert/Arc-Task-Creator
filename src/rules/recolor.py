@@ -100,7 +100,7 @@ OFFSETS = {
 }
 
 
-def generate_cross_plus_shape_fixed_recolor(grid_size=(12, 12), stamp_num=(2, 6), colors=("gray", "red", "blue")):
+def generate_cross_plus_shape_fixed_recolor(grid_size=(12, 12), stamp_num=(3, 4), colors=("gray", "red", "blue")):
     rows, cols = grid_size
     grid_input, grid_output = Grid(rows, cols), Grid(rows, cols)
 
@@ -140,7 +140,7 @@ def generate_cross_plus_shape_fixed_recolor(grid_size=(12, 12), stamp_num=(2, 6)
     return grid_input, grid_output, params
 
 
-def generate_cross_plus_cyclic_recolor(grid_size=(12, 12), stamp_num=(2, 6), colors=("gray", "red", "blue")):
+def generate_cross_plus_cyclic_recolor(grid_size=(12, 12), stamp_num=(3, 4), colors=("gray", "red", "blue")):
     rows, cols = grid_size
     grid_input, grid_output = Grid(rows, cols), Grid(rows, cols)
 

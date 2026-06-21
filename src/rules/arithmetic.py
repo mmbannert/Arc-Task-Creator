@@ -23,7 +23,7 @@ def _generate_dot_counting_recolor(target="majority", block_num=(1, 6)):
     grid_input, grid_output = make_grids()
 
     color1, color2 = random.sample(COLORS[:2], 2)
-    n1, n2 = _sample_two_counts(block_num)
+    n1, n2 = _sample_two_unique_counts(block_num)
 
     n_majority = max(n1, n2)
     n_minority = min(n1, n2)
@@ -74,7 +74,9 @@ def generate_cross_plus_minority_recolor(stamp_num=(1, 3)):
 def _generate_cross_plus_counting_recolor(target="majority", stamp_num=(1, 3)):
     grid_input, grid_output = make_grids()
 
-    n_cross, n_plus = _sample_two_counts(stamp_num)
+    n_cross, n_plus = _sample_two_unique_counts(stamp_num)
+    while n_cross + n_plus > 4:  # don't want too many objects at once
+        n_cross, n_plus = _sample_two_unique_counts(stamp_num)
 
     placed = _place_non_overlapping_shapes(
         grid_input,
@@ -154,7 +156,7 @@ def _place_non_overlapping_shapes(grid, shape_counts):
     return placed
 
 
-def _sample_two_counts(block_num):
+def _sample_two_unique_counts(block_num):
     n1 = rand_between(*block_num)
     n2 = rand_between(*block_num)
 

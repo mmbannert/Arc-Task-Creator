@@ -67,6 +67,7 @@ if __name__ == "__main__":
     if int(participant.removeprefix("p")) % 2 == 0:
         inference_background, application_background = application_background, inference_background
 
+
     # ------------------------------------------------------------------ #
     # Nested functions                                                   #
     # ------------------------------------------------------------------ #
@@ -165,11 +166,18 @@ if __name__ == "__main__":
                 if stimulus_alignment:
                     candidates = [
                         r for r in rules
-                        if rule_stimulus_type[r] == rule_stimulus_type[compare_target] and r != compare_target and r not in used_rules
+                        if rule_stimulus_type[r] == rule_stimulus_type[
+                            compare_target] and r != compare_target and r not in used_rules
                     ]
                     if not candidates:
-                        # no unused rule shares this type relax requirements
-                        candidates = [r for r in rules if r != compare_target]
+                        # no unused rule with same stimulus type -> relax stimulus alignment, prefer other unused rules
+                        candidates = [r for r in rules if r != compare_target and r not in used_rules]
+
+                    if not candidates:
+                        # all rules used, then enforce stimulus type
+                        candidates = [r for r in rules if
+                                      r != compare_target and rule_stimulus_type[r] == rule_stimulus_type[
+                                          compare_target]]
 
                     stimulus_alignment = False
 
@@ -267,6 +275,7 @@ if __name__ == "__main__":
         """
         return str(image_path.resolve().relative_to(base_dir)).replace("\\", "/")
 
+
     def family_block_sequence(n: int) -> list[str]:
         """
         Balanced cycling: every 5 blocks covers each family exactly once, then reshuffles.
@@ -278,6 +287,7 @@ if __name__ == "__main__":
             rng.shuffle(batch)
             sequence.extend(batch)
         return sequence[:n]
+
 
     # ------------------------------------------------------------------ #
     # Execution                                                          #

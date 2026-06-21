@@ -17,8 +17,8 @@ if __name__ == "__main__":
     session_path: str = "session.json"
     participant: str = "p01"  # max 3 chars
 
-    block_num: int = 5  # must be >= 5 to guarantee all families are covered in family sessions.
-    number_of_sessions: int = 8  # alternating: odd = family only, even = mix only
+    number_of_sessions: int = 10  # alternating: odd = family, even = mix, so choose even numbers for balance
+    number_of_blocks_per_session: int = 5  # must be >= 5 to guarantee all families are covered in family sessions.
     number_of_decision_trials_per_phase: int = 4
 
     # ------------------------------------------------------------------ #
@@ -51,6 +51,14 @@ if __name__ == "__main__":
             )
 
     families = list(pools)
+
+    # (family, rule) -> stimulus type, e.g. ("arithmetic", "dot_majority_recolor") -> "dots"
+    # Assumes "stimulus" is constant across all instances of a given rule.
+    rule_stimulus_type: dict[tuple[str, str], str] = {
+        (family, rule): records[0]["params"]["stimulus"]
+        for family, family_pool in pools.items()
+        for rule, records in family_pool.items()
+    }
 
     inference_background = "yellow"
     application_background = "cyan"
@@ -122,10 +130,12 @@ if __name__ == "__main__":
     def build_rule_path(
             rules: list[tuple[str, str]],
             number_of_decisions: int,
-            phase: str,  # "swap" or "stable"
+            phase: str,  # "inference" or "application"
     ) -> list[tuple[str, str]]:
         """
         Build the per-phase rule sequence: respects same/different label counts and prefers unused rules for coverage
+        The first "different" in a phase keeps the same stimulus type (e.g. dots, cross_plus, occluding blocks)
+        as the rule it differs from; subsequent "different"s are free to switch stimulus type.
         """
         rng.shuffle(rules)  # randomize rule priority (affects coverage order)
 
@@ -135,18 +145,40 @@ if __name__ == "__main__":
         rule_path = [first_rule]
         used_rules = {first_rule}
 
+        # For Stimulus Alignment
+        stimulus_alignment = True  # the first "different" in the phase must match stimulus type
+
         for label in labels:
             previous_rule = rule_path[-1]
+            compare_target = first_rule if phase == "application" else previous_rule
 
             if label == "same":
-                rule_path.append(first_rule if phase == "application" else previous_rule)
+                rule_path.append(compare_target)
 
             elif label == "different":
-                # prefer a rule not used yet in this phase, but never repeat previous
-                candidates = [r for r in rules if r != previous_rule and r not in used_rules]
-                if not candidates:
-                    candidates = [r for r in rules if
-                                  r != previous_rule]  # all rules used: just pick any other rule
+
+                # Three criteria
+                # 1. different rule from compare target
+                # 2. stimulus alignment with compare target
+                # 3. prefer unused rules for coverage
+
+                if stimulus_alignment:
+                    candidates = [
+                        r for r in rules
+                        if rule_stimulus_type[r] == rule_stimulus_type[compare_target] and r != compare_target and r not in used_rules
+                    ]
+                    if not candidates:
+                        # no unused rule shares this type relax requirements
+                        candidates = [r for r in rules if r != compare_target]
+
+                    stimulus_alignment = False
+
+                else:
+                    candidates = [r for r in rules if r != compare_target and r not in used_rules]
+                    if not candidates:
+                        candidates = [r for r in rules if r != compare_target]
+
+                    stimulus_alignment = True
 
                 next_rule = rng.choice(candidates)
                 rule_path.append(next_rule)
@@ -266,16 +298,16 @@ if __name__ == "__main__":
 
         if is_family_session:
             rng.shuffle(families)  # so that family blocks are shuffled
-            for family in family_block_sequence(block_num):
+            for family in family_block_sequence(number_of_blocks_per_session):
                 blocks.append(build_block(next_block_id, restrict_family=family))
                 next_block_id += 1
         else:  # mixup_session
-            for _ in range(block_num):
+            for _ in range(number_of_blocks_per_session):
                 blocks.append(build_block(next_block_id, restrict_family=None))
                 next_block_id += 1
 
         number_of_trials_per_block = 2 + 2 * number_of_decision_trials_per_phase
-        number_of_trials_total = block_num * number_of_trials_per_block
+        number_of_trials_total = number_of_blocks_per_session * number_of_trials_per_block
 
         session = {
             "participant": participant,
@@ -284,7 +316,7 @@ if __name__ == "__main__":
             "type": "family" if is_family_session else "mix",
             "number_of_decision_trials_per_phase": number_of_decision_trials_per_phase,
             "number_of_trials_per_block": number_of_trials_per_block,
-            "number_of_blocks": block_num,
+            "number_of_blocks": number_of_blocks_per_session,
             "number_of_trials_total": number_of_trials_total,
             "blocks": blocks,
         }

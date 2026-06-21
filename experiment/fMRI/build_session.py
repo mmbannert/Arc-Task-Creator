@@ -147,7 +147,7 @@ if __name__ == "__main__":
         used_rules = {first_rule}
 
         # For Stimulus Alignment
-        stimulus_alignment = rng.choice([True, False])  # randomize whether the first "different" must match type
+        stimulus_alignment = True  # the first "different" in the phase must match stimulus type
 
         for label in labels:
             previous_rule = rule_path[-1]

@@ -17,17 +17,15 @@ if __name__ == "__main__":
     session_path: str = "session.json"
     participant: str = "p01"  # max 3 chars
 
-    number_of_sessions: int = 10  # alternating: odd = family, even = mix, so choose even numbers for balance
-    number_of_blocks_per_session: int = 5  # must be >= 5 to guarantee all families are covered in family sessions.
-    number_of_decision_trials_per_phase: int = 4
+    number_of_sessions: int = 6  # alternating: odd = family, even = mix, so choose even numbers for balance
+    number_of_decision_trials_per_block: int = 8
 
     # ------------------------------------------------------------------ #
     # Setup                                                              #
     # ------------------------------------------------------------------ #
 
     out_root_path = Path(out_root).resolve()
-    session_file_path = Path(session_path).resolve()
-    base_dir = session_file_path.parent.resolve()
+    base_dir = Path(session_path).resolve().parent
     base_dir.mkdir(parents=True, exist_ok=True)
 
     # Collect pools: pools[family][rule] -> list of stimulus records (each record points to its combined image)
@@ -51,142 +49,114 @@ if __name__ == "__main__":
             )
 
     families = list(pools)
+    number_of_blocks_per_session = len(families)  # one block per family, every session
 
-    # (family, rule) -> stimulus type, e.g. ("arithmetic", "dot_majority_recolor") -> "dots"
-    # Assumes "stimulus" is constant across all instances of a given rule.
-    rule_stimulus_type: dict[tuple[str, str], str] = {
-        (family, rule): records[0]["params"]["stimulus"]
-        for family, family_pool in pools.items()
-        for rule, records in family_pool.items()
+    # Running per-family context balance, carried across every session built in this run.
+    context_tally: dict[str, dict[str, int]] = {
+        family: {"inference": 0, "application": 0} for family in families
     }
-
-    inference_background = "yellow"
-    application_background = "cyan"
-
-    # Counterbalance phase colors based on participant number parity
-    if int(participant.removeprefix("p")) % 2 == 0:
-        inference_background, application_background = application_background, inference_background
-
 
     # ------------------------------------------------------------------ #
     # Nested functions                                                   #
     # ------------------------------------------------------------------ #
 
-    def build_block(block_id: int, restrict_family: str | None) -> dict:
+    def alternating_context_sequence(starting_context: str, length: int) -> list[str]:
         """
-        Build one block: either a single-family block or a mix block drawing from all families
+        e.g. ("inference", 5) -> ["inference", "application", "inference", "application", "inference"]
         """
-        used_stimulus_ids: set[str] = set()
+        other_context = "application" if starting_context == "inference" else "inference"
+        return [starting_context if i % 2 == 0 else other_context for i in range(length)]
 
-        if restrict_family is None:
-            rules = [(family, rule) for family, family_pool in pools.items() for rule in family_pool]
-            family_label = "mix"
-        else:
-            rules = [(restrict_family, rule) for rule in pools.get(restrict_family, {})]
-            family_label = restrict_family
 
-        phases = (
-                build_phase("inference", rules, used_stimulus_ids, inference_background) +
-                build_phase("application", rules, used_stimulus_ids, application_background)
+    def assign_families_to_contexts(context_slots: list[str], rng: random.Random) -> list[tuple[str, str]]:
+        """
+        Decide, for this session, which family fills each context slot.
+        Returns (family, context) pairs in slot order.
+
+        Families most "owed" inference (fewest inference blocks relative to application blocks so far) fill the
+        inference slots first; the rest fill the application slots. Ties are broken randomly.
+        """
+        n_inference_slots = context_slots.count("inference")
+
+        shuffled_families = families[:]
+        rng.shuffle(shuffled_families)  # random tie-break for equally-owed families
+
+        ranked_by_inference_need = sorted(
+            shuffled_families,
+            key=lambda family: context_tally[family]["application"] - context_tally[family]["inference"],
+            reverse=True,  # most owed inference first
         )
 
-        return {"block_id": block_id, "family": family_label, "phases": phases}
+        inference_families = ranked_by_inference_need[:n_inference_slots]
+        application_families = ranked_by_inference_need[n_inference_slots:]
+
+        rng.shuffle(inference_families)    # randomize which slot within the group each family gets
+        rng.shuffle(application_families)
+
+        inference_iter = iter(inference_families)
+        application_iter = iter(application_families)
+        return [
+            (next(inference_iter) if context == "inference" else next(application_iter), context)
+            for context in context_slots
+        ]
 
 
-    def build_phase(
-            phase: str,
-            rules: list[tuple[str, str]],
-            used_stimulus_ids: set[str],
-            background: str,
-    ) -> list[dict]:
+    def build_block(block_id: int, family: str, context: str, rng: random.Random) -> dict:
         """
-        Build a phase consisting of one phase_start trial + a list of decision trials
-        Inference (swap): each trial is compared to the previous rule.
-        Application (stable): each trial is compared to the memorized rule (rule_path[0]).
+        Build one block: single family, single context, one initial trial, followed by the decision trials.
         """
-        rule_path = build_rule_path(rules, number_of_decision_trials_per_phase, phase)
+        used_stimulus_ids: set[str] = set()
+        rules = [(family, rule) for rule in pools[family]]
 
-        # Phase_start uses the first rule to establish context (no response recorded here)
-        start_family, start_rule = rule_path[0]
-        first, second = pick_pair(pools[start_family][start_rule], used_stimulus_ids)
-        phase_start = {
-            "phase": f"{phase}_start",
-            "bg": background,
-            "trial": [make_trial_entry(start_family, start_rule, first, second, correct=None)],
-        }
+        rule_path = build_rule_path(rules, number_of_decision_trials_per_block, context, rng)
 
-        # Decision trials: correct label is derived from whether rule changed vs previous trial
-        decision_trials = []
+        initial_family, initial_rule = rule_path[0]
+        first, second = pick_pair(pools[initial_family][initial_rule], used_stimulus_ids, rng)
+        trials = [make_trial_entry(initial_family, initial_rule, first, second, correct=None)]
+
         for index in range(1, len(rule_path)):
-            family, rule = rule_path[index]
-            compare_to = rule_path[0] if phase == "application" else rule_path[index - 1]
-            correct_label = "same" if (family, rule) == compare_to else "different"
+            family_i, rule_i = rule_path[index]
+            compare_to = rule_path[0] if context == "application" else rule_path[index - 1]
+            correct_label = "same" if (family_i, rule_i) == compare_to else "different"
 
-            first, second = pick_pair(pools[family][rule], used_stimulus_ids)
-            decision_trials.append(make_trial_entry(family, rule, first, second, correct=correct_label))
+            first, second = pick_pair(pools[family_i][rule_i], used_stimulus_ids, rng)
+            trials.append(make_trial_entry(family_i, rule_i, first, second, correct=correct_label))
 
-        return [phase_start, {"phase": phase, "bg": background, "trials": decision_trials}]
+        return {"block_id": block_id, "family": family, "context": context, "trials": trials}
 
 
     def build_rule_path(
             rules: list[tuple[str, str]],
             number_of_decisions: int,
-            phase: str,  # "inference" or "application"
+            context: str,  # "inference" or "application"
+            rng: random.Random,
     ) -> list[tuple[str, str]]:
         """
-        Build the per-phase rule sequence: respects same/different label counts and prefers unused rules for coverage
-        The first "different" in a phase keeps the same stimulus type (e.g. dots, cross_plus, occluding blocks)
-        as the rule it differs from; subsequent "different"s are free to switch stimulus type.
+        Build the rule sequence for one block: respects same/different label
+        Inference (swap): each trial compares to the previous trial's rule.
+        Application (stable): each trial compares to the block's first (rule_path[0]).
         """
+
         rng.shuffle(rules)  # randomize rule priority (affects coverage order)
 
-        labels = make_labels(number_of_decisions, max_run=3)
+        labels = make_labels(number_of_decisions, max_run=3, rng=rng)
 
         first_rule = rng.choice(rules)
         rule_path = [first_rule]
         used_rules = {first_rule}
 
-        # For Stimulus Alignment
-        stimulus_alignment = True  # the first "different" in the phase must match stimulus type
-
         for label in labels:
             previous_rule = rule_path[-1]
-            compare_target = first_rule if phase == "application" else previous_rule
+            compare_target = first_rule if context == "application" else previous_rule
 
             if label == "same":
                 rule_path.append(compare_target)
 
             elif label == "different":
-
-                # Three criteria
-                # 1. different rule from compare target
-                # 2. stimulus alignment with compare target
-                # 3. prefer unused rules for coverage
-
-                if stimulus_alignment:
-                    candidates = [
-                        r for r in rules
-                        if rule_stimulus_type[r] == rule_stimulus_type[
-                            compare_target] and r != compare_target and r not in used_rules
-                    ]
-                    if not candidates:
-                        # no unused rule with same stimulus type -> relax stimulus alignment, prefer other unused rules
-                        candidates = [r for r in rules if r != compare_target and r not in used_rules]
-
-                    if not candidates:
-                        # all rules used, then enforce stimulus type
-                        candidates = [r for r in rules if
-                                      r != compare_target and rule_stimulus_type[r] == rule_stimulus_type[
-                                          compare_target]]
-
-                    stimulus_alignment = False
-
-                else:
-                    candidates = [r for r in rules if r != compare_target and r not in used_rules]
-                    if not candidates:
-                        candidates = [r for r in rules if r != compare_target]
-
-                    stimulus_alignment = True
+                candidates = [r for r in rules if r != compare_target and r not in used_rules]
+                if not candidates:
+                    # every other rule already used in this block -> allow reuse
+                    candidates = [r for r in rules if r != compare_target]
 
                 next_rule = rng.choice(candidates)
                 rule_path.append(next_rule)
@@ -195,7 +165,7 @@ if __name__ == "__main__":
         return rule_path
 
 
-    def make_labels(number_of_decisions: int, max_run: int = 3) -> list[str]:
+    def make_labels(number_of_decisions: int, max_run: int, rng: random.Random) -> list[str]:
         """
         Generate a balanced same/different label sequence with a cap on repeated labels (prevents long streaks)
         """
@@ -219,7 +189,7 @@ if __name__ == "__main__":
                 return labels
 
 
-    def pick_pair(stimulus_pool: list[dict], used_stimulus_ids: set[str]) -> tuple[dict, dict]:
+    def pick_pair(stimulus_pool: list[dict], used_stimulus_ids: set[str], rng: random.Random) -> tuple[dict, dict]:
         """
         Draw two unique stimuli from a rule pool (no reuse within the current block).
         """
@@ -276,55 +246,38 @@ if __name__ == "__main__":
         return str(image_path.resolve().relative_to(base_dir)).replace("\\", "/")
 
 
-    def family_block_sequence(n: int) -> list[str]:
-        """
-        Balanced cycling: every 5 blocks covers each family exactly once, then reshuffles.
-        Guarantees equal family representation in any multiple-of-5 interval.
-        """
-        sequence = []
-        while len(sequence) < n:
-            batch = families[:]
-            rng.shuffle(batch)
-            sequence.extend(batch)
-        return sequence[:n]
-
-
     # ------------------------------------------------------------------ #
     # Execution                                                          #
     # ------------------------------------------------------------------ #
 
     for session_index in range(1, number_of_sessions + 1):
-        is_family_session = session_index % 2 == 1  # odd = family, even = mix
-
-        session_filename = f"session_{session_index:02d}.json"
-        session_file_path = base_dir / session_filename
-        base_dir = session_file_path.parent.resolve()
+        session_file_path = base_dir / f"session_{session_index:02d}.json"
 
         seed = int(participant.removeprefix("p")) * 100 + session_index
         rng = random.Random(seed)
 
+        # Deterministic alternation guarantees an exact 50/50 split of session-starting
+        # context across the whole run, on top of the per-family tally correction below.
+        starting_context = "inference" if session_index % 2 == 1 else "application"
+        context_slots = alternating_context_sequence(starting_context, number_of_blocks_per_session)
+
+        family_context_pairs = assign_families_to_contexts(context_slots, rng)
+
         blocks = []
         next_block_id = 1
+        for family, context in family_context_pairs:
+            blocks.append(build_block(next_block_id, family, context, rng))
+            context_tally[family][context] += 1
+            next_block_id += 1
 
-        if is_family_session:
-            rng.shuffle(families)  # so that family blocks are shuffled
-            for family in family_block_sequence(number_of_blocks_per_session):
-                blocks.append(build_block(next_block_id, restrict_family=family))
-                next_block_id += 1
-        else:  # mixup_session
-            for _ in range(number_of_blocks_per_session):
-                blocks.append(build_block(next_block_id, restrict_family=None))
-                next_block_id += 1
-
-        number_of_trials_per_block = 2 + 2 * number_of_decision_trials_per_phase
+        number_of_trials_per_block = 1 + number_of_decision_trials_per_block  # +1 bc initial trial
         number_of_trials_total = number_of_blocks_per_session * number_of_trials_per_block
 
         session = {
             "participant": participant,
             "seed": seed,
-            "session": session_index,
-            "type": "family" if is_family_session else "mix",
-            "number_of_decision_trials_per_phase": number_of_decision_trials_per_phase,
+            "starting_context": starting_context,
+            "number_of_decision_trials_per_block": number_of_decision_trials_per_block,
             "number_of_trials_per_block": number_of_trials_per_block,
             "number_of_blocks": number_of_blocks_per_session,
             "number_of_trials_total": number_of_trials_total,

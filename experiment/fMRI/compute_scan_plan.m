@@ -7,7 +7,7 @@ cfg = utilities.session.default_config();
 
     experimentDuration = ...
         session.number_of_trials_total * cfg.response_time_window + ... % all trials
-        session.number_of_blocks * 2 * cfg.rest_time; % all fixation/rest
+        session.number_of_blocks * cfg.rest_time; % all rest
 
     totalDuration = cfg.dummy_seconds + experimentDuration + cfg.rest_time;
 

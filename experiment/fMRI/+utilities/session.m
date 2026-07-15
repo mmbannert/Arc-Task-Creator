@@ -5,7 +5,7 @@ function config = default_config()
     config = struct();
 
     % ---- general config ----
-    config.skip_sync_tests = 1; % 1 in production
+    config.skip_sync_tests = 0; % 0 in production
     config.rest_time = 10; % 10 in production 
     config.response_time_window = 10; % 10 in production
 
@@ -20,8 +20,10 @@ function config = default_config()
     % config.native_resolution = [1600, 1200];    % at desktop
 
     % ---- response keys ----
-    config.keys.same      = '4$'; % left button '3#', carefull MPI keyboard has it reversed
-    config.keys.different = '3#'; % right button '4$'
+    config.keys.same      = '4$'; % left button. 
+    config.keys.different = '3#'; % right button. 
+    % 3T lab keyboard for RIGHT hand has '4$' on index finger (left-most button) and '3#' on middle finger (second-from-left button).
+    % For standard keyboard swap them.
 
     % ---- EyeLink config ----
     config.eyelink_flag = 1;  % 1 in production

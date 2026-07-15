@@ -55,44 +55,32 @@ function blockTrials = run_block(block)
 
     blockTrials = repmat(utilities.log.trial_template(), 0, 1);
 
-    for phaseIndex = 1:numel(block.phases)
-        phase = block.phases(phaseIndex);
+    utilities.screen.fixation_screen(window, windowRect, config.rest_time);
 
-        if phaseIndex == 1 || phaseIndex == 3
-            utilities.screen.fixation_screen(window, windowRect, config.rest_time);
+    for trialIndex = 1:numel(block.trials)
+        trial = run_trial(block, trialIndex, block.trials(trialIndex));
 
-            trial = run_trial(block, phase, phaseIndex, 0, phase.trial(1));
-
-            blockTrials(end+1, 1) = trial; %#ok<AGROW>
-            utilities.log.print_trial(trial);
-            continue
-        end
-
-        for trialIndex = 1:numel(phase.trials)
-            trial = run_trial(block, phase, phaseIndex, trialIndex, phase.trials(trialIndex));
-
-            blockTrials(end+1, 1) = trial; %#ok<AGROW>
-            utilities.log.print_trial(trial);
-        end
+        blockTrials(end+1, 1) = trial; %#ok<AGROW>
+        utilities.log.print_trial(trial);
     end
 end
 
 
-function trial = run_trial(block, phase, phaseIndex, trialIndex, trialData)
+function trial = run_trial(block, trialIndex, trialData)
 
-    trialId = utilities.log.make_trial_id(block.block_id, phaseIndex, trialIndex);
+    trialId = utilities.log.make_trial_id(block.block_id, trialIndex);
     utilities.eyelink.eyelink_trial_id(config, trialId);
 
     [response, reactionTime, stimulusOnsetTime, ...
     allResponses, allReactionTimes] = ...
     utilities.screen.trial_screen( ...
-        window, windowRect, phase, trialData, textureCache, ...
+        window, windowRect, block, trialIndex, trialData, textureCache, ...
         keys.sameResponse, keys.differentResponse, keys.escape, ...
         config.response_time_window);
 
 
     trial = utilities.log.make_trial( ...
-        block, phase, phaseIndex, trialIndex, trialData, ...
+        block, trialIndex, trialData, ...
         response, reactionTime, stimulusOnsetTime, experimentStartTime, ...
         allResponses, allReactionTimes);
 end
@@ -133,6 +121,8 @@ function [experimentStartTime, scannerSync, eyelink] = prepare_experiment()
             window, windowRect, ...
             sprintf(['Eye tracker calibration is disabled.\n\n' ...
                      'Press any response button when ready for the scan.']));
+
+        eyelink = [];
     end
 
     fprintf('[Participant] Waiting for readiness button press...\n');

@@ -20,6 +20,12 @@ if __name__ == "__main__":
     number_of_sessions: int = 6  # alternating: odd = family, even = mix, so choose even numbers for balance
     number_of_decision_trials_per_block: int = 8
 
+    # Counterbalance frame colors (yellow/cyan) for contexts
+    if int(participant.removeprefix("p")) % 2 == 0:
+        context_frame_colors = {"inference": "cyan", "application": "yellow"}
+    else:
+        context_frame_colors = {"inference": "yellow", "application": "cyan"}
+
     # ------------------------------------------------------------------ #
     # Setup                                                              #
     # ------------------------------------------------------------------ #
@@ -56,6 +62,7 @@ if __name__ == "__main__":
         family: {"inference": 0, "application": 0} for family in families
     }
 
+
     # ------------------------------------------------------------------ #
     # Nested functions                                                   #
     # ------------------------------------------------------------------ #
@@ -90,7 +97,7 @@ if __name__ == "__main__":
         inference_families = ranked_by_inference_need[:n_inference_slots]
         application_families = ranked_by_inference_need[n_inference_slots:]
 
-        rng.shuffle(inference_families)    # randomize which slot within the group each family gets
+        rng.shuffle(inference_families)  # randomize which slot within the group each family gets
         rng.shuffle(application_families)
 
         inference_iter = iter(inference_families)
@@ -122,7 +129,13 @@ if __name__ == "__main__":
             first, second = pick_pair(pools[family_i][rule_i], used_stimulus_ids, rng)
             trials.append(make_trial_entry(family_i, rule_i, first, second, correct=correct_label))
 
-        return {"block_id": block_id, "family": family, "context": context, "trials": trials}
+        return {
+            "block_id": block_id,
+            "family": family,
+            "context": context,
+            "frame_color": context_frame_colors[context],
+            "trials": trials,
+        }
 
 
     def build_rule_path(

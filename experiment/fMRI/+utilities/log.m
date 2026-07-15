@@ -10,8 +10,8 @@ function log = init_log(session,config)
     log.session = struct();
     log.session.seed = session.seed;
 
-    log.session.type = session.type;
-    log.session.number_of_decision_trials_per_phase = session.number_of_decision_trials_per_phase;
+    log.session.starting_context = session.starting_context;
+    log.session.number_of_decision_trials_per_block = session.number_of_decision_trials_per_block;
     log.session.number_of_trials_per_block = session.number_of_trials_per_block;
     log.session.number_of_blocks = session.number_of_blocks;
     log.session.number_of_trials_total = session.number_of_trials_total;
@@ -26,11 +26,10 @@ function trialTemplate = trial_template()
         'uid', "", ...
         'block_id', [], ...
         'block_family', "", ...
-        'trial_family', "", ...
-        'phase', "", ...
-        'phase_index', [], ...
+        'context', "", ...
+        'frame_color', "", ...
+        'trial_role', "", ...
         'trial_index', [], ...
-        'bg', "", ...
         'rule', "", ...
         'imgs', strings(0, 1), ...
         'correct', "", ...
@@ -46,28 +45,30 @@ end
 
 
 function trial = make_trial( ...
-    block, phase, phaseIndex, trialIndex, ...
+    block, trialIndex, ...
     trialData, response, reactionTime, stimulusOnsetTime, experimentStartTime, ...
     allResponses, allReactionTimes)
 
     trial = utilities.log.trial_template();
 
+    isInitialTrial = (trialIndex == 1);
+
     trial.block_id = block.block_id;
     trial.block_family = string(block.family);
-    trial.trial_family = utilities.log.trial_family(block, trialData);
-    trial.uid = utilities.log.make_trial_id(block.block_id, phaseIndex, trialIndex);
+    trial.uid = utilities.log.make_trial_id(block.block_id, trialIndex);
 
-    trial.phase = string(phase.phase);
-    trial.phase_index = phaseIndex;
+    trial.context = string(block.context);
+    trial.frame_color = string(block.frame_color);
+    trial.trial_role = utilities.log.trial_role_name(isInitialTrial);
     trial.trial_index = trialIndex;
 
-    trial.bg = utilities.log.get_field_str(phase, 'bg');
     trial.rule = utilities.log.get_field_str(trialData, 'rule');
     trial.imgs = utilities.log.get_field_strarr(trialData, 'imgs');
     trial.correct = utilities.log.get_field_str(trialData, 'correct');
 
-    trial.resp = utilities.log.normalize_response(phase, string(response));
-    trial.all_responses = utilities.log.normalize_responses(phase, allResponses);    trial.all_rts = allReactionTimes;
+    trial.resp = utilities.log.normalize_response(block.context, isInitialTrial, string(response));
+    trial.all_responses = utilities.log.normalize_responses(block.context, isInitialTrial, allResponses);  
+    trial.all_rts = allReactionTimes;
     trial.rt = reactionTime;
     trial.is_correct = utilities.log.score(trial.resp, trial.correct);
 
@@ -75,12 +76,11 @@ function trial = make_trial( ...
     trial.stimulus_info = trialData;
 end
 
-
-function fam = trial_family(block, tr)
-    if isstruct(tr) && isfield(tr, 'family') && ~isempty(tr.family)
-        fam = string(tr.family);
+function name = trial_role_name(isInitialTrial)
+    if isInitialTrial
+        name = "initial";
     else
-        fam = string(block.family);
+        name = "decision";
     end
 end
 
@@ -146,27 +146,25 @@ function save_log(log, sessionPath, session)
     fprintf('Saved log: %s\n', outPath);
 end
 
-function trialId = make_trial_id(blockId, phaseIndex, trialIndex)
-    trialId = sprintf('%d_%d_%d', blockId, phaseIndex, trialIndex);
+function trialId = make_trial_id(blockId, trialIndex)
+    trialId = sprintf('%d_%d', blockId, trialIndex);
 end
 
 
-function resp = normalize_response(phase, resp)
-    phaseName = string(phase.phase);
-
-    if resp == "timeout"
+function resp = normalize_response(context, isInitialTrial, resp)
+    if resp == "timeout" || ~isInitialTrial
         return
     end
 
-    switch phaseName
-        case "inference_start",    resp = "ready";
-        case "application_start",  resp = "memorized";
+    switch context
+        case 'inference',    resp = "ready";
+        case 'application',  resp = "memorized";
     end
 end
 
-function responses = normalize_responses(phase, responses)
+function responses = normalize_responses(context, isInitialTrial, responses)
     for i = 1:numel(responses)
-        responses(i) = utilities.log.normalize_response(phase, responses(i));
+        responses(i) = utilities.log.normalize_response(context, isInitialTrial, responses(i));
     end
 end
 
@@ -191,11 +189,13 @@ function print_trial(trial)
         marker = ' ! ';
     end
 
+    contextLabel = sprintf('%s/%s', char(trial.context), char(trial.trial_role));
+
     fprintf( ...
-        '%s [Block %d | %-17s | Trial %02d] ID=%s rule=%s resp=%s rt=%.3f correct=%s onset=%.3f\n', ...
+        '%s [Block %d | %-19s | Trial %02d] ID=%s rule=%s resp=%s rt=%.3f correct=%s onset=%.3f\n', ...
         marker, ...
         trial.block_id, ...
-        char(string(trial.phase)), ...
+        contextLabel, ...
         trial.trial_index, ...
         char(trial.uid), ...
         char(string(trial.rule)), ...

@@ -5,9 +5,9 @@ function config = default_config()
     config = struct();
 
     % ---- general config ----
-    config.skip_sync_tests = 0; % 0 in production
-    config.rest_time = 10; % 10 in production 
-    config.response_time_window = 10; % 10 in production
+    config.skip_sync_tests = 1; % 0 in production
+    config.rest_time = 1; % 10 in production 
+    config.response_time_window = 1; % 10 in production
 
     % ---- screen config ----
     config.use_windowed_mode = false;  % false in production
@@ -26,7 +26,7 @@ function config = default_config()
     % For standard keyboard swap them.
 
     % ---- EyeLink config ----
-    config.eyelink_flag = 1;  % 1 in production
+    config.eyelink_flag = 0;  % 1 in production
 
     % ---- scanner config ----
     config.use_scanner_trigger = true;
@@ -58,22 +58,8 @@ function session = normalize_session(session)
     session.blocks = utilities.session.force_struct_array(session.blocks);
 
     for b = 1:numel(session.blocks)
-        session.blocks(b).phases = utilities.session.force_struct_array( ...
-            session.blocks(b).phases);
-
-        for ph = 1:numel(session.blocks(b).phases)
-            P = session.blocks(b).phases(ph);
-
-            if isfield(P, 'trials') && ~isempty(P.trials)
-                session.blocks(b).phases(ph).trials = ...
-                    utilities.session.force_struct_array(P.trials);
-            end
-
-            if isfield(P, 'trial') && ~isempty(P.trial)
-                session.blocks(b).phases(ph).trial = ...
-                    utilities.session.force_struct_array(P.trial);
-            end
-        end
+        session.blocks(b).trials = utilities.session.force_struct_array( ...
+            session.blocks(b).trials);
     end
 end
 
@@ -113,25 +99,11 @@ function allImgs = collect_all_images(session)
     for b = 1:numel(session.blocks)
         block = session.blocks(b);
 
-        for ph = 1:numel(block.phases)
-            phase = block.phases(ph);
+        for t = 1:numel(block.trials)
+            tr = block.trials(t);
 
-            if isfield(phase, 'trial') && ~isempty(phase.trial)
-                tr0 = phase.trial(1);
-
-                if isfield(tr0, 'imgs') && ~isempty(tr0.imgs)
-                    allImgs = [allImgs, utilities.session.to_cellstr(tr0.imgs)]; %#ok<AGROW>
-                end
-            end
-
-            if isfield(phase, 'trials') && ~isempty(phase.trials)
-                for t = 1:numel(phase.trials)
-                    tr = phase.trials(t);
-
-                    if isfield(tr, 'imgs') && ~isempty(tr.imgs)
-                        allImgs = [allImgs, utilities.session.to_cellstr(tr.imgs)]; %#ok<AGROW>
-                    end
-                end
+            if isfield(tr, 'imgs') && ~isempty(tr.imgs)
+                allImgs = [allImgs, utilities.session.to_cellstr(tr.imgs)]; %#ok<AGROW>
             end
         end
     end

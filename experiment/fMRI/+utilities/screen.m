@@ -95,20 +95,20 @@ end
 
 
 function [resp, rt, tOn, allResponses, allRts] = trial_screen( ...
-    w, rect, phase, trialData, textureCache, ...
+    w, rect, block, trialIndex, trialData, textureCache, ...
     sameKey, differentKey, escapeKey, duration)
 
-    utilities.screen.draw_trial(w, rect, phase, trialData, textureCache, "");
+    utilities.screen.draw_trial(w, rect, block, trialIndex, trialData, textureCache, "");
     tOn = Screen('Flip', w);
 
     [resp, rt, allResponses, allRts] = utilities.screen.collect_responses( ...
-        w, rect, phase, trialData, textureCache, ...
+        w, rect, block, trialIndex, trialData, textureCache, ...
         tOn, duration, sameKey, differentKey, escapeKey);
 end
 
 
 function [firstResponse, firstRt, allResponses, allRts] = collect_responses( ...
-    w, rect, phase, trialData, textureCache, ...
+    w, rect, block, trialIndex, trialData, textureCache, ...
     tOn, duration, sameKey, differentKey, escapeKey)
  
     firstResponse        = "timeout";
@@ -143,23 +143,22 @@ function [firstResponse, firstRt, allResponses, allRts] = collect_responses( ...
         if firstResponse == "timeout"
             firstResponse = response;
             firstRt       = rt;
-            utilities.screen.draw_trial(w, rect, phase, trialData, textureCache, response);
+            utilities.screen.draw_trial(w, rect, block, trialIndex, trialData, textureCache, response);
             Screen('Flip', w);
         end
     end
 end
 
-function draw_trial(w, rect, phase, trialData, textureCache, selectedResponse)
+function draw_trial(w, rect, block, trialIndex, trialData, textureCache, selectedResponse)
     utilities.screen.clear_screen(w);
-    Screen('FrameRect', w, utilities.screen.phase_bg_rgb(phase.bg), rect, 30);
-    utilities.screen.draw_header(w, rect, phase, selectedResponse);
+    Screen('FrameRect', w, utilities.screen.context_frame_rgb(block.frame_color), rect, 30);
+    utilities.screen.draw_header(w, rect, block.context, trialIndex, selectedResponse);
     utilities.screen.draw_two_stacked_imgs(w, rect, textureCache, trialData.imgs);
 end
 
 
-
-function draw_header(w, rect, phase, selectedResponse)
-    [hint, leftText, rightText] = utilities.screen.phase_text(phase);
+function draw_header(w, rect, context, trialIndex, selectedResponse)
+    [hint, leftText, rightText] = utilities.screen.context_trial_text(context, trialIndex);
 
     Screen('TextStyle', w, 1);
     Screen('TextSize', w, 38);
@@ -192,29 +191,31 @@ function draw_response_tip(w, rect, selectedResponse, leftText, rightText)
     DrawFormattedText(w, char(rightText), centerX + gap, y, rightColor);
 end
 
-function [hint, leftText, rightText] = phase_text(phase)
-    phaseName = string(phase.phase);
+function [hint, leftText, rightText] = context_trial_text(context, trialIndex)
+    isInitialTrial = (trialIndex == 1);
 
-    switch phaseName
-        case "inference_start"
-            hint = "First rule";
-            leftText = "←   Ready";
-            rightText = "Ready   →";
+    switch context
+        case 'inference'
+            if isInitialTrial
+                hint = "First rule";
+                leftText = "←   Ready";
+                rightText = "Ready   →";
+            else
+                hint = "Previous rule";
+                leftText = "←   Same";
+                rightText = "Different   →";
+            end
 
-        case "application_start"
-            hint = "Memorize this rule";
-            leftText = "←   Memorized";
-            rightText = "Memorized   →";
-
-        case "inference"
-            hint = "Previous rule";
-            leftText = "←   Same";
-            rightText = "Different   →";
-
-        case "application"
-            hint = "Memorized rule";
-            leftText = "←   Same";
-            rightText = "Different   →";
+        case 'application'
+            if isInitialTrial
+                hint = "Memorize this rule";
+                leftText = "←   Memorized";
+                rightText = "Memorized   →";
+            else
+                hint = "Memorized rule";
+                leftText = "←   Same";
+                rightText = "Different   →";
+            end
     end
 end
 
@@ -251,10 +252,10 @@ end
 
 
 
-function rgb = phase_bg_rgb(bgName)
+function rgb = context_frame_rgb(frame_color)
     luminosity = 0.4;
 
-    switch string(bgName)
+    switch string(frame_color)
         case "yellow",        baseRgb = [1 1 0];
         case "cyan",          baseRgb = [0 1 1];
         otherwise,            rgb = [0 0 0];

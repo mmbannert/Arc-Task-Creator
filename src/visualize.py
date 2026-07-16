@@ -2,6 +2,20 @@ import numpy as np
 import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt
 
+from src.config import COLOR_VALUES
+
+
+def resolve_color(name):
+    """
+    Map a color label to the RGB it should actually render as.
+    Luminance-matched colors (see config.COLOR_VALUES) take priority;
+    anything else (e.g. "black" background) falls back to matplotlib's
+    normal name/hex resolution.
+    """
+    if name in COLOR_VALUES:
+        return COLOR_VALUES[name]
+    return mcolors.to_rgb(name)
+
 
 def save_grid(grid, save_path="output.png"):
     rows, cols = grid.rows, grid.cols
@@ -9,7 +23,7 @@ def save_grid(grid, save_path="output.png"):
 
     # Convert color names/hex to normalized RGB
     rgb_grid = np.array([
-        [mcolors.to_rgb(color_grid[r][c]) for c in range(cols)]
+        [resolve_color(color_grid[r][c]) for c in range(cols)]
         for r in range(rows)
     ])
 
@@ -38,11 +52,11 @@ def save_combined_grids(grid1, grid2, save_path="combined.png"):
     rows2, cols2 = grid2.rows, grid2.cols
 
     rgb_grid1 = np.array([
-        [mcolors.to_rgb(grid1.as_list()[r][c]) for c in range(cols1)]
+        [resolve_color(grid1.as_list()[r][c]) for c in range(cols1)]
         for r in range(rows1)
     ])
     rgb_grid2 = np.array([
-        [mcolors.to_rgb(grid2.as_list()[r][c]) for c in range(cols2)]
+        [resolve_color(grid2.as_list()[r][c]) for c in range(cols2)]
         for r in range(rows2)
     ])
 

@@ -26,6 +26,8 @@ try
         utilities.log.print_block_summary(blockIndex, blockSummary);
     end
 
+    utilities.screen.fixation_screen(window, windowRect, config.rest_time);
+
     if config.use_scanner_trigger
         experimentLog.scanner_sync = scannerSync;
     end
@@ -37,6 +39,12 @@ try
         utilities.eyelink.stop_recording();
         utilities.eyelink.close(eyelink.edfFile, fileparts(sessionPath));
     end
+
+    % One session-wide feedback screen for the participant at the end.
+    sessionSummary = utilities.log.summarize_trials(experimentLog.trials);
+    utilities.screen.message_screen( ...
+        window, windowRect, utilities.log.format_session_feedback(sessionSummary));
+    utilities.screen.wait_key(keys.response, keys.escape);
 
     Screen('CloseAll');
     fprintf('\nExperiment finished successfully.\n');

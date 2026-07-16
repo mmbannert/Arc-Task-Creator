@@ -1,3 +1,4 @@
+
 classdef session
 methods(Static)
 
@@ -5,13 +6,13 @@ function config = default_config()
     config = struct();
 
     % ---- general config ----
-    config.skip_sync_tests = 1; % 0 in production
-    config.rest_time = 1; % 10 in production 
-    config.response_time_window = 1; % 10 in production
+    config.skip_sync_tests = 0; % 0 in production
+    config.rest_time = 10; % 10 in production
+    config.response_time_window = 10; % 10 in production
 
     % ---- screen config ----
     config.use_windowed_mode = false;  % false in production
-    config.window_rect = [100 100 900 900]; % [X_start Y_start X_end Y_end]
+    config.window_rect = [100 100 1500 1500]; % [X_start Y_start X_end Y_end]
     config.resolution = [1400 1400];
     config.bg_color = [25 25 25]; % for grayish background
     
@@ -26,7 +27,7 @@ function config = default_config()
     % For standard keyboard swap them.
 
     % ---- EyeLink config ----
-    config.eyelink_flag = 0;  % 1 in production
+    config.eyelink_flag = 1;  % 1 in production
 
     % ---- scanner config ----
     config.use_scanner_trigger = true;

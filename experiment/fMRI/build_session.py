@@ -108,7 +108,7 @@ if __name__ == "__main__":
         ]
 
 
-    def build_block(block_id: int, family: str, context: str, rng: random.Random) -> dict:
+    def build_block(block_index: int, family: str, context: str, rng: random.Random) -> dict:
         """
         Build one block: single family, single context, one initial trial, followed by the decision trials.
         """
@@ -130,7 +130,7 @@ if __name__ == "__main__":
             trials.append(make_trial_entry(family_i, rule_i, first, second, correct=correct_label))
 
         return {
-            "block_id": block_id,
+            "block_index": block_index,
             "family": family,
             "context": context,
             "frame_color": context_frame_colors[context],
@@ -277,11 +277,11 @@ if __name__ == "__main__":
         family_context_pairs = assign_families_to_contexts(context_slots, rng)
 
         blocks = []
-        next_block_id = 1
+        next_block_index = 1
         for family, context in family_context_pairs:
-            blocks.append(build_block(next_block_id, family, context, rng))
+            blocks.append(build_block(next_block_index, family, context, rng))
             context_tally[family][context] += 1
-            next_block_id += 1
+            next_block_index += 1
 
         number_of_trials_per_block = 1 + number_of_decision_trials_per_block  # +1 bc initial trial
         number_of_trials_total = number_of_blocks_per_session * number_of_trials_per_block

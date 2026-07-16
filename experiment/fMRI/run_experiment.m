@@ -68,7 +68,7 @@ end
 
 function trial = run_trial(block, trialIndex, trialData)
 
-    trialId = utilities.log.make_trial_id(block.block_id, trialIndex);
+    trialId = utilities.log.make_trial_id(block.block_index, trialIndex);
     utilities.eyelink.eyelink_trial_id(config, trialId);
 
     [response, reactionTime, stimulusOnsetTime, ...

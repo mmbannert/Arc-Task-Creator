@@ -1,6 +1,6 @@
 import random
 
-from rules._common import make_grids, make_params
+from src.rules._common import make_grids, make_params
 from src.config import COLORS
 from src.util import rand_between
 

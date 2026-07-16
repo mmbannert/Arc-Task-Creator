@@ -1,7 +1,7 @@
 import random
 
-from config import COLORS, GRID_SIZE
-from rules._common import make_params, make_grids
+from src.config import COLORS, GRID_SIZE
+from src.rules._common import make_params, make_grids
 
 
 def generate_occlusion_mirror_x(size_range=(2, 5)):

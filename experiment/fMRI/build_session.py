@@ -17,7 +17,7 @@ if __name__ == "__main__":
     session_path: str = "session.json"
     participant: str = "p01"  # max 3 chars
 
-    number_of_sessions: int = 6  # alternating: odd = family, even = mix, so choose even numbers for balance
+    number_of_sessions: int = 6  # alternating starting context: so choose even numbers for balance
     number_of_decision_trials_per_block: int = 8
 
     # Counterbalance frame colors (yellow/cyan) for contexts

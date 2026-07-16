@@ -116,4 +116,4 @@ def _generate_stimulus(rule: str, gen, out_root: str = "out") -> None:
 
 
 if __name__ == "__main__":
-    main(30)
+    main(40)

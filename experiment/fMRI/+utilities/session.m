@@ -12,13 +12,15 @@ function config = default_config()
 
     % ---- screen config ----
     config.use_windowed_mode = false;  % false in production
-    config.window_rect = [100 100 1500 1500]; % [X_start Y_start X_end Y_end]
-    config.resolution = [1400 1400];
+    config.window_rect = [50 50 1350 1350]; % [X_start Y_start X_end Y_end]
+    config.resolution = [1300 1300];
     config.bg_color = [25 25 25]; % for grayish background
     
     % Native resolution of display device
     config.native_resolution = [1920, 1080];     % in 3T lab
     % config.native_resolution = [1600, 1200];    % at desktop
+    % config.native_resolution = [3440, 1440];    % at brunsstr
+
 
     % ---- response keys ----
     config.keys.same      = '4$'; % left button. 

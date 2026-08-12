@@ -71,6 +71,128 @@ def generate_cross_plus_minority_recolor(stamp_num=(1, 3)):
     )
 
 
+def generate_dot_equalize_recolor(block_num=(1, 6)):
+    """
+    Recolor FROM (majority) color INTO the minority color so both group shave same count.
+
+    Choosing dots to recolor: bottom-most first, then left-most among ties
+    """
+    grid_input, grid_output = make_grids()
+
+    color1, color2 = random.sample(COLORS[:2], 2)
+    n1, n2 = _sample_two_unique_counts(block_num)
+
+    while (n1 + n2) % 2 != 0:  # need an even total for an exact 50/50 split
+        n1, n2 = _sample_two_unique_counts(block_num)
+
+    n_majority = max(n1, n2)
+    n_minority = min(n1, n2)
+    majority_color = color1
+    minority_color = color2
+
+    all_positions = random.sample(
+        grid_input.cells(),
+        n_majority + n_minority
+    )
+
+    majority_positions = all_positions[:n_majority]
+    minority_positions = all_positions[n_majority:]
+
+    grid_input.fill_multiple_cells(majority_positions, majority_color)
+    grid_input.fill_multiple_cells(minority_positions, minority_color)
+
+    n_to_flip = (n_majority - n_minority) // 2  # exact, since n_majority+n_minority is even
+
+    flip_positions = _bottom_left_first(majority_positions)[:n_to_flip]
+    flip_set = set(flip_positions)
+    kept_majority_positions = [p for p in majority_positions if p not in flip_set]
+
+    grid_output.fill_multiple_cells(kept_majority_positions, majority_color)
+    grid_output.fill_multiple_cells(flip_positions, minority_color)
+    grid_output.fill_multiple_cells(minority_positions, minority_color)
+
+    params = make_params(
+        event="recoloring",
+        condition=["color", "counting"],
+        stimulus="dots",
+        colors=(majority_color, minority_color),
+        n_objects=n_majority + n_minority,
+        counting_type=_counting_type(n_majority, n_minority),
+        target="equalize",
+        n_recolored=n_to_flip,
+    )
+
+    return grid_input, grid_output, params
+
+
+def generate_dot_diff_two_recolor(block_num=(1, 6)):
+    """
+    Like dot_equalize_recolor, but instead of fully balancing the groups,
+    recolor exactly enough dots FROM the majority color group INTO the
+    minority color so the two groups end up differing by exactly 2 (not 0).
+    Counts are resampled until (majority - minority) is an even number >= 2,
+    so a target difference of 2 is always reachable.
+
+    The dots that get recolored are chosen deterministically: bottommost
+    first, then leftmost among ties -- never randomly -- so the same input
+    always produces the same output.
+    """
+    grid_input, grid_output = make_grids()
+
+    color1, color2 = random.sample(COLORS[:2], 2)
+    n1, n2 = _sample_two_unique_counts(block_num)
+
+    while abs(n1 - n2) < 2 or abs(n1 - n2) % 2 != 0:
+        n1, n2 = _sample_two_unique_counts(block_num)
+
+    n_majority = max(n1, n2)
+    n_minority = min(n1, n2)
+    majority_color = color1
+    minority_color = color2
+
+    all_positions = random.sample(
+        grid_input.cells(),
+        n_majority + n_minority
+    )
+
+    majority_positions = all_positions[:n_majority]
+    minority_positions = all_positions[n_majority:]
+
+    grid_input.fill_multiple_cells(majority_positions, majority_color)
+    grid_input.fill_multiple_cells(minority_positions, minority_color)
+
+    n_to_flip = (n_majority - n_minority - 2) // 2  # exact: leaves a difference of 2
+
+    flip_positions = _bottom_left_first(majority_positions)[:n_to_flip]
+    flip_set = set(flip_positions)
+    kept_majority_positions = [p for p in majority_positions if p not in flip_set]
+
+    grid_output.fill_multiple_cells(kept_majority_positions, majority_color)
+    grid_output.fill_multiple_cells(flip_positions, minority_color)
+    grid_output.fill_multiple_cells(minority_positions, minority_color)
+
+    params = make_params(
+        event="recoloring",
+        condition=["color", "counting"],
+        stimulus="dots",
+        colors=(majority_color, minority_color),
+        n_objects=n_majority + n_minority,
+        counting_type=_counting_type(n_majority, n_minority),
+        target="diff_two",
+        n_recolored=n_to_flip,
+        target_diff=2,
+    )
+
+    return grid_input, grid_output, params
+
+
+def _bottom_left_first(positions):
+    """
+    Deterministic recolor order: bottommost first, then leftmost among ties.
+    """
+    return sorted(positions, key=lambda pos: (pos[1], pos[1]))  # -pos[0] is bottom in visualize.py
+
+
 def _generate_cross_plus_counting_recolor(target="majority", stamp_num=(1, 3)):
     grid_input, grid_output = make_grids()
 

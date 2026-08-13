@@ -23,7 +23,7 @@ Each rule is implemented as a separate function, and families of rules are organ
 
 ```
 ArcRuleGenerator/
-├── experiment/                # fMRI experiment, pilot experiment design, data, analysis, source files
+├── experiment/                # fMRI experiment setup and pilot experiment with data & analysis
 ├── out/                       # Generated examples organized by rule type
 └── src/
     ├── rules/    

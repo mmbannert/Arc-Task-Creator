@@ -47,9 +47,8 @@ from src.rules.attraction import (
     generate_falling_dots,
 )
 
-
-def main(N):
-    rules = {
+"""
+rules = {
         "occlusion.occlusion_reversal": generate_occlusion_reversal,
         "occlusion.occlusion_mirror_x": generate_occlusion_mirror_x,
         "occlusion.occlusion_mirror_y": generate_occlusion_mirror_y,
@@ -75,6 +74,13 @@ def main(N):
         "recoloring.dot_neighbor_recolor": generate_dot_neighbor_recolor,
         "recoloring.cross_plus_shape_fixed_recolor": generate_cross_plus_shape_fixed_recolor,
         "recoloring.cross_plus_cyclic_recolor": generate_cross_plus_cyclic_recolor,
+    }
+"""
+
+def main(N):
+    rules = {
+        "arithmetic.dot_equalize_recolor": generate_dot_equalize_recolor,
+        "arithmetic.dot_diff_two_recolor": generate_dot_diff_two_recolor,
     }
 
     for name, gen in rules.items():
@@ -121,4 +127,4 @@ def _generate_stimulus(rule: str, gen, out_root: str = "out") -> None:
 
 
 if __name__ == "__main__":
-    main(40)
+    main(5)

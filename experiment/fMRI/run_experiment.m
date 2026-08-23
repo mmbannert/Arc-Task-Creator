@@ -76,7 +76,7 @@ end
 
 function trial = run_trial(block, trialIndex, trialData)
 
-    trialId = utilities.log.make_trial_id(block.block_index, trialIndex);
+    trialId = utilities.log.make_trial_id(block.block_index, trialIndex -1); % matlab index starts at 1. I like 0 better.
     utilities.eyelink.eyelink_trial_id(config, trialId);
 
     [response, reactionTime, stimulusOnsetTime, ...

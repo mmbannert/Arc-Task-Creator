@@ -7,18 +7,16 @@ from src.util import append_jsonl, next_idx
 
 from src.rules.recolor import (
     generate_cross_plus_shape_fixed_recolor,
-    generate_dot_inversion_recolor,
-    generate_dot_neighbor_recolor,
-    generate_cross_plus_cyclic_recolor,
+    generate_cross_plus_neighbor_recolor,
+    generate_cross_plus_inversion_recolor
 )
 
 from src.rules.arithmetic import (
-    generate_dot_majority_recolor,
-    generate_dot_minority_recolor,
-    generate_cross_plus_majority_recolor,
-    generate_cross_plus_minority_recolor,
+    generate_dot_minority_takeover_recolor,
+    generate_dot_majority_takeover_recolor,
     generate_dot_equalize_recolor,
-    generate_dot_diff_two_recolor,
+    generate_dot_majority_increment_recolor,
+    generate_dot_minority_increment_recolor
 )
 
 from src.rules.expansion import (
@@ -64,8 +62,8 @@ rules = {
         "expansion.plus_step": generate_plus_expansion_single_step,
         "expansion.plus_ray": generate_plus_expansion_ray,
         "expansion.3arm_star_ray": generate_3arm_star_expansion_ray,
-        "arithmetic.dot_majority_recolor": generate_dot_majority_recolor,
-        "arithmetic.dot_minority_recolor": generate_dot_minority_recolor,
+        "arithmetic.dot_minority_takeover_recolor": generate_dot_minority_takeover_recolor,
+        "arithmetic.dot_majority_takeover_recolor": generate_dot_majority_takeover_recolor,
         "arithmetic.dot_equalize_recolor": generate_dot_equalize_recolor,
         "arithmetic.dot_diff_two_recolor": generate_dot_diff_two_recolor,
         "arithmetic.cross_plus_majority_recolor": generate_cross_plus_majority_recolor,
@@ -79,8 +77,12 @@ rules = {
 
 def main(N):
     rules = {
-        "arithmetic.dot_equalize_recolor": generate_dot_equalize_recolor,
-        "arithmetic.dot_diff_two_recolor": generate_dot_diff_two_recolor,
+        #"arithmetic.dot_equalize_recolor": generate_dot_equalize_recolor,
+        #"arithmetic.dot_majority_increment_recolor": generate_dot_majority_increment_recolor,
+        #"arithmetic.dot_minority_increment_recolor": generate_dot_minority_increment_recolor,
+        "recolor.cross_plus_shape_fixed_recolor": generate_cross_plus_shape_fixed_recolor,
+        "recolor.cross_plus_neighbor_recolor":generate_cross_plus_neighbor_recolor,
+        "recolor.cross_plus_inversion_recolor":generate_cross_plus_inversion_recolor
     }
 
     for name, gen in rules.items():

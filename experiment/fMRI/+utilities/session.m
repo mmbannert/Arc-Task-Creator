@@ -88,7 +88,7 @@ function allImgs = collect_all_images(session)
             tr = block.trials(t);
 
             if isfield(tr, 'imgs') && ~isempty(tr.imgs)
-                allImgs = [allImgs, utilities.session.to_cellstr(tr.imgs)]; %#ok<AGROW>
+                allImgs = [allImgs, tr.imgs]; %#ok<AGROW>
             end
         end
     end
@@ -97,15 +97,6 @@ function allImgs = collect_all_images(session)
 end
 
 
-function c = to_cellstr(x)
-    if isempty(x)
-        c = {};
-    elseif iscell(x)
-        c = x;
-    else
-        c = cellstr(string(x));
-    end
-end
 
 
 end

@@ -1,187 +1,164 @@
 import random
-from typing import Dict, Tuple, Any, List
-from src.grid import Grid
+
+from src.config import COLORS
+from src.rules._common import make_grids, make_params
 from src.util import rand_between
 
 
-def generate_dot_inversion_recolor(grid_size=(12, 12), block_num=(1, 6), colors=("red", "blue")):
-    rows, cols = grid_size
-    grid_input, grid_output = Grid(rows, cols), Grid(rows, cols)
-
-    n1 = rand_between(*block_num)
-    n2 = rand_between(*block_num)
-
-    color1, color2 = random.sample(colors, 2)
-
-    all_positions = random.sample([(x, y) for x in range(cols) for y in range(rows)], n1 + n2)
-    color1_positions = all_positions[:n1]
-    color2_positions = all_positions[n1:]
-
-    for x, y in color1_positions:
-        grid_input.fill_cell(x, y, color1)
-    for x, y in color2_positions:
-        grid_input.fill_cell(x, y, color2)
-
-    for x, y in color1_positions:
-        grid_output.fill_cell(x, y, color2)
-    for x, y in color2_positions:
-        grid_output.fill_cell(x, y, color1)
-
-    params = {
-        "event": "recoloring",
-        "condition": "color",
-        "stimulus": "dots",
-        "grid_size": grid_size,
-        "colors": colors,
-        "n_objects": n1 + n2
-    }
-
-    return grid_input, grid_output, params
-
-
-def generate_dot_neighbor_recolor(grid_size=(12, 12), block_num=(4, 8), colors=("red", "blue")):
-    rows, cols = grid_size
-    grid_input, grid_output = Grid(rows, cols), Grid(rows, cols)
-
-    n_objects = rand_between(*block_num)
-
-    def neighbors(x, y):
-        return [
-            (x + dx, y + dy)
-            for dx in (-1, 0, 1) for dy in (-1, 0, 1)
-            if (dx, dy) != (0, 0) and 0 <= x + dx < cols and 0 <= y + dy < rows
-        ]
-
-    all_positions = [(x, y) for x in range(cols) for y in range(rows)]
-    random.shuffle(all_positions)
-
-    # Pick one guaranteed adjacent pair and one guaranteed isolated dot
-    pairs = [(a, b) for a in all_positions for b in neighbors(*a) if a < b]
-    guaranteed_pair = random.choice(pairs)
-
-    isolated = [p for p in all_positions if p not in guaranteed_pair
-                and not any(n in set(guaranteed_pair) for n in neighbors(*p))]
-    guaranteed_isolated = random.choice(isolated)
-
-    occupied = set(guaranteed_pair) | {guaranteed_isolated}
-    positions = list(occupied)
-
-    # Fill remaining freely
-    for pos in all_positions:
-        if len(positions) >= n_objects:
-            break
-        if pos not in occupied:
-            positions.append(pos)
-            occupied.add(pos)
-
-    for x, y in positions:
-        grid_input.fill_cell(x, y, random.choice(colors))
-
-    for x, y in positions:
-        has_neighbor = any(n in occupied for n in neighbors(x, y))
-        grid_output.fill_cell(x, y, colors[0] if has_neighbor else colors[1])
-
-    params = {
-        "event": "recoloring",
-        "condition": ["shape", "neighbor"],
-        "stimulus": "dots",
-        "grid_size": grid_size,
-        "colors": colors,
-        "n_objects": len(positions)
-    }
-
-    return grid_input, grid_output, params
-
-
-# Needed for cross plus recolor
-OFFSETS = {
-    "plus": [(0, 1), (1, 0), (1, 1), (1, 2), (2, 1)],  # 2,4,5,6,8
-    "cross": [(0, 0), (0, 2), (1, 1), (2, 0), (2, 2)],  # 1,3,5,7,9
+SHAPE_DIRECTIONS = {
+    "plus": ((0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)),
+    "cross": ((0, 0), (1, 1), (1, -1), (-1, 1), (-1, -1)),
 }
 
 
-def generate_cross_plus_shape_fixed_recolor(grid_size=(12, 12), stamp_num=(3, 4), colors=("gray", "red", "blue")):
-    rows, cols = grid_size
-    grid_input, grid_output = Grid(rows, cols), Grid(rows, cols)
+def generate_cross_plus_inversion_recolor(object_num=(3, 4)):
+    grid_input, grid_output, placed = _generate_cross_plus_input(object_num)
 
-    k = rand_between(*stamp_num)
-    out_map = {"cross": colors[1], "plus": colors[2]}
+    for _, cells, color in placed:
+        output_color = COLORS[1] if color == COLORS[0] else COLORS[0]
+        grid_output.fill_multiple_cells(cells, output_color)
 
-    candidates = [(r, c) for r in range(rows - 2) for c in range(cols - 2)]
-    random.shuffle(candidates)
-
-    used = set()
-    placed: List[Tuple[str, List[Tuple[int, int]]]] = []
-
-    for top_r, top_c in candidates:
-        shape = random.choice(("cross", "plus"))
-        cells = [(top_r + dr, top_c + dc) for dr, dc in OFFSETS[shape]]
-        if any(cell in used for cell in cells):
-            continue
-        used.update(cells)
-        placed.append((shape, cells))
-        if len(placed) == k:
-            break
-
-    for shape, cells in placed:
-        for r, c in cells:
-            grid_input.fill_cell(r, c, colors[0])
-            grid_output.fill_cell(r, c, out_map[shape])
-
-    params = {
-        "event": "recoloring",
-        "condition": "shape",
-        "stimulus": "cross_plus",
-        "grid_size": grid_size,
-        "colors": colors,
-        "n_objects": len(placed)
-    }
+    params = make_params(
+        event="recoloring",
+        condition="color",
+        stimulus="cross_plus",
+        colors=COLORS[:2],
+        n_objects=len(placed),
+    )
 
     return grid_input, grid_output, params
 
 
-def generate_cross_plus_cyclic_recolor(grid_size=(12, 12), stamp_num=(3, 4), colors=("gray", "red", "blue")):
-    rows, cols = grid_size
-    grid_input, grid_output = Grid(rows, cols), Grid(rows, cols)
+def generate_cross_plus_neighbor_recolor(object_num=(3, 4)):
+    grid_input, grid_output, placed = _generate_cross_plus_input(object_num)
 
-    k = rand_between(*stamp_num)
-    recolor_map = {
-        colors[2]: colors[0],  # blue -> gray
-        colors[0]: colors[1],  # gray -> red
-        colors[1]: colors[2],  # red -> blue
+    for i, (_, cells, _) in enumerate(placed):
+        touches_other = any(
+            _objects_touch(cells, other_cells)
+            for j, (_, other_cells, _) in enumerate(placed)
+            if i != j
+        )
+
+        output_color = COLORS[0] if touches_other else COLORS[1]
+        grid_output.fill_multiple_cells(cells, output_color)
+
+    params = make_params(
+        event="recoloring",
+        condition=["shape", "neighbor"],
+        stimulus="cross_plus",
+        colors=COLORS[:2],
+        n_objects=len(placed),
+    )
+
+    return grid_input, grid_output, params
+
+
+def generate_cross_plus_shape_fixed_recolor(object_num=(3, 4)):
+    grid_input, grid_output, placed = _generate_cross_plus_input(object_num)
+
+    shape_colors = {
+        "cross": COLORS[0],
+        "plus": COLORS[1],
     }
 
-    candidates = [(r, c) for r in range(rows - 2) for c in range(cols - 2)]
+    for shape, cells, _ in placed:
+        grid_output.fill_multiple_cells(cells, shape_colors[shape])
+
+    params = make_params(
+        event="recoloring",
+        condition="shape",
+        stimulus="cross_plus",
+        colors=COLORS[:2],
+        n_objects=len(placed),
+    )
+
+    return grid_input, grid_output, params
+
+
+def _generate_cross_plus_input(object_num):
+    """
+    Generate randomly colored cross/plus objects while guaranteeing:
+    - at least one pair of touching objects
+    - at least one isolated object
+    """
+    while True:
+        n_objects = rand_between(*object_num)
+
+        if n_objects < 3:
+            raise ValueError("cross_plus recolor requires at least 3 objects")
+
+        grid_input, grid_output = make_grids()
+        placed = _place_cross_plus_objects(grid_input, n_objects)
+
+        if len(placed) != n_objects:
+            continue
+
+        if not _has_touching_pair_and_isolated_object(placed):
+            continue
+
+        colored = []
+
+        for shape, cells in placed:
+            color = random.choice(COLORS[:2])
+            grid_input.fill_multiple_cells(cells, color)
+            colored.append((shape, cells, color))
+
+        return grid_input, grid_output, colored
+
+
+def _place_cross_plus_objects(grid, n_objects):
+    candidates = grid.interior_cells()
     random.shuffle(candidates)
 
     used = set()
-    placed: List[Tuple[str, List[Tuple[int, int]]]] = []
+    placed = []
 
-    for top_r, top_c in candidates:
+    for _ in range(n_objects):
         shape = random.choice(("cross", "plus"))
-        cells = [(top_r + dr, top_c + dc) for dr, dc in OFFSETS[shape]]
-        if any(cell in used for cell in cells):
-            continue
-        used.update(cells)
-        placed.append((shape, cells))
-        if len(placed) == k:
+
+        for center in candidates:
+            cells = _shape_cells(center, SHAPE_DIRECTIONS[shape])
+
+            if any(cell in used for cell in cells):
+                continue
+
+            used.update(cells)
+            placed.append((shape, cells))
             break
 
-    for shape, cells in placed:
-        input_color = random.choice(colors)
-        output_color = recolor_map[input_color]
+    return placed
 
-        for r, c in cells:
-            grid_input.fill_cell(r, c, input_color)
-            grid_output.fill_cell(r, c, output_color)
 
-    params = {
-        "event": "recoloring",
-        "condition": "color",
-        "stimulus": "cross_plus",
-        "grid_size": grid_size,
-        "colors": colors,
-        "n_objects": len(placed)
-    }
+def _shape_cells(center, directions):
+    row, col = center
 
-    return grid_input, grid_output, params
+    return [
+        (row + d_row, col + d_col)
+        for d_row, d_col in directions
+    ]
+
+
+def _objects_touch(cells1, cells2):
+    """Return True if two objects touch along an edge."""
+    cells2 = set(cells2)
+
+    for row, col in cells1:
+        for d_row, d_col in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            if (row + d_row, col + d_col) in cells2:
+                return True
+
+    return False
+
+
+def _has_touching_pair_and_isolated_object(placed):
+    touched = [False] * len(placed)
+
+    for i, (_, cells1) in enumerate(placed):
+        for j in range(i + 1, len(placed)):
+            _, cells2 = placed[j]
+
+            if _objects_touch(cells1, cells2):
+                touched[i] = True
+                touched[j] = True
+
+    return any(touched) and any(not is_touched for is_touched in touched)

@@ -1,0 +1,351 @@
+{
+  "components": {
+    "1": {
+      "id": "1",
+      "type": "lab.html.Form",
+      "content": "<form>\n  <section class=\"survey-section\">\n    <h2>Part A — General Strategy</h2>\n\n    <div class=\"question\">\n      <label for=\"A1\">\n        <strong>\n          Did you use a specific strategy to work out the rule shown in a pair of images?\n        </strong>\n      </label>\n\n      <textarea\n        class=\"text-answer\"\n        id=\"A1\"\n        name=\"A1\"\n        rows=\"5\"\n        required\n      ></textarea>\n    </div>\n\n    <div class=\"question\">\n      <label for=\"A2\">\n        <strong>\n          Did your strategy differ between the two kinds of blocks?\n        </strong>\n\n        <span class=\"question-note\">\n          Comparing to the previous pair vs. the memorized first pair.\n        </span>\n      </label>\n\n      <textarea\n        class=\"text-answer\"\n        id=\"A2\"\n        name=\"A2\"\n        rows=\"5\"\n        required\n      ></textarea>\n    </div>\n\n    <div class=\"question\">\n      <label for=\"A3\">\n        <strong>\n          Which of these two kinds of blocks felt easier, and why?\n        </strong>\n      </label>\n\n      <textarea\n        class=\"text-answer\"\n        id=\"A3\"\n        name=\"A3\"\n        rows=\"5\"\n        required\n      ></textarea>\n    </div>\n\n    <div class=\"form-actions\">\n      <button type=\"submit\">Next</button>\n    </div>\n  </section>\n</form>",
+      "scrollTop": true,
+      "files": [],
+      "responses": [
+        {
+          "label": "",
+          "event": "",
+          "target": "",
+          "filter": ""
+        }
+      ],
+      "parameters": [
+        {
+          "name": "",
+          "value": "",
+          "type": "string"
+        }
+      ],
+      "messageHandlers": [
+        {
+          "title": "",
+          "message": "",
+          "code": ""
+        }
+      ],
+      "title": "2. Part A: General Strategy",
+      "_tab": "Content"
+    },
+    "3": {
+      "id": "3",
+      "type": "lab.html.Form",
+      "content": "<form>\n  <section class=\"survey-section\">\n    <h2>Part B — Rule Descriptions</h2>\n\n    <p class=\"section-intro\">\n      <strong>What do you think the rule is?</strong>\n      Describe it in your own words.\n      The two images shown for each item are two examples of the same rule.\n    </p>\n\n    <input type=\"hidden\" name=\"part_b_intro_seen\" value=\"1\">\n\n    <div class=\"form-actions\">\n      <button type=\"submit\">Next</button>\n    </div>\n  </section>\n</form>",
+      "scrollTop": true,
+      "files": [],
+      "responses": [
+        {
+          "label": "",
+          "event": "",
+          "target": "",
+          "filter": ""
+        }
+      ],
+      "parameters": [
+        {
+          "name": "",
+          "value": "",
+          "type": "string"
+        }
+      ],
+      "messageHandlers": [
+        {
+          "title": "",
+          "message": "",
+          "code": ""
+        }
+      ],
+      "title": "3. Part B: Introduction",
+      "_tab": "Content"
+    },
+    "5": {
+      "id": "5",
+      "type": "lab.html.Form",
+      "content": "<form>\n  <section class=\"survey-section\">\n    <h2>Part B — Rule Descriptions</h2>\n    <h3>Arithmetic</h3>\n\n    <div class=\"rule-question\">\n      <div class=\"stimulus-pair\">\n        <img\n          alt=\"Rule example 1\"\n          src=\"images/arithmetic.majority_recolor.t4.combined.png\"\n        >\n        <img\n          alt=\"Rule example 2\"\n          src=\"images/arithmetic.majority_recolor.t7.combined.png\"\n        >\n      </div>\n\n      <label for=\"B_ARI_1\">Describe the rule:</label>\n      <textarea\n        class=\"text-answer rule-answer\"\n        id=\"B_ARI_1\"\n        name=\"B_ARI_1\"\n        rows=\"4\"\n        required\n      ></textarea>\n    </div>\n\n    <div class=\"rule-question\">\n      <div class=\"stimulus-pair\">\n        <img\n          alt=\"Rule example 1\"\n          src=\"images/arithmetic.minority_recolor.t1.combined.png\"\n        >\n        <img\n          alt=\"Rule example 2\"\n          src=\"images/arithmetic.minority_recolor.t3.combined.png\"\n        >\n      </div>\n\n      <label for=\"B_ARI_2\">Describe the rule:</label>\n      <textarea\n        class=\"text-answer rule-answer\"\n        id=\"B_ARI_2\"\n        name=\"B_ARI_2\"\n        rows=\"4\"\n        required\n      ></textarea>\n    </div>\n\n    <div class=\"rule-question\">\n      <div class=\"stimulus-pair\">\n        <img\n          alt=\"Rule example 1\"\n          src=\"images/arithmetic.cross_plus_majority_recolor.t4.combined.png\"\n        >\n        <img\n          alt=\"Rule example 2\"\n          src=\"images/arithmetic.cross_plus_majority_recolor.t5.combined.png\"\n        >\n      </div>\n\n      <label for=\"B_ARI_3\">Describe the rule:</label>\n      <textarea\n        class=\"text-answer rule-answer\"\n        id=\"B_ARI_3\"\n        name=\"B_ARI_3\"\n        rows=\"4\"\n        required\n      ></textarea>\n    </div>\n\n    <div class=\"rule-question\">\n      <div class=\"stimulus-pair\">\n        <img\n          alt=\"Rule example 1\"\n          src=\"images/arithmetic.cross_plus_minority_recolor.t1.combined.png\"\n        >\n        <img\n          alt=\"Rule example 2\"\n          src=\"images/arithmetic.cross_plus_minority_recolor.t2.combined.png\"\n        >\n      </div>\n\n      <label for=\"B_ARI_4\">Describe the rule:</label>\n      <textarea\n        class=\"text-answer rule-answer\"\n        id=\"B_ARI_4\"\n        name=\"B_ARI_4\"\n        rows=\"4\"\n        required\n      ></textarea>\n    </div>\n\n    <div class=\"form-actions\">\n      <button type=\"submit\">Next</button>\n    </div>\n  </section>\n</form>",
+      "scrollTop": true,
+      "files": [],
+      "responses": [
+        {
+          "label": "",
+          "event": "",
+          "target": "",
+          "filter": ""
+        }
+      ],
+      "parameters": [
+        {
+          "name": "",
+          "value": "",
+          "type": "string"
+        }
+      ],
+      "messageHandlers": [
+        {
+          "title": "",
+          "message": "",
+          "code": ""
+        }
+      ],
+      "title": "4. Arithmetic",
+      "_tab": "Content"
+    },
+    "14": {
+      "id": "14",
+      "type": "lab.html.Form",
+      "content": "<form>\n  <section class=\"survey-section\">\n    <h2>Part B — Rule Descriptions</h2>\n    <h3>Attraction</h3>\n\n    <div class=\"rule-question\">\n      <div class=\"stimulus-pair\">\n        <img alt=\"Rule example 1\" src=\"images/attraction.color.t1.combined.png\">\n        <img alt=\"Rule example 2\" src=\"images/attraction.color.t2.combined.png\">\n      </div>\n\n      <label for=\"B_ATT_1\">Describe the rule:</label>\n      <textarea\n        class=\"text-answer rule-answer\"\n        id=\"B_ATT_1\"\n        name=\"B_ATT_1\"\n        rows=\"4\"\n        required\n      ></textarea>\n    </div>\n\n    <div class=\"rule-question\">\n      <div class=\"stimulus-pair\">\n        <img alt=\"Rule example 1\" src=\"images/attraction.size.t3.combined.png\">\n        <img alt=\"Rule example 2\" src=\"images/attraction.size.t5.combined.png\">\n      </div>\n\n      <label for=\"B_ATT_2\">Describe the rule:</label>\n      <textarea\n        class=\"text-answer rule-answer\"\n        id=\"B_ATT_2\"\n        name=\"B_ATT_2\"\n        rows=\"4\"\n        required\n      ></textarea>\n    </div>\n\n    <div class=\"rule-question\">\n      <div class=\"stimulus-pair\">\n        <img alt=\"Rule example 1\" src=\"images/attraction.repulsion.t1.combined.png\">\n        <img alt=\"Rule example 2\" src=\"images/attraction.repulsion.t2.combined.png\">\n      </div>\n\n      <label for=\"B_ATT_3\">Describe the rule:</label>\n      <textarea\n        class=\"text-answer rule-answer\"\n        id=\"B_ATT_3\"\n        name=\"B_ATT_3\"\n        rows=\"4\"\n        required\n      ></textarea>\n    </div>\n\n    <div class=\"rule-question\">\n      <div class=\"stimulus-pair\">\n        <img alt=\"Rule example 1\" src=\"images/attraction.float.t2.combined.png\">\n        <img alt=\"Rule example 2\" src=\"images/attraction.float.t5.combined.png\">\n      </div>\n\n      <label for=\"B_ATT_4\">Describe the rule:</label>\n      <textarea\n        class=\"text-answer rule-answer\"\n        id=\"B_ATT_4\"\n        name=\"B_ATT_4\"\n        rows=\"4\"\n        required\n      ></textarea>\n    </div>\n\n    <div class=\"rule-question\">\n      <div class=\"stimulus-pair\">\n        <img alt=\"Rule example 1\" src=\"images/attraction.gravity.t2.combined.png\">\n        <img alt=\"Rule example 2\" src=\"images/attraction.gravity.t3.combined.png\">\n      </div>\n\n      <label for=\"B_ATT_5\">Describe the rule:</label>\n      <textarea\n        class=\"text-answer rule-answer\"\n        id=\"B_ATT_5\"\n        name=\"B_ATT_5\"\n        rows=\"4\"\n        required\n      ></textarea>\n    </div>\n\n    <div class=\"form-actions\">\n      <button type=\"submit\">Next</button>\n    </div>\n  </section>\n</form>",
+      "scrollTop": true,
+      "files": [],
+      "responses": [
+        {
+          "label": "",
+          "event": "",
+          "target": "",
+          "filter": ""
+        }
+      ],
+      "parameters": [
+        {
+          "name": "",
+          "value": "",
+          "type": "string"
+        }
+      ],
+      "messageHandlers": [
+        {
+          "title": "",
+          "message": "",
+          "code": ""
+        }
+      ],
+      "title": "5. Attraction",
+      "_tab": "Content"
+    },
+    "15": {
+      "id": "15",
+      "type": "lab.html.Form",
+      "content": "<form>\n  <section class=\"survey-section\">\n    <h2>Part B — Rule Descriptions</h2>\n    <h3>Recoloring</h3>\n\n    <div class=\"rule-question\">\n      <div class=\"stimulus-pair\">\n        <img alt=\"Rule example 1\" src=\"images/color.inversion_recolor.t1.combined.png\">\n        <img alt=\"Rule example 2\" src=\"images/color.inversion_recolor.t2.combined.png\">\n      </div>\n\n      <label for=\"B_REB_1\">Describe the rule:</label>\n      <textarea\n        class=\"text-answer rule-answer\"\n        id=\"B_REB_1\"\n        name=\"B_REB_1\"\n        rows=\"4\"\n        required\n      ></textarea>\n    </div>\n\n    <div class=\"rule-question\">\n      <div class=\"stimulus-pair\">\n        <img alt=\"Rule example 1\" src=\"images/recoloring.dot_neighbor_recolor.t2.combined.png\">\n        <img alt=\"Rule example 2\" src=\"images/recoloring.dot_neighbor_recolor.t4.combined.png\">\n      </div>\n\n      <label for=\"B_REB_2\">Describe the rule:</label>\n      <textarea\n        class=\"text-answer rule-answer\"\n        id=\"B_REB_2\"\n        name=\"B_REB_2\"\n        rows=\"4\"\n        required\n      ></textarea>\n    </div>\n\n    <div class=\"rule-question\">\n      <div class=\"stimulus-pair\">\n        <img alt=\"Rule example 1\" src=\"images/color.cross_plus_recolor.t1.combined.png\">\n        <img alt=\"Rule example 2\" src=\"images/color.cross_plus_recolor.t2.combined.png\">\n      </div>\n\n      <label for=\"B_REB_3\">Describe the rule:</label>\n      <textarea\n        class=\"text-answer rule-answer\"\n        id=\"B_REB_3\"\n        name=\"B_REB_3\"\n        rows=\"4\"\n        required\n      ></textarea>\n    </div>\n\n    <div class=\"rule-question\">\n      <div class=\"stimulus-pair\">\n        <img alt=\"Rule example 1\" src=\"images/recoloring.cross_plus_cyclic_recolor.t1.combined.png\">\n        <img alt=\"Rule example 2\" src=\"images/recoloring.cross_plus_cyclic_recolor.t2.combined.png\">\n      </div>\n\n      <label for=\"B_REB_4\">Describe the rule:</label>\n      <textarea\n        class=\"text-answer rule-answer\"\n        id=\"B_REB_4\"\n        name=\"B_REB_4\"\n        rows=\"4\"\n        required\n      ></textarea>\n    </div>\n\n    <div class=\"form-actions\">\n      <button type=\"submit\">Next</button>\n    </div>\n  </section>\n</form>",
+      "scrollTop": true,
+      "files": [],
+      "responses": [
+        {
+          "label": "",
+          "event": "",
+          "target": "",
+          "filter": ""
+        }
+      ],
+      "parameters": [
+        {
+          "name": "",
+          "value": "",
+          "type": "string"
+        }
+      ],
+      "messageHandlers": [
+        {
+          "title": "",
+          "message": "",
+          "code": ""
+        }
+      ],
+      "title": "6. Recoloring",
+      "_tab": "Content"
+    },
+    "16": {
+      "id": "16",
+      "type": "lab.html.Form",
+      "content": "<form>\n  <section class=\"survey-section\">\n    <h2>Part B — Rule Descriptions</h2>\n    <h3>Expansion</h3>\n\n    <div class=\"rule-question\">\n      <div class=\"stimulus-pair\">\n        <img alt=\"Rule example 1\" src=\"images/expansion.plus_step.t1.combined.png\">\n        <img alt=\"Rule example 2\" src=\"images/expansion.plus_step.t2.combined.png\">\n      </div>\n\n      <label for=\"B_EXP_1\">Describe the rule:</label>\n      <textarea class=\"text-answer rule-answer\"\n                id=\"B_EXP_1\"\n                name=\"B_EXP_1\"\n                rows=\"4\"\n                required></textarea>\n    </div>\n\n    <div class=\"rule-question\">\n      <div class=\"stimulus-pair\">\n        <img alt=\"Rule example 1\" src=\"images/expansion.plus_full.t1.combined.png\">\n        <img alt=\"Rule example 2\" src=\"images/expansion.plus_full.t2.combined.png\">\n      </div>\n\n      <label for=\"B_EXP_2\">Describe the rule:</label>\n      <textarea class=\"text-answer rule-answer\"\n                id=\"B_EXP_2\"\n                name=\"B_EXP_2\"\n                rows=\"4\"\n                required></textarea>\n    </div>\n\n    <div class=\"rule-question\">\n      <div class=\"stimulus-pair\">\n        <img alt=\"Rule example 1\" src=\"images/expansion.star_step.t1.combined.png\">\n        <img alt=\"Rule example 2\" src=\"images/expansion.star_step.t2.combined.png\">\n      </div>\n\n      <label for=\"B_EXP_3\">Describe the rule:</label>\n      <textarea class=\"text-answer rule-answer\"\n                id=\"B_EXP_3\"\n                name=\"B_EXP_3\"\n                rows=\"4\"\n                required></textarea>\n    </div>\n\n    <div class=\"rule-question\">\n      <div class=\"stimulus-pair\">\n        <img alt=\"Rule example 1\" src=\"images/expansion.star_full.t1.combined.png\">\n        <img alt=\"Rule example 2\" src=\"images/expansion.star_full.t2.combined.png\">\n      </div>\n\n      <label for=\"B_EXP_4\">Describe the rule:</label>\n      <textarea class=\"text-answer rule-answer\"\n                id=\"B_EXP_4\"\n                name=\"B_EXP_4\"\n                rows=\"4\"\n                required></textarea>\n    </div>\n\n    <div class=\"rule-question\">\n      <div class=\"stimulus-pair\">\n        <img alt=\"Rule example 1\" src=\"images/expansion.3arm_star_full.t1.combined.png\">\n        <img alt=\"Rule example 2\" src=\"images/expansion.3arm_star_full.t2.combined.png\">\n      </div>\n\n      <label for=\"B_EXP_5\">Describe the rule:</label>\n      <textarea class=\"text-answer rule-answer\"\n                id=\"B_EXP_5\"\n                name=\"B_EXP_5\"\n                rows=\"4\"\n                required></textarea>\n    </div>\n\n    <div class=\"form-actions\">\n      <button type=\"submit\">Next</button>\n    </div>\n  </section>\n</form>",
+      "scrollTop": true,
+      "files": [],
+      "responses": [
+        {
+          "label": "",
+          "event": "",
+          "target": "",
+          "filter": ""
+        }
+      ],
+      "parameters": [
+        {
+          "name": "",
+          "value": "",
+          "type": "string"
+        }
+      ],
+      "messageHandlers": [
+        {
+          "title": "",
+          "message": "",
+          "code": ""
+        }
+      ],
+      "title": "7. Expansion",
+      "_tab": "Content"
+    },
+    "17": {
+      "id": "17",
+      "type": "lab.html.Form",
+      "content": "<form>\n  <section class=\"survey-section\">\n    <h2>Part B — Rule Descriptions</h2>\n    <h3>Occlusion</h3>\n\n    <div class=\"rule-question\">\n      <div class=\"stimulus-pair\">\n        <img alt=\"Rule example 1\" src=\"images/occlusion.occlusion_reversal.t1.combined.png\">\n        <img alt=\"Rule example 2\" src=\"images/occlusion.occlusion_reversal.t2.combined.png\">\n      </div>\n\n      <label for=\"B_OCB_1\">Describe the rule:</label>\n      <textarea class=\"text-answer rule-answer\"\n                id=\"B_OCB_1\"\n                name=\"B_OCB_1\"\n                rows=\"4\"\n                required></textarea>\n    </div>\n\n    <div class=\"rule-question\">\n      <div class=\"stimulus-pair\">\n        <img alt=\"Rule example 1\" src=\"images/mirror_rotate.occlusion_mirror_x.t1.combined.png\">\n        <img alt=\"Rule example 2\" src=\"images/mirror_rotate.occlusion_mirror_x.t2.combined.png\">\n      </div>\n\n      <label for=\"B_OCB_2\">Describe the rule:</label>\n      <textarea class=\"text-answer rule-answer\"\n                id=\"B_OCB_2\"\n                name=\"B_OCB_2\"\n                rows=\"4\"\n                required></textarea>\n    </div>\n\n    <div class=\"rule-question\">\n      <div class=\"stimulus-pair\">\n        <img alt=\"Rule example 1\" src=\"images/mirror_rotate.occlusion_mirror_y.t1.combined.png\">\n        <img alt=\"Rule example 2\" src=\"images/mirror_rotate.occlusion_mirror_y.t2.combined.png\">\n      </div>\n\n      <label for=\"B_OCB_3\">Describe the rule:</label>\n      <textarea class=\"text-answer rule-answer\"\n                id=\"B_OCB_3\"\n                name=\"B_OCB_3\"\n                rows=\"4\"\n                required></textarea>\n    </div>\n\n    <div class=\"rule-question\">\n      <div class=\"stimulus-pair\">\n        <img alt=\"Rule example 1\" src=\"images/mirror_rotate.occlusion_rotate_90.t1.combined.png\">\n        <img alt=\"Rule example 2\" src=\"images/mirror_rotate.occlusion_rotate_90.t2.combined.png\">\n      </div>\n\n      <label for=\"B_OCB_4\">Describe the rule:</label>\n      <textarea class=\"text-answer rule-answer\"\n                id=\"B_OCB_4\"\n                name=\"B_OCB_4\"\n                rows=\"4\"\n                required></textarea>\n    </div>\n\n    <div class=\"rule-question\">\n      <div class=\"stimulus-pair\">\n        <img alt=\"Rule example 1\" src=\"images/mirror_rotate.occlusion_rotate_180.t1.combined.png\">\n        <img alt=\"Rule example 2\" src=\"images/mirror_rotate.occlusion_rotate_180.t2.combined.png\">\n      </div>\n\n      <label for=\"B_OCB_5\">Describe the rule:</label>\n      <textarea class=\"text-answer rule-answer\"\n                id=\"B_OCB_5\"\n                name=\"B_OCB_5\"\n                rows=\"4\"\n                required></textarea>\n    </div>\n\n    <div class=\"form-actions\">\n      <button type=\"submit\">Finish questionnaire</button>\n    </div>\n  </section>\n</form>",
+      "scrollTop": true,
+      "files": [],
+      "responses": [
+        {
+          "label": "",
+          "event": "",
+          "target": "",
+          "filter": ""
+        }
+      ],
+      "parameters": [
+        {
+          "name": "",
+          "value": "",
+          "type": "string"
+        }
+      ],
+      "messageHandlers": [
+        {
+          "title": "",
+          "message": "",
+          "code": ""
+        }
+      ],
+      "title": "8. Occlusion",
+      "_tab": "Content"
+    },
+    "18": {
+      "id": "18",
+      "type": "lab.html.Form",
+      "content": "<section class=\"survey-section\" style=\"text-align: center; padding-top: 60px;\">\n\n  <h1>Thank you!</h1>\n\n  <p style=\"font-size: 1.2rem; margin-top: 30px;\">\n    You have completed the questionnaire.\n  </p>\n\n  <div style=\"\n    margin: 45px auto;\n    padding: 25px;\n    max-width: 650px;\n    border: 2px solid #d9534f;\n    border-radius: 8px;\n  \">\n    <h2 style=\"margin-top: 0;\">Please stop here.</h2>\n\n    <p style=\"font-size: 1.1rem;\">\n      Please do not close this page or end the experiment.\n    </p>\n\n    <p>\n      Let the experimenter know that you are finished and return the laptop.\n    </p>\n  </div>\n\n</section>",
+      "scrollTop": true,
+      "files": [],
+      "responses": [
+        {
+          "label": "",
+          "event": "",
+          "target": "",
+          "filter": ""
+        }
+      ],
+      "parameters": [
+        {
+          "name": "",
+          "value": "",
+          "type": "string"
+        }
+      ],
+      "messageHandlers": [
+        {
+          "title": "",
+          "message": "",
+          "code": ""
+        }
+      ],
+      "title": "9. Thank you",
+      "_tab": "Content"
+    },
+    "29": {
+      "id": "29",
+      "type": "lab.html.Form",
+      "content": "<form>\n  <section class=\"survey-section\">\n    <h2>Participant Information</h2>\n\n    <div class=\"meta-grid\">\n      <label class=\"field\">\n        <span>Participant ID</span>\n        <input\n          autocomplete=\"off\"\n          id=\"participant_id\"\n          name=\"participant_id\"\n          type=\"text\"\n          required\n        >\n      </label>\n\n      <label class=\"field\">\n        <span>Date</span>\n        <input\n          id=\"survey_date\"\n          name=\"survey_date\"\n          type=\"date\"\n          required\n        >\n      </label>\n    </div>\n\n    <div class=\"form-actions\">\n      <button type=\"submit\">Next</button>\n    </div>\n  </section>\n</form>",
+      "scrollTop": true,
+      "files": [],
+      "responses": [
+        {
+          "label": "",
+          "event": "",
+          "target": "",
+          "filter": ""
+        }
+      ],
+      "parameters": [
+        {
+          "name": "",
+          "value": "",
+          "type": "string"
+        }
+      ],
+      "messageHandlers": [
+        {
+          "title": "",
+          "message": "",
+          "code": ""
+        }
+      ],
+      "title": "1. Participant Information",
+      "_tab": "Content"
+    },
+    "root": {
+      "id": "root",
+      "title": "root",
+      "type": "lab.flow.Sequence",
+      "children": [
+        "29",
+        "1",
+        "3",
+        "5",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18"
+      ],
+      "parameters": [],
+      "plugins": [
+        {
+          "type": "lab.plugins.Metadata"
+        }
+      ],
+      "metadata": {
+        "title": "Arc-like Task Test",
+        "description": "",
+        "repository": "",
+        "contributors": "Yavuz Karaca <yavkaraca@gmail.com>"
+      }
+    }
+  },
+  "version": [
+    20,
+    2,
+    4
+  ],
+  "files": {
+    "files": {
+      "index.html": {
+        "content": "data:text/html,%3C!doctype%20html%3E%0A%3Chtml%3E%0A%3Chead%3E%0A%20%20%3Cmeta%20charset%3D%22utf-8%22%3E%0A%20%20%3Ctitle%3EExperiment%3C%2Ftitle%3E%0A%20%20%3C!--%20viewport%20setup%20--%3E%0A%20%20%3Cmeta%20name%3D%22viewport%22%20content%3D%22width%3Ddevice-width%2C%20initial-scale%3D1%22%3E%0A%20%20%3C!--%20lab.js%20library%20and%20experiment%20code%20--%3E%0A%20%20%24%7B%20header%20%7D%0A%3C%2Fhead%3E%0A%3Cbody%3E%0A%20%20%3C!--%20If%20you'd%20rather%20have%20a%20container%20with%20a%20fixed%20width%0A%20%20%20%20%20%20%20and%20variable%20height%2C%20try%20removing%20the%20fullscreen%20class%20below%20--%3E%0A%20%20%3Cdiv%20class%3D%22container%20fullscreen%22%20data-labjs-section%3D%22main%22%3E%0A%20%20%20%20%3Cmain%20class%3D%22content-vertical-center%20content-horizontal-center%22%3E%0A%20%20%20%20%20%20%3Cdiv%3E%0A%20%20%20%20%20%20%20%20%3Ch2%3ELoading%20Experiment%3C%2Fh2%3E%0A%20%20%20%20%20%20%20%20%3Cp%3EThe%20experiment%20is%20loading%20and%20should%20start%20in%20a%20few%20seconds%3C%2Fp%3E%0A%20%20%20%20%20%20%3C%2Fdiv%3E%0A%20%20%20%20%3C%2Fmain%3E%0A%20%20%3C%2Fdiv%3E%0A%3C%2Fbody%3E%0A%3C%2Fhtml%3E%0A",
+        "source": "library"
+      },
+      "style.css": {
+        "content": "data:text/css,%2F*%20ARC%20fMRI%20post-measurement%20questionnaire%20*%2F%0D%0A%0D%0A%3Aroot%20%7B%0D%0A%20%20font-family%3A%20Arial%2C%20Helvetica%2C%20sans-serif%3B%0D%0A%20%20color%3A%20%2320242a%3B%0D%0A%20%20background%3A%20%23f4f6f8%3B%0D%0A%7D%0D%0A%0D%0A*%20%7B%0D%0A%20%20box-sizing%3A%20border-box%3B%0D%0A%7D%0D%0A%0D%0Abody%20%7B%0D%0A%20%20margin%3A%200%3B%0D%0A%20%20background%3A%20%23f4f6f8%3B%0D%0A%20%20line-height%3A%201.5%3B%0D%0A%7D%0D%0A%0D%0A.container%20%7B%0D%0A%20%20width%3A%20min(1100px%2C%20calc(100%25%20-%2032px))%3B%0D%0A%20%20margin%3A%2036px%20auto%2072px%3B%0D%0A%7D%0D%0A%0D%0A.survey-header%2C%0D%0A.survey-section%20%7B%0D%0A%20%20background%3A%20%23ffffff%3B%0D%0A%20%20border%3A%201px%20solid%20%23d9dee5%3B%0D%0A%20%20border-radius%3A%2010px%3B%0D%0A%20%20padding%3A%2028px%2032px%3B%0D%0A%20%20margin-bottom%3A%2024px%3B%0D%0A%7D%0D%0A%0D%0A.survey-header%20h1%20%7B%0D%0A%20%20margin%3A%200%200%208px%3B%0D%0A%20%20font-size%3A%202rem%3B%0D%0A%7D%0D%0A%0D%0A.survey-header%20p%2C%0D%0A.section-intro%20%7B%0D%0A%20%20margin%3A%200%3B%0D%0A%20%20color%3A%20%23525b66%3B%0D%0A%7D%0D%0A%0D%0Ah2%20%7B%0D%0A%20%20margin%3A%200%200%2022px%3B%0D%0A%20%20font-size%3A%201.45rem%3B%0D%0A%20%20border-bottom%3A%202px%20solid%20%23d9dee5%3B%0D%0A%20%20padding-bottom%3A%2010px%3B%0D%0A%7D%0D%0A%0D%0Ah3%20%7B%0D%0A%20%20margin%3A%2038px%200%2018px%3B%0D%0A%20%20font-size%3A%201.2rem%3B%0D%0A%7D%0D%0A%0D%0A.meta-grid%20%7B%0D%0A%20%20display%3A%20grid%3B%0D%0A%20%20grid-template-columns%3A%20repeat(2%2C%20minmax(0%2C%201fr))%3B%0D%0A%20%20gap%3A%2020px%3B%0D%0A%7D%0D%0A%0D%0A.field%2C%0D%0A.question%2C%0D%0A.rule-question%20%7B%0D%0A%20%20display%3A%20block%3B%0D%0A%7D%0D%0A%0D%0A.field%20span%2C%0D%0A.question%20%3E%20label%2C%0D%0A.rule-question%20%3E%20label%20%7B%0D%0A%20%20display%3A%20block%3B%0D%0A%20%20margin-bottom%3A%208px%3B%0D%0A%7D%0D%0A%0D%0Ainput%2C%0D%0Atextarea%20%7B%0D%0A%20%20width%3A%20100%25%3B%0D%0A%20%20font%3A%20inherit%3B%0D%0A%20%20color%3A%20inherit%3B%0D%0A%20%20background%3A%20%23ffffff%3B%0D%0A%20%20border%3A%201px%20solid%20%23aeb7c2%3B%0D%0A%20%20border-radius%3A%206px%3B%0D%0A%20%20padding%3A%2010px%2012px%3B%0D%0A%7D%0D%0A%0D%0Ainput%3Afocus%2C%0D%0Atextarea%3Afocus%20%7B%0D%0A%20%20outline%3A%202px%20solid%20%235687b5%3B%0D%0A%20%20outline-offset%3A%201px%3B%0D%0A%20%20border-color%3A%20%235687b5%3B%0D%0A%7D%0D%0A%0D%0Atextarea%20%7B%0D%0A%20%20resize%3A%20vertical%3B%0D%0A%20%20min-height%3A%20110px%3B%0D%0A%7D%0D%0A%0D%0A.question%20%7B%0D%0A%20%20margin%3A%2026px%200%3B%0D%0A%7D%0D%0A%0D%0A.question-note%20%7B%0D%0A%20%20display%3A%20block%3B%0D%0A%20%20margin-top%3A%203px%3B%0D%0A%20%20color%3A%20%2368727e%3B%0D%0A%20%20font-size%3A%200.95rem%3B%0D%0A%7D%0D%0A%0D%0A.rule-question%20%7B%0D%0A%20%20padding%3A%2022px%200%2030px%3B%0D%0A%20%20border-bottom%3A%201px%20solid%20%23e0e4e9%3B%0D%0A%7D%0D%0A%0D%0A.rule-question%3Alast-of-type%20%7B%0D%0A%20%20border-bottom%3A%200%3B%0D%0A%7D%0D%0A%0D%0A.stimulus-pair%20%7B%0D%0A%20%20display%3A%20grid%3B%0D%0A%20%20grid-template-columns%3A%20repeat(2%2C%20minmax(0%2C%201fr))%3B%0D%0A%20%20gap%3A%2024px%3B%0D%0A%20%20align-items%3A%20center%3B%0D%0A%20%20margin-bottom%3A%2016px%3B%0D%0A%7D%0D%0A%0D%0A.stimulus-pair%20img%20%7B%0D%0A%20%20display%3A%20block%3B%0D%0A%20%20width%3A%20100%25%3B%0D%0A%20%20height%3A%20auto%3B%0D%0A%20%20object-fit%3A%20contain%3B%0D%0A%20%20border-radius%3A%204px%3B%0D%0A%7D%0D%0A%0D%0A.rule-answer%20%7B%0D%0A%20%20min-height%3A%20100px%3B%0D%0A%7D%0D%0A%0D%0A.form-actions%20%7B%0D%0A%20%20display%3A%20flex%3B%0D%0A%20%20justify-content%3A%20flex-end%3B%0D%0A%20%20margin-top%3A%2028px%3B%0D%0A%7D%0D%0A%0D%0Abutton%5Btype%3D%22submit%22%5D%20%7B%0D%0A%20%20appearance%3A%20none%3B%0D%0A%20%20border%3A%200%3B%0D%0A%20%20border-radius%3A%207px%3B%0D%0A%20%20padding%3A%2012px%2022px%3B%0D%0A%20%20font%3A%20inherit%3B%0D%0A%20%20font-weight%3A%20700%3B%0D%0A%20%20cursor%3A%20pointer%3B%0D%0A%20%20background%3A%20%232e5a88%3B%0D%0A%20%20color%3A%20white%3B%0D%0A%7D%0D%0A%0D%0Abutton%5Btype%3D%22submit%22%5D%3Ahover%20%7B%0D%0A%20%20background%3A%20%23244b73%3B%0D%0A%7D%0D%0A%0D%0A%40media%20(max-width%3A%20760px)%20%7B%0D%0A%20%20.container%20%7B%0D%0A%20%20%20%20width%3A%20min(100%25%20-%2018px%2C%201100px)%3B%0D%0A%20%20%20%20margin-top%3A%2012px%3B%0D%0A%20%20%7D%0D%0A%0D%0A%20%20.survey-header%2C%0D%0A%20%20.survey-section%20%7B%0D%0A%20%20%20%20padding%3A%2020px%2016px%3B%0D%0A%20%20%7D%0D%0A%0D%0A%20%20.meta-grid%2C%0D%0A%20%20.stimulus-pair%20%7B%0D%0A%20%20%20%20grid-template-columns%3A%201fr%3B%0D%0A%20%20%7D%0D%0A%7D%0D%0A",
+        "source": "library"
+      }
+    },
+    "bundledFiles": {
+      "lib/lab.js": {
+        "type": "application/javascript"
+      },
+      "lib/lab.js.map": {
+        "type": "text/plain"
+      },
+      "lib/lab.fallback.js": {
+        "type": "application/javascript"
+      },
+      "lib/lab.legacy.js": {
+        "type": "application/javascript"
+      },
+      "lib/lab.legacy.js.map": {
+        "type": "text/plain"
+      },
+      "lib/lab.css": {
+        "type": "text/css"
+      },
+      "lib/loading.svg": {
+        "type": "image/svg+xml"
+      }
+    }
+  }
+}

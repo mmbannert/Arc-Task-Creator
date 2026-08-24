@@ -5,7 +5,7 @@ config = utilities.session.default_config();
 % Change configurations in utilities.session
 
 try
-    session = utilities.session.load_session(sessionPath);
+    session = jsondecode(fileread(sessionPath));
     keys = utilities.session.setup_keys(config);
     [window, windowRect] = utilities.screen.setup_window(config);
     textureCache = utilities.session.preload_textures(session, sessionPath, window);
@@ -107,12 +107,11 @@ function [experimentStartTime, scannerSync, eyelink] = prepare_experiment()
                  'Press any response button when ready.']));
 
     if config.eyelink_flag
-        fprintf('[EyeLink] Opening connection...\n');
+        fprintf('[EyeLink] Opening calibration screen...\n');
 
         eyelink = utilities.eyelink.setup( ...
             window, windowRect, session.participant);
 
-        fprintf('[EyeLink] Calibration screen active. Complete calibration on tracker PC.\n');
         utilities.eyelink.calibrate(eyelink);
 
         fprintf('[EyeLink] Starting recording...\n');
@@ -170,7 +169,6 @@ function [experimentStartTime, scannerSync, eyelink] = prepare_experiment()
     fprintf('[Experiment] Start time: %.4f\n\n', experimentStartTime);
 
     if config.eyelink_flag
-        % utilities.eyelink.msg('EXPERIMENT_START %.4f', experimentStartTime);
         utilities.eyelink.msg('EXPERIMENT_START');
     end
 end

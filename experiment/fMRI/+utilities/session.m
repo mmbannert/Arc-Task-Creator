@@ -49,55 +49,31 @@ function keys = setup_keys(config)
     keys.response          = [keys.sameResponse keys.differentResponse];
 end
 
-
-function session = load_session(sessionPath)
-    session = jsondecode(fileread(sessionPath));
-end
-
-
 function texCache = preload_textures(session, sessionPath, w)
-    baseDir = fileparts(sessionPath);
 
-    if baseDir == ""
-        baseDir = pwd;
+    fprintf('Preloading images...\n');
+
+    baseDir = fileparts(sessionPath);
+    if isempty(baseDir), baseDir = pwd; end
+
+    allImgs = {};
+    for b = 1:numel(session.blocks)
+        for t = 1:numel(session.blocks(b).trials)
+            allImgs = [allImgs; session.blocks(b).trials(t).imgs(:)]; %#ok<AGROW>
+        end
     end
 
-    allImgs = utilities.session.collect_all_images(session);
+    allImgs = unique(allImgs, 'stable');
     texCache = containers.Map();
 
-    fprintf('Preloading %d images...\n', numel(allImgs));
-
     for i = 1:numel(allImgs)
-        rel = char(allImgs{i});
-        p = fullfile(baseDir, rel);
-        im = imread(p);
+        rel = allImgs{i};
+        im = imread(fullfile(baseDir, rel));
         texCache(rel) = Screen('MakeTexture', w, im);
     end
 
     fprintf('Image preloading finished.\n');
 end
-
-
-function allImgs = collect_all_images(session)
-    allImgs = {};
-
-    for b = 1:numel(session.blocks)
-        block = session.blocks(b);
-
-        for t = 1:numel(block.trials)
-            tr = block.trials(t);
-
-            if isfield(tr, 'imgs') && ~isempty(tr.imgs)
-                allImgs = [allImgs, tr.imgs]; %#ok<AGROW>
-            end
-        end
-    end
-
-    allImgs = unique(allImgs, 'stable');
-end
-
-
-
 
 end
 end

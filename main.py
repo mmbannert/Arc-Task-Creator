@@ -3,7 +3,7 @@ from pathlib import Path
 
 from src.visualize import save_grid, save_combined_grids
 from src.stimulus import Stimulus
-from src.util import append_jsonl, next_idx, new_seed
+from src.util import append_jsonl, next_idx
 
 from src.rules.recolor import (
     generate_cross_plus_shape_fixed_recolor,
@@ -94,8 +94,6 @@ def _generate_stimulus(rule: str, gen, out_root: str = "out") -> None:
     jsonl_path = base / "stimuli.jsonl"
 
     idx = next_idx(jsonl_path)
-    seed = new_seed()
-    random.seed(seed)
 
     produced = gen()
     inp, out, params = (*produced, {})[:3]
@@ -118,7 +116,6 @@ def _generate_stimulus(rule: str, gen, out_root: str = "out") -> None:
         id=stim_id,
         rule=rule_name,
         family=family,
-        seed=seed,
         params=params
     )
 

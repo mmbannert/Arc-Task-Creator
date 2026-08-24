@@ -48,7 +48,6 @@ if __name__ == "__main__":
             pools[family][rule].append(
                 {
                     "id": row["id"],
-                    "seed": row["seed"],
                     "combined_path": rule_directory / f'{row["id"]}.combined.png',
                     "params": row["params"],
                 }
@@ -236,12 +235,10 @@ if __name__ == "__main__":
             "stimuli": [
                 {
                     "id": first["id"],
-                    "seed": first.get("seed"),
                     "params": first.get("params"),
                 },
                 {
                     "id": second["id"],
-                    "seed": second.get("seed"),
                     "params": second.get("params"),
                 },
             ],

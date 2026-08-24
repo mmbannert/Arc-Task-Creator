@@ -3,7 +3,7 @@ function scanPlan = compute_scan_plan(session)
 cfg = utilities.session.default_config();
 
     sessionText = fileread(session);
-        session = jsondecode(sessionText);
+    session = jsondecode(sessionText);
 
     experimentDuration = ...
         session.number_of_trials_total * cfg.response_time_window + ... % all trials

@@ -52,19 +52,7 @@ end
 
 function session = load_session(sessionPath)
     session = jsondecode(fileread(sessionPath));
-    session = utilities.session.normalize_session(session);
 end
-
-
-function session = normalize_session(session)
-    session.blocks = utilities.session.force_struct_array(session.blocks);
-
-    for b = 1:numel(session.blocks)
-        session.blocks(b).trials = utilities.session.force_struct_array( ...
-            session.blocks(b).trials);
-    end
-end
-
 
 
 function texCache = preload_textures(session, sessionPath, w)
@@ -82,11 +70,6 @@ function texCache = preload_textures(session, sessionPath, w)
     for i = 1:numel(allImgs)
         rel = char(allImgs{i});
         p = fullfile(baseDir, rel);
-
-        if ~isfile(p)
-            error('Image file not found: %s', p);
-        end
-
         im = imread(p);
         texCache(rel) = Screen('MakeTexture', w, im);
     end
@@ -124,39 +107,6 @@ function c = to_cellstr(x)
     end
 end
 
-
-function a = force_struct_array(x)
-    if isempty(x) || ~iscell(x)
-        a = x;
-        return
-    end
-
-    if ~all(cellfun(@isstruct, x))
-        try
-            a = [x{:}];
-        catch
-            a = x;
-        end
-        return
-    end
-
-    allFields = {};
-    for i = 1:numel(x)
-        allFields = union(allFields, fieldnames(x{i}), 'stable');
-    end
-
-    emptyStruct = cell2struct(repmat({[]}, 1, numel(allFields)), allFields, 2);
-    a = repmat(emptyStruct, 1, numel(x));
-
-    for i = 1:numel(x)
-        s = x{i};
-        fn = fieldnames(s);
-
-        for k = 1:numel(fn)
-            a(i).(fn{k}) = s.(fn{k});
-        end
-    end
-end
 
 end
 end

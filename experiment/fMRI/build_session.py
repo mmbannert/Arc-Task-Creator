@@ -232,6 +232,7 @@ if __name__ == "__main__":
             ],
             "family": family,
             "rule": rule,
+            "correct": correct or "",
             "stimuli": [
                 {
                     "id": first["id"],
@@ -243,11 +244,7 @@ if __name__ == "__main__":
                 },
             ],
         }
-
-        if correct in ("same", "different"):  # only decision trials have a correct answer, phase starts don't
-            trial["correct"] = correct
         return trial
-
 
     def relative_path(image_path: Path) -> str:
         """

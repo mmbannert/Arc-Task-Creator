@@ -5,14 +5,14 @@ from src.config import COLORS
 from src.util import rand_between
 
 
-def generate_dot_majority_takeover_recolor(block_num=(1, 6)):
+def generate_majority_takeover(block_num=(1, 6)):
     return _generate_dot_counting_recolor(
         target="majority",
         block_num=block_num
     )
 
 
-def generate_dot_minority_takeover_recolor(block_num=(1, 6)):
+def generate_minority_takeover(block_num=(1, 6)):
     return _generate_dot_counting_recolor(
         target="minority",
         block_num=block_num
@@ -56,21 +56,21 @@ def _generate_dot_counting_recolor(target="majority", block_num=(1, 6)):
 
     return grid_input, grid_output, params
 
-def generate_dot_equalize_recolor(block_num=(1, 4)):
+def generate_equalize_colors(block_num=(1, 4)):
     return _generate_dot_arithmetic_recolor(
         operation="equalize",
         block_num=block_num,
     )
 
 
-def generate_dot_majority_increment_recolor(block_num=(2, 3)):
+def generate_increment_majority_color(block_num=(2, 3)):
     return _generate_dot_arithmetic_recolor(
         operation="majority_increment",
         block_num=block_num,
     )
 
 
-def generate_dot_minority_increment_recolor(block_num=(2, 3)):
+def generate_increment_minority_color(block_num=(2, 3)):
     return _generate_dot_arithmetic_recolor(
         operation="minority_increment",
         block_num=block_num,

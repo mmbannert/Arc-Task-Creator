@@ -11,7 +11,7 @@ SHAPE_DIRECTIONS = {
 }
 
 
-def generate_cross_plus_inversion_recolor(object_num=(3, 4)):
+def generate_color_inversion(object_num=(3, 4)):
     grid_input, grid_output, placed = _generate_cross_plus_input(object_num)
 
     for _, cells, color in placed:
@@ -29,7 +29,7 @@ def generate_cross_plus_inversion_recolor(object_num=(3, 4)):
     return grid_input, grid_output, params
 
 
-def generate_cross_plus_neighbor_recolor(object_num=(3, 4)):
+def generate_touching_edges_recolor(object_num=(3, 4)):
     grid_input, grid_output, placed = _generate_cross_plus_input(object_num)
 
     for i, (_, cells, _) in enumerate(placed):
@@ -53,7 +53,7 @@ def generate_cross_plus_neighbor_recolor(object_num=(3, 4)):
     return grid_input, grid_output, params
 
 
-def generate_cross_plus_shape_fixed_recolor(object_num=(3, 4)):
+def generate_shape_color_mapping(object_num=(3, 4)):
     grid_input, grid_output, placed = _generate_cross_plus_input(object_num)
 
     shape_colors = {

@@ -210,8 +210,8 @@ function [hint, leftText, rightText] = context_trial_text(context, trialIndex)
         case 'application'
             if isInitialTrial
                 hint = "Memorize this rule";
-                leftText = "←   Memorized";
-                rightText = "Memorized   →";
+                leftText = "←   Ready";
+                rightText = "Ready   →";
             else
                 hint = "Memorized rule";
                 leftText = "←   Same";

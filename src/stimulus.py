@@ -9,7 +9,6 @@ class Stimulus:
     id: str
     rule: str  # e.g. "cross_plus_recolor"
     family: str  # e.g. "color" (inferred)
-    seed: int
     params: Dict[str, Any]
 
     def to_json_dict(self) -> Dict[str, Any]:

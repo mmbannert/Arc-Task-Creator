@@ -191,6 +191,7 @@ function draw_response_tip(w, rect, selectedResponse, leftText, rightText)
     DrawFormattedText(w, char(rightText), centerX + gap, y, rightColor);
 end
 
+
 function [hint, leftText, rightText] = context_trial_text(context, trialIndex)
     isInitialTrial = (trialIndex == 1);
 
@@ -221,10 +222,8 @@ end
 
 
 function draw_two_stacked_imgs(w, rect, textureCache, imgsField)
-    imgs = utilities.session.to_cellstr(imgsField);
-
-    topTexture = textureCache(char(imgs{1}));
-    bottomTexture = textureCache(char(imgs{2}));
+    topTexture = textureCache(char(imgsField{1}));
+    bottomTexture = textureCache(char(imgsField{2}));
 
     gap = rect(4) * 0.06;
     imageWidth = rect(3) * 0.80;

@@ -48,7 +48,6 @@ if __name__ == "__main__":
             pools[family][rule].append(
                 {
                     "id": row["id"],
-                    "seed": row["seed"],
                     "combined_path": rule_directory / f'{row["id"]}.combined.png',
                     "params": row["params"],
                 }
@@ -233,22 +232,18 @@ if __name__ == "__main__":
             ],
             "family": family,
             "rule": rule,
+            "correct": correct or "",
             "stimuli": [
                 {
                     "id": first["id"],
-                    "seed": first.get("seed"),
                     "params": first.get("params"),
                 },
                 {
                     "id": second["id"],
-                    "seed": second.get("seed"),
                     "params": second.get("params"),
                 },
             ],
         }
-
-        if correct in ("same", "different"):  # only decision trials have a correct answer, phase starts don't
-            trial["correct"] = correct
         return trial
 
 

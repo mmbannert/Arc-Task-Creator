@@ -3,22 +3,20 @@ from pathlib import Path
 
 from src.visualize import save_grid, save_combined_grids
 from src.stimulus import Stimulus
-from src.util import append_jsonl, next_idx, new_seed
+from src.util import append_jsonl, next_idx
 
 from src.rules.recolor import (
-    generate_cross_plus_shape_fixed_recolor,
-    generate_dot_inversion_recolor,
-    generate_dot_neighbor_recolor,
-    generate_cross_plus_cyclic_recolor,
+    generate_shape_color_mapping,
+    generate_touching_edges_recolor,
+    generate_color_inversion
 )
 
 from src.rules.arithmetic import (
-    generate_dot_majority_recolor,
-    generate_dot_minority_recolor,
-    generate_cross_plus_majority_recolor,
-    generate_cross_plus_minority_recolor,
-    generate_dot_equalize_recolor,
-    generate_dot_diff_two_recolor,
+    generate_minority_takeover,
+    generate_majority_takeover,
+    generate_equalize_colors,
+    generate_increment_majority_color,
+    generate_increment_minority_color
 )
 
 from src.rules.expansion import (
@@ -51,10 +49,10 @@ from src.rules.attraction import (
 def main(N):
     rules = {
         "occlusion.occlusion_reversal": generate_occlusion_reversal,
-        "occlusion.occlusion_mirror_x": generate_occlusion_mirror_x,
-        "occlusion.occlusion_mirror_y": generate_occlusion_mirror_y,
-        "occlusion.occlusion_rotate_90": generate_occlusion_rotate_90,
-        "occlusion.occlusion_rotate_180": generate_occlusion_rotate_180,
+        "occlusion.mirror_x": generate_occlusion_mirror_x,
+        "occlusion.mirror_y": generate_occlusion_mirror_y,
+        "occlusion.rotate_90": generate_occlusion_rotate_90,
+        "occlusion.rotate_180": generate_occlusion_rotate_180,
         "attraction.color_attraction": generate_color_attraction,
         "attraction.size_attraction": generate_size_attraction,
         "attraction.falling_blocks": generate_falling_blocks,
@@ -64,17 +62,15 @@ def main(N):
         "expansion.star_ray": generate_star_expansion_ray,
         "expansion.plus_step": generate_plus_expansion_single_step,
         "expansion.plus_ray": generate_plus_expansion_ray,
-        "expansion.3arm_star_ray": generate_3arm_star_expansion_ray,
-        "arithmetic.dot_majority_recolor": generate_dot_majority_recolor,
-        "arithmetic.dot_minority_recolor": generate_dot_minority_recolor,
-        "arithmetic.dot_equalize_recolor": generate_dot_equalize_recolor,
-        "arithmetic.dot_diff_two_recolor": generate_dot_diff_two_recolor,
-        "arithmetic.cross_plus_majority_recolor": generate_cross_plus_majority_recolor,
-        "arithmetic.cross_plus_minority_recolor": generate_cross_plus_minority_recolor,
-        "recoloring.dot_inversion_recolor": generate_dot_inversion_recolor,
-        "recoloring.dot_neighbor_recolor": generate_dot_neighbor_recolor,
-        "recoloring.cross_plus_shape_fixed_recolor": generate_cross_plus_shape_fixed_recolor,
-        "recoloring.cross_plus_cyclic_recolor": generate_cross_plus_cyclic_recolor,
+        "expansion.3_arm_star_ray": generate_3arm_star_expansion_ray,
+        "arithmetic.minority_takeover": generate_minority_takeover,
+        "arithmetic.majority_takeover": generate_majority_takeover,
+        "arithmetic.equalize_colors": generate_equalize_colors,
+        "arithmetic.increment_majority_color": generate_increment_majority_color,
+        "arithmetic.increment_minority_color": generate_increment_minority_color,
+        "recolor.shape_color_mapping": generate_shape_color_mapping,
+        "recolor.touching_edges_recolor": generate_touching_edges_recolor,
+        "recolor.color_inversion": generate_color_inversion,
     }
 
     for name, gen in rules.items():
@@ -88,8 +84,6 @@ def _generate_stimulus(rule: str, gen, out_root: str = "out") -> None:
     jsonl_path = base / "stimuli.jsonl"
 
     idx = next_idx(jsonl_path)
-    seed = new_seed()
-    random.seed(seed)
 
     produced = gen()
     inp, out, params = (*produced, {})[:3]
@@ -112,7 +106,6 @@ def _generate_stimulus(rule: str, gen, out_root: str = "out") -> None:
         id=stim_id,
         rule=rule_name,
         family=family,
-        seed=seed,
         params=params
     )
 

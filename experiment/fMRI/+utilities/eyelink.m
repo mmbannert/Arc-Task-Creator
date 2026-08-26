@@ -10,7 +10,7 @@ function eyelink = setup(w, rect, participant)
     [~, vs] = Eyelink('GetTrackerVersion');
     fprintf('Running experiment on tracker: %s\n', vs);
 
-    Eyelink('command', 'calibration_type = HV13');
+    Eyelink('command', 'calibration_type = HV9');
     Eyelink('command', 'calibration_area_proportion = 0.41 0.41');
     Eyelink('command', 'validation_area_proportion = 0.41 0.41');
     Eyelink('command', 'file_event_filter = LEFT,RIGHT,FIXATION,SACCADE,BLINK,MESSAGE');

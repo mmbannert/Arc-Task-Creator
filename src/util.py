@@ -18,8 +18,3 @@ def next_idx(jsonl_path: Path) -> int:
         return 1
     with jsonl_path.open("r", encoding="utf-8") as f:
         return sum(1 for _ in f) + 1
-
-
-def new_seed() -> int:
-    # 32-bit seed; stable across platforms
-    return random.randrange(0, 2 ** 32)

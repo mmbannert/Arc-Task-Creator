@@ -47,7 +47,7 @@ def _draw_grid(ax, grid):
 
     ax.imshow(
         rgb_grid,
-        origin="lower",
+        origin="lower",  # so its like coordinate system (x = col, y = row)
         interpolation="none",
         extent=(0, grid.cols, 0, grid.rows),
     )

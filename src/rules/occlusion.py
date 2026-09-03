@@ -74,9 +74,9 @@ def generate_occlusion_rotate_180(size_range=(2, 5)):
 
 def _transform_occupied_box(grid, transform_fn):
     row_min, row_max, col_min, col_max = grid.get_occupied_bounding_box()
-    box = grid.extract_box(row_min, row_max, col_min, col_max)
+    box = grid.get_rect(row_min, row_max, col_min, col_max)
     transform_fn(box)
-    grid.paste_at(box, row_min, col_min)
+    grid.set_grid_at(box, row_min, col_min)
 
 
 def _transform_occupied_square_box(grid, transform_fn):
@@ -85,9 +85,9 @@ def _transform_occupied_square_box(grid, transform_fn):
     row_min, row_max, col_min, col_max = _make_square_box(
         row_min, row_max, col_min, col_max, grid.rows, grid.cols
     )
-    box = grid.extract_box(row_min, row_max, col_min, col_max)
+    box = grid.get_rect(row_min, row_max, col_min, col_max)
     transform_fn(box)
-    grid.paste_at(box, row_min, col_min)
+    grid.set_grid_at(box, row_min, col_min)
 
 
 def _make_square_box(row_min, row_max, col_min, col_max, max_rows, max_cols):
@@ -128,12 +128,12 @@ def generate_occlusion_reversal(size_range=(2, 5)):
     front_block = {"col_min": x2, "row_min": y2, "col_max": x2 + w, "row_max": y2 + h, "color": COLORS[1]}
 
     # Input: back first, front second
-    grid_input.fill_rect(**back_block)
-    grid_input.fill_rect(**front_block)
+    grid_input.set_rect(**back_block)
+    grid_input.set_rect(**front_block)
 
     # Output: front first, back second (reversed)
-    grid_output.fill_rect(**front_block)
-    grid_output.fill_rect(**back_block)
+    grid_output.set_rect(**front_block)
+    grid_output.set_rect(**back_block)
 
     for _ in range(random.randrange(4)):  # Rotate few times to generate all variations
         grid_input.rotate_ccw_90()

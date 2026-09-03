@@ -21,11 +21,11 @@ def generate_color_attraction(size_range=(2, 5)):
     x2 = rand_between(x1 + w1 + 1, cols - w2)
     y2 = rand_between(max(0, y1 - h2 + 1), min(rows - h2, y1 + h1 - 1))
 
-    grid_input.fill_rect(col_min=x1, row_min=y1, col_max=x1 + w1 - 1, row_max=y1 + h1 - 1, color=COLORS[0])
-    grid_input.fill_rect(col_min=x2, row_min=y2, col_max=x2 + w2 - 1, row_max=y2 + h2 - 1, color=COLORS[1])
+    grid_input.set_rect(col_min=x1, row_min=y1, col_max=x1 + w1 - 1, row_max=y1 + h1 - 1, color=COLORS[0])
+    grid_input.set_rect(col_min=x2, row_min=y2, col_max=x2 + w2 - 1, row_max=y2 + h2 - 1, color=COLORS[1])
 
-    grid_output.fill_rect(col_min=x1, row_min=y1, col_max=x1 + w1 - 1, row_max=y1 + h1 - 1, color=COLORS[0])
-    grid_output.fill_rect(col_min=x1 + w1, row_min=y2, col_max=x1 + w1 + w2 - 1, row_max=y2 + h2 - 1, color=COLORS[1])
+    grid_output.set_rect(col_min=x1, row_min=y1, col_max=x1 + w1 - 1, row_max=y1 + h1 - 1, color=COLORS[0])
+    grid_output.set_rect(col_min=x1 + w1, row_min=y2, col_max=x1 + w1 + w2 - 1, row_max=y2 + h2 - 1, color=COLORS[1])
 
     # Rotate to generate all movement directions
     _random_rotate_pair(grid_input, grid_output)
@@ -58,11 +58,11 @@ def generate_size_attraction(size_range=(3, 6)):
 
     color_big, color_small = random.sample(COLORS[:2], 2)
 
-    grid_input.fill_rect(col_min=x1, row_min=y1, col_max=x1 + w1 - 1, row_max=y1 + h1 - 1, color=color_big)
-    grid_input.fill_rect(col_min=x2, row_min=y2, col_max=x2 + w2 - 1, row_max=y2 + h2 - 1, color=color_small)
+    grid_input.set_rect(col_min=x1, row_min=y1, col_max=x1 + w1 - 1, row_max=y1 + h1 - 1, color=color_big)
+    grid_input.set_rect(col_min=x2, row_min=y2, col_max=x2 + w2 - 1, row_max=y2 + h2 - 1, color=color_small)
 
-    grid_output.fill_rect(col_min=x1, row_min=y1, col_max=x1 + w1 - 1, row_max=y1 + h1 - 1, color=color_big)
-    grid_output.fill_rect(col_min=x1 + w1, row_min=y2, col_max=x1 + w1 + w2 - 1, row_max=y2 + h2 - 1, color=color_small)
+    grid_output.set_rect(col_min=x1, row_min=y1, col_max=x1 + w1 - 1, row_max=y1 + h1 - 1, color=color_big)
+    grid_output.set_rect(col_min=x1 + w1, row_min=y2, col_max=x1 + w1 + w2 - 1, row_max=y2 + h2 - 1, color=color_small)
 
     _random_rotate_pair(grid_input, grid_output)
 
@@ -90,11 +90,11 @@ def generate_color_repulsion(size_range=(2, 5)):
     x2 = x1 + w1
     y2 = rand_between(y1 - h2 // 2 + 1, y1 + h2 // 2 - 1)
 
-    grid_input.fill_rect(col_min=x1, row_min=y1, col_max=x1 + w1 - 1, row_max=y1 + h1 - 1, color=COLORS[0])
-    grid_input.fill_rect(col_min=x2, row_min=y2, col_max=x2 + w2 - 1, row_max=y2 + h2 - 1, color=COLORS[1])
+    grid_input.set_rect(col_min=x1, row_min=y1, col_max=x1 + w1 - 1, row_max=y1 + h1 - 1, color=COLORS[0])
+    grid_input.set_rect(col_min=x2, row_min=y2, col_max=x2 + w2 - 1, row_max=y2 + h2 - 1, color=COLORS[1])
 
-    grid_output.fill_rect(col_min=x1, row_min=y1, col_max=x1 + w1 - 1, row_max=y1 + h1 - 1, color=COLORS[0])
-    grid_output.fill_rect(col_min=cols - w2, row_min=y2, col_max=cols, row_max=y2 + h2 - 1, color=COLORS[1])
+    grid_output.set_rect(col_min=x1, row_min=y1, col_max=x1 + w1 - 1, row_max=y1 + h1 - 1, color=COLORS[0])
+    grid_output.set_rect(col_min=cols - w2, row_min=y2, col_max=cols, row_max=y2 + h2 - 1, color=COLORS[1])
 
     _random_rotate_pair(grid_input, grid_output)
 
@@ -121,11 +121,11 @@ def generate_falling_blocks(size_range=(2, 6)):
     x2 = rand_between(x1 + w1 + 1, cols - w2)
     y2 = rand_between(1, rows - h2 - 1)
 
-    grid_input.fill_rect(col_min=x1, row_min=y1, col_max=x1 + w1 - 1, row_max=y1 + h1 - 1, color=COLORS[0])
-    grid_input.fill_rect(col_min=x2, row_min=y2, col_max=x2 + w2 - 1, row_max=y2 + h2 - 1, color=COLORS[1])
+    grid_input.set_rect(col_min=x1, row_min=y1, col_max=x1 + w1 - 1, row_max=y1 + h1 - 1, color=COLORS[0])
+    grid_input.set_rect(col_min=x2, row_min=y2, col_max=x2 + w2 - 1, row_max=y2 + h2 - 1, color=COLORS[1])
 
-    grid_output.fill_rect(col_min=x1, row_min=0, col_max=x1 + w1 - 1, row_max=0 + h1 - 1, color=COLORS[0])
-    grid_output.fill_rect(col_min=x2, row_min=0, col_max=x2 + w2 - 1, row_max=0 + h2 - 1, color=COLORS[1])
+    grid_output.set_rect(col_min=x1, row_min=0, col_max=x1 + w1 - 1, row_max=0 + h1 - 1, color=COLORS[0])
+    grid_output.set_rect(col_min=x2, row_min=0, col_max=x2 + w2 - 1, row_max=0 + h2 - 1, color=COLORS[1])
 
     params = make_params(
         event="falling",
@@ -160,10 +160,10 @@ def generate_falling_dots(n_objects=(3, 10)):
     grid_input, _ = make_grids()
 
     n = rand_between(*n_objects)
-    positions = random.sample(grid_input.cells(), n)
+    positions = random.sample(grid_input.get_coordinates(), n)
 
     for row, col in positions:
-        grid_input.fill_cell(row, col, random.choice(COLORS[:2]))
+        grid_input.set_cell(row, col, random.choice(COLORS[:2]))
 
     grid_output = _apply_gravity(grid_input)
 
@@ -183,10 +183,10 @@ def _apply_gravity(grid: Grid) -> Grid:
     out = Grid(rows, cols)
 
     for c in range(cols):
-        col = [grid.get(r, c) for r in range(rows) if grid.get(r, c) != "black"]
+        col = [grid.get_cell(r, c) for r in range(rows) if grid.get_cell(r, c) != "black"]
         r = 0  # bottom is row 0 in coordinate system
         for color in col:  # keep order stable
-            out.fill_cell(r, c, color)
+            out.set_cell(r, c, color)
             r += 1
 
     return out

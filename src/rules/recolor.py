@@ -16,7 +16,7 @@ def generate_color_inversion(object_num=(3, 4)):
 
     for _, cells, color in placed:
         output_color = COLORS[1] if color == COLORS[0] else COLORS[0]
-        grid_output.fill_multiple_cells(cells, output_color)
+        grid_output.set_multi_cells(cells, output_color)
 
     params = make_params(
         event="recoloring",
@@ -40,7 +40,7 @@ def generate_touching_edges_recolor(object_num=(3, 4)):
         )
 
         output_color = COLORS[0] if touches_other else COLORS[1]
-        grid_output.fill_multiple_cells(cells, output_color)
+        grid_output.set_multi_cells(cells, output_color)
 
     params = make_params(
         event="recoloring",
@@ -62,7 +62,7 @@ def generate_shape_color_mapping(object_num=(3, 4)):
     }
 
     for shape, cells, _ in placed:
-        grid_output.fill_multiple_cells(cells, shape_colors[shape])
+        grid_output.set_multi_cells(cells, shape_colors[shape])
 
     params = make_params(
         event="recoloring",
@@ -100,14 +100,14 @@ def _generate_cross_plus_input(object_num):
 
         for shape, cells in placed:
             color = random.choice(COLORS[:2])
-            grid_input.fill_multiple_cells(cells, color)
+            grid_input.set_multi_cells(cells, color)
             colored.append((shape, cells, color))
 
         return grid_input, grid_output, colored
 
 
 def _place_cross_plus_objects(grid, n_objects):
-    candidates = grid.interior_cells()
+    candidates = grid.get_interior_cells()
     random.shuffle(candidates)
 
     used = set()

@@ -31,18 +31,18 @@ def _generate_dot_counting_recolor(target="majority", block_num=(1, 6)):
     minority_color = color2
 
     all_positions = random.sample(
-        grid_input.cells(),
+        grid_input.get_coordinates(),
         n_majority + n_minority
     )
 
     majority_positions = all_positions[:n_majority]
     minority_positions = all_positions[n_majority:]
 
-    grid_input.fill_multiple_cells(majority_positions, majority_color)
-    grid_input.fill_multiple_cells(minority_positions, minority_color)
+    grid_input.set_multi_cells(majority_positions, majority_color)
+    grid_input.set_multi_cells(minority_positions, minority_color)
 
     target_color = majority_color if target == "majority" else minority_color
-    grid_output.fill_multiple_cells(all_positions, target_color)
+    grid_output.set_multi_cells(all_positions, target_color)
 
     params = make_params(
         event="recoloring",
@@ -92,15 +92,15 @@ def _generate_dot_arithmetic_recolor(operation, block_num):
     majority_color, minority_color = random.sample(COLORS[:2], 2)
 
     all_positions = random.sample(
-        grid_input.cells(),
+        grid_input.get_coordinates(),
         n_majority + n_minority,
     )
 
     majority_positions = all_positions[:n_majority]
     minority_positions = all_positions[n_majority:]
 
-    grid_input.fill_multiple_cells(majority_positions, majority_color)
-    grid_input.fill_multiple_cells(minority_positions, minority_color)
+    grid_input.set_multi_cells(majority_positions, majority_color)
+    grid_input.set_multi_cells(minority_positions, minority_color)
 
     grid_output = grid_input.copy()
 
@@ -120,7 +120,7 @@ def _generate_dot_arithmetic_recolor(operation, block_num):
         target_color = minority_color
 
     flip_positions = _bottom_left_first(source_positions)[:n_to_flip]
-    grid_output.fill_multiple_cells(flip_positions, target_color)
+    grid_output.set_multi_cells(flip_positions, target_color)
 
     params = make_params(
         event="recoloring",

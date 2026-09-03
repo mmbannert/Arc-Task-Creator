@@ -41,7 +41,7 @@ def resolve_color(name):
 
 def _draw_grid(ax, grid):
     rgb_grid = np.array([
-        [resolve_color(grid.get(row, col)) for col in range(grid.cols)]
+        [resolve_color(grid.get_cell(row, col)) for col in range(grid.cols)]
         for row in range(grid.rows)
     ])
 

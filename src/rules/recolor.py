@@ -10,6 +10,9 @@ SHAPE_DIRECTIONS = {
     "cross": ((0, 0), (1, 1), (1, -1), (-1, 1), (-1, -1)),
 }
 
+# TODO: at least once provide:
+#  1. same shapes different color.
+#  2. touching edge shapes different color.
 
 def generate_color_inversion(object_num=(3, 4)):
     grid_input, grid_output, placed = _generate_cross_plus_input(object_num)
@@ -77,9 +80,11 @@ def generate_shape_color_mapping(object_num=(3, 4)):
 
 def _generate_cross_plus_input(object_num):
     """
-    Generate randomly colored cross/plus objects while guaranteeing:
-    - at least one pair of touching objects
+    Generate cross/plus objects guaranteeing:
+    - at least one touching pair
     - at least one isolated object
+    - same-shaped objects with different colors
+    - touching objects with different colors
     """
     while True:
         n_objects = rand_between(*object_num)
@@ -96,12 +101,20 @@ def _generate_cross_plus_input(object_num):
         if not _has_touching_pair_and_isolated_object(placed):
             continue
 
-        colored = []
+        while True:
+            colored = [
+                (shape, cells, random.choice(COLORS[:2]))
+                for shape, cells in placed
+            ]
 
-        for shape, cells in placed:
-            color = random.choice(COLORS[:2])
+            if (
+                _has_same_shape_different_colors(colored)
+                and _has_touching_different_colors(colored)
+            ):
+                break
+
+        for _, cells, color in colored:
             grid_input.set_multi_cells(cells, color)
-            colored.append((shape, cells, color))
 
         return grid_input, grid_output, colored
 
@@ -162,3 +175,18 @@ def _has_touching_pair_and_isolated_object(placed):
                 touched[j] = True
 
     return any(touched) and any(not is_touched for is_touched in touched)
+
+def _has_same_shape_different_colors(placed):
+    return any(
+        shape1 == shape2 and color1 != color2
+        for i, (shape1, _, color1) in enumerate(placed)
+        for shape2, _, color2 in placed[i + 1:]
+    )
+
+
+def _has_touching_different_colors(placed):
+    return any(
+        color1 != color2 and _objects_touch(cells1, cells2)
+        for i, (_, cells1, color1) in enumerate(placed)
+        for _, cells2, color2 in placed[i + 1:]
+    )

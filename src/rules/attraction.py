@@ -138,7 +138,7 @@ def generate_falling_blocks(size_range=(2, 6)):
     return grid_input, grid_output, params
 
 
-def generate_float(size_range=(2, 6)):
+def generate_floating_blocks(size_range=(2, 6)):
     grid_input, grid_output, params = generate_falling_blocks(size_range)
     # funny idea: floating is opposite direction falling
     grid_input.rotate_180()

@@ -1,0 +1,1852 @@
+{
+  "participant": "p01",
+  "seed": 101,
+  "starting_context": "inference",
+  "number_of_decision_trials_per_block": 8,
+  "number_of_trials_per_block": 9,
+  "number_of_blocks": 5,
+  "number_of_trials_total": 45,
+  "blocks": [
+    {
+      "block_index": 1,
+      "family": "expansion",
+      "context": "inference",
+      "frame_color": "yellow",
+      "trials": [
+        {
+          "imgs": [
+            "stimuli/expansion.3_arm_star_ray/expansion.3_arm_star_ray.t23.combined.png",
+            "stimuli/expansion.3_arm_star_ray/expansion.3_arm_star_ray.t6.combined.png"
+          ],
+          "family": "expansion",
+          "rule": "3_arm_star_ray",
+          "correct": "",
+          "stimuli": [
+            {
+              "id": "expansion.3_arm_star_ray.t23",
+              "params": {
+                "event": "expansion",
+                "condition": "shape",
+                "stimulus": "ray_expansion",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 3
+              }
+            },
+            {
+              "id": "expansion.3_arm_star_ray.t6",
+              "params": {
+                "event": "expansion",
+                "condition": "shape",
+                "stimulus": "ray_expansion",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 1
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/expansion.3_arm_star_ray/expansion.3_arm_star_ray.t22.combined.png",
+            "stimuli/expansion.3_arm_star_ray/expansion.3_arm_star_ray.t15.combined.png"
+          ],
+          "family": "expansion",
+          "rule": "3_arm_star_ray",
+          "correct": "same",
+          "stimuli": [
+            {
+              "id": "expansion.3_arm_star_ray.t22",
+              "params": {
+                "event": "expansion",
+                "condition": "shape",
+                "stimulus": "ray_expansion",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            },
+            {
+              "id": "expansion.3_arm_star_ray.t15",
+              "params": {
+                "event": "expansion",
+                "condition": "shape",
+                "stimulus": "ray_expansion",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/expansion.star_step/expansion.star_step.t25.combined.png",
+            "stimuli/expansion.star_step/expansion.star_step.t47.combined.png"
+          ],
+          "family": "expansion",
+          "rule": "star_step",
+          "correct": "different",
+          "stimuli": [
+            {
+              "id": "expansion.star_step.t25",
+              "params": {
+                "event": "expansion",
+                "condition": "shape",
+                "stimulus": "step_expansion",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 4
+              }
+            },
+            {
+              "id": "expansion.star_step.t47",
+              "params": {
+                "event": "expansion",
+                "condition": "shape",
+                "stimulus": "step_expansion",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 1
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/expansion.plus_ray/expansion.plus_ray.t47.combined.png",
+            "stimuli/expansion.plus_ray/expansion.plus_ray.t25.combined.png"
+          ],
+          "family": "expansion",
+          "rule": "plus_ray",
+          "correct": "different",
+          "stimuli": [
+            {
+              "id": "expansion.plus_ray.t47",
+              "params": {
+                "event": "expansion",
+                "condition": "shape",
+                "stimulus": "ray_expansion",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            },
+            {
+              "id": "expansion.plus_ray.t25",
+              "params": {
+                "event": "expansion",
+                "condition": "shape",
+                "stimulus": "ray_expansion",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/expansion.star_ray/expansion.star_ray.t25.combined.png",
+            "stimuli/expansion.star_ray/expansion.star_ray.t40.combined.png"
+          ],
+          "family": "expansion",
+          "rule": "star_ray",
+          "correct": "different",
+          "stimuli": [
+            {
+              "id": "expansion.star_ray.t25",
+              "params": {
+                "event": "expansion",
+                "condition": "shape",
+                "stimulus": "ray_expansion",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 1
+              }
+            },
+            {
+              "id": "expansion.star_ray.t40",
+              "params": {
+                "event": "expansion",
+                "condition": "shape",
+                "stimulus": "ray_expansion",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 3
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/expansion.star_ray/expansion.star_ray.t38.combined.png",
+            "stimuli/expansion.star_ray/expansion.star_ray.t2.combined.png"
+          ],
+          "family": "expansion",
+          "rule": "star_ray",
+          "correct": "same",
+          "stimuli": [
+            {
+              "id": "expansion.star_ray.t38",
+              "params": {
+                "event": "expansion",
+                "condition": "shape",
+                "stimulus": "ray_expansion",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            },
+            {
+              "id": "expansion.star_ray.t2",
+              "params": {
+                "event": "expansion",
+                "condition": "shape",
+                "stimulus": "ray_expansion",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/expansion.plus_step/expansion.plus_step.t32.combined.png",
+            "stimuli/expansion.plus_step/expansion.plus_step.t25.combined.png"
+          ],
+          "family": "expansion",
+          "rule": "plus_step",
+          "correct": "different",
+          "stimuli": [
+            {
+              "id": "expansion.plus_step.t32",
+              "params": {
+                "event": "expansion",
+                "condition": "shape",
+                "stimulus": "step_expansion",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 1
+              }
+            },
+            {
+              "id": "expansion.plus_step.t25",
+              "params": {
+                "event": "expansion",
+                "condition": "shape",
+                "stimulus": "step_expansion",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 3
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/expansion.plus_step/expansion.plus_step.t30.combined.png",
+            "stimuli/expansion.plus_step/expansion.plus_step.t5.combined.png"
+          ],
+          "family": "expansion",
+          "rule": "plus_step",
+          "correct": "same",
+          "stimuli": [
+            {
+              "id": "expansion.plus_step.t30",
+              "params": {
+                "event": "expansion",
+                "condition": "shape",
+                "stimulus": "step_expansion",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 1
+              }
+            },
+            {
+              "id": "expansion.plus_step.t5",
+              "params": {
+                "event": "expansion",
+                "condition": "shape",
+                "stimulus": "step_expansion",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 1
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/expansion.plus_step/expansion.plus_step.t23.combined.png",
+            "stimuli/expansion.plus_step/expansion.plus_step.t33.combined.png"
+          ],
+          "family": "expansion",
+          "rule": "plus_step",
+          "correct": "same",
+          "stimuli": [
+            {
+              "id": "expansion.plus_step.t23",
+              "params": {
+                "event": "expansion",
+                "condition": "shape",
+                "stimulus": "step_expansion",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            },
+            {
+              "id": "expansion.plus_step.t33",
+              "params": {
+                "event": "expansion",
+                "condition": "shape",
+                "stimulus": "step_expansion",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "block_index": 2,
+      "family": "recolor",
+      "context": "application",
+      "frame_color": "cyan",
+      "trials": [
+        {
+          "imgs": [
+            "stimuli/recolor.shape_color_mapping/recolor.shape_color_mapping.t43.combined.png",
+            "stimuli/recolor.shape_color_mapping/recolor.shape_color_mapping.t40.combined.png"
+          ],
+          "family": "recolor",
+          "rule": "shape_color_mapping",
+          "correct": "",
+          "stimuli": [
+            {
+              "id": "recolor.shape_color_mapping.t43",
+              "params": {
+                "event": "recoloring",
+                "condition": "shape",
+                "stimulus": "cross_plus",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 3
+              }
+            },
+            {
+              "id": "recolor.shape_color_mapping.t40",
+              "params": {
+                "event": "recoloring",
+                "condition": "shape",
+                "stimulus": "cross_plus",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 4
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/recolor.color_inversion/recolor.color_inversion.t19.combined.png",
+            "stimuli/recolor.color_inversion/recolor.color_inversion.t9.combined.png"
+          ],
+          "family": "recolor",
+          "rule": "color_inversion",
+          "correct": "different",
+          "stimuli": [
+            {
+              "id": "recolor.color_inversion.t19",
+              "params": {
+                "event": "recoloring",
+                "condition": "color",
+                "stimulus": "cross_plus",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 4
+              }
+            },
+            {
+              "id": "recolor.color_inversion.t9",
+              "params": {
+                "event": "recoloring",
+                "condition": "color",
+                "stimulus": "cross_plus",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 3
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/recolor.shape_color_mapping/recolor.shape_color_mapping.t26.combined.png",
+            "stimuli/recolor.shape_color_mapping/recolor.shape_color_mapping.t30.combined.png"
+          ],
+          "family": "recolor",
+          "rule": "shape_color_mapping",
+          "correct": "same",
+          "stimuli": [
+            {
+              "id": "recolor.shape_color_mapping.t26",
+              "params": {
+                "event": "recoloring",
+                "condition": "shape",
+                "stimulus": "cross_plus",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 4
+              }
+            },
+            {
+              "id": "recolor.shape_color_mapping.t30",
+              "params": {
+                "event": "recoloring",
+                "condition": "shape",
+                "stimulus": "cross_plus",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 4
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/recolor.touching_edges_recolor/recolor.touching_edges_recolor.t30.combined.png",
+            "stimuli/recolor.touching_edges_recolor/recolor.touching_edges_recolor.t38.combined.png"
+          ],
+          "family": "recolor",
+          "rule": "touching_edges_recolor",
+          "correct": "different",
+          "stimuli": [
+            {
+              "id": "recolor.touching_edges_recolor.t30",
+              "params": {
+                "event": "recoloring",
+                "condition": [
+                  "shape",
+                  "neighbor"
+                ],
+                "stimulus": "cross_plus",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 4
+              }
+            },
+            {
+              "id": "recolor.touching_edges_recolor.t38",
+              "params": {
+                "event": "recoloring",
+                "condition": [
+                  "shape",
+                  "neighbor"
+                ],
+                "stimulus": "cross_plus",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 4
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/recolor.color_inversion/recolor.color_inversion.t32.combined.png",
+            "stimuli/recolor.color_inversion/recolor.color_inversion.t25.combined.png"
+          ],
+          "family": "recolor",
+          "rule": "color_inversion",
+          "correct": "different",
+          "stimuli": [
+            {
+              "id": "recolor.color_inversion.t32",
+              "params": {
+                "event": "recoloring",
+                "condition": "color",
+                "stimulus": "cross_plus",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 4
+              }
+            },
+            {
+              "id": "recolor.color_inversion.t25",
+              "params": {
+                "event": "recoloring",
+                "condition": "color",
+                "stimulus": "cross_plus",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 4
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/recolor.shape_color_mapping/recolor.shape_color_mapping.t48.combined.png",
+            "stimuli/recolor.shape_color_mapping/recolor.shape_color_mapping.t41.combined.png"
+          ],
+          "family": "recolor",
+          "rule": "shape_color_mapping",
+          "correct": "same",
+          "stimuli": [
+            {
+              "id": "recolor.shape_color_mapping.t48",
+              "params": {
+                "event": "recoloring",
+                "condition": "shape",
+                "stimulus": "cross_plus",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 4
+              }
+            },
+            {
+              "id": "recolor.shape_color_mapping.t41",
+              "params": {
+                "event": "recoloring",
+                "condition": "shape",
+                "stimulus": "cross_plus",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 4
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/recolor.shape_color_mapping/recolor.shape_color_mapping.t17.combined.png",
+            "stimuli/recolor.shape_color_mapping/recolor.shape_color_mapping.t3.combined.png"
+          ],
+          "family": "recolor",
+          "rule": "shape_color_mapping",
+          "correct": "same",
+          "stimuli": [
+            {
+              "id": "recolor.shape_color_mapping.t17",
+              "params": {
+                "event": "recoloring",
+                "condition": "shape",
+                "stimulus": "cross_plus",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 4
+              }
+            },
+            {
+              "id": "recolor.shape_color_mapping.t3",
+              "params": {
+                "event": "recoloring",
+                "condition": "shape",
+                "stimulus": "cross_plus",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 4
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/recolor.color_inversion/recolor.color_inversion.t27.combined.png",
+            "stimuli/recolor.color_inversion/recolor.color_inversion.t2.combined.png"
+          ],
+          "family": "recolor",
+          "rule": "color_inversion",
+          "correct": "different",
+          "stimuli": [
+            {
+              "id": "recolor.color_inversion.t27",
+              "params": {
+                "event": "recoloring",
+                "condition": "color",
+                "stimulus": "cross_plus",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 4
+              }
+            },
+            {
+              "id": "recolor.color_inversion.t2",
+              "params": {
+                "event": "recoloring",
+                "condition": "color",
+                "stimulus": "cross_plus",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 4
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/recolor.shape_color_mapping/recolor.shape_color_mapping.t23.combined.png",
+            "stimuli/recolor.shape_color_mapping/recolor.shape_color_mapping.t2.combined.png"
+          ],
+          "family": "recolor",
+          "rule": "shape_color_mapping",
+          "correct": "same",
+          "stimuli": [
+            {
+              "id": "recolor.shape_color_mapping.t23",
+              "params": {
+                "event": "recoloring",
+                "condition": "shape",
+                "stimulus": "cross_plus",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 3
+              }
+            },
+            {
+              "id": "recolor.shape_color_mapping.t2",
+              "params": {
+                "event": "recoloring",
+                "condition": "shape",
+                "stimulus": "cross_plus",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 4
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "block_index": 3,
+      "family": "arithmetic",
+      "context": "inference",
+      "frame_color": "yellow",
+      "trials": [
+        {
+          "imgs": [
+            "stimuli/arithmetic.minority_takeover/arithmetic.minority_takeover.t40.combined.png",
+            "stimuli/arithmetic.minority_takeover/arithmetic.minority_takeover.t3.combined.png"
+          ],
+          "family": "arithmetic",
+          "rule": "minority_takeover",
+          "correct": "",
+          "stimuli": [
+            {
+              "id": "arithmetic.minority_takeover.t40",
+              "params": {
+                "event": "recoloring",
+                "condition": [
+                  "color",
+                  "counting"
+                ],
+                "stimulus": "dots",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 8,
+                "counting_type": "soft",
+                "target": "minority_takeover",
+                "n_recolored": 8
+              }
+            },
+            {
+              "id": "arithmetic.minority_takeover.t3",
+              "params": {
+                "event": "recoloring",
+                "condition": [
+                  "color",
+                  "counting"
+                ],
+                "stimulus": "dots",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 4,
+                "counting_type": "soft",
+                "target": "minority_takeover",
+                "n_recolored": 4
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/arithmetic.minority_takeover/arithmetic.minority_takeover.t41.combined.png",
+            "stimuli/arithmetic.minority_takeover/arithmetic.minority_takeover.t13.combined.png"
+          ],
+          "family": "arithmetic",
+          "rule": "minority_takeover",
+          "correct": "same",
+          "stimuli": [
+            {
+              "id": "arithmetic.minority_takeover.t41",
+              "params": {
+                "event": "recoloring",
+                "condition": [
+                  "color",
+                  "counting"
+                ],
+                "stimulus": "dots",
+                "colors": [
+                  "blue",
+                  "red"
+                ],
+                "n_objects": 11,
+                "counting_type": "hard",
+                "target": "minority_takeover",
+                "n_recolored": 11
+              }
+            },
+            {
+              "id": "arithmetic.minority_takeover.t13",
+              "params": {
+                "event": "recoloring",
+                "condition": [
+                  "color",
+                  "counting"
+                ],
+                "stimulus": "dots",
+                "colors": [
+                  "blue",
+                  "red"
+                ],
+                "n_objects": 9,
+                "counting_type": "soft",
+                "target": "minority_takeover",
+                "n_recolored": 9
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/arithmetic.increment_majority_color/arithmetic.increment_majority_color.t30.combined.png",
+            "stimuli/arithmetic.increment_majority_color/arithmetic.increment_majority_color.t1.combined.png"
+          ],
+          "family": "arithmetic",
+          "rule": "increment_majority_color",
+          "correct": "different",
+          "stimuli": [
+            {
+              "id": "arithmetic.increment_majority_color.t30",
+              "params": {
+                "event": "recoloring",
+                "condition": [
+                  "color",
+                  "counting"
+                ],
+                "stimulus": "dots",
+                "colors": [
+                  "blue",
+                  "red"
+                ],
+                "n_objects": 7,
+                "counting_type": "hard",
+                "target": "majority_increment",
+                "n_recolored": 1
+              }
+            },
+            {
+              "id": "arithmetic.increment_majority_color.t1",
+              "params": {
+                "event": "recoloring",
+                "condition": [
+                  "color",
+                  "counting"
+                ],
+                "stimulus": "dots",
+                "colors": [
+                  "blue",
+                  "red"
+                ],
+                "n_objects": 7,
+                "counting_type": "hard",
+                "target": "majority_increment",
+                "n_recolored": 1
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/arithmetic.increment_majority_color/arithmetic.increment_majority_color.t15.combined.png",
+            "stimuli/arithmetic.increment_majority_color/arithmetic.increment_majority_color.t29.combined.png"
+          ],
+          "family": "arithmetic",
+          "rule": "increment_majority_color",
+          "correct": "same",
+          "stimuli": [
+            {
+              "id": "arithmetic.increment_majority_color.t15",
+              "params": {
+                "event": "recoloring",
+                "condition": [
+                  "color",
+                  "counting"
+                ],
+                "stimulus": "dots",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 7,
+                "counting_type": "hard",
+                "target": "majority_increment",
+                "n_recolored": 1
+              }
+            },
+            {
+              "id": "arithmetic.increment_majority_color.t29",
+              "params": {
+                "event": "recoloring",
+                "condition": [
+                  "color",
+                  "counting"
+                ],
+                "stimulus": "dots",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 7,
+                "counting_type": "hard",
+                "target": "majority_increment",
+                "n_recolored": 1
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/arithmetic.equalize_colors/arithmetic.equalize_colors.t40.combined.png",
+            "stimuli/arithmetic.equalize_colors/arithmetic.equalize_colors.t23.combined.png"
+          ],
+          "family": "arithmetic",
+          "rule": "equalize_colors",
+          "correct": "different",
+          "stimuli": [
+            {
+              "id": "arithmetic.equalize_colors.t40",
+              "params": {
+                "event": "recoloring",
+                "condition": [
+                  "color",
+                  "counting"
+                ],
+                "stimulus": "dots",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 8,
+                "counting_type": "soft",
+                "target": "equalize",
+                "n_recolored": 2
+              }
+            },
+            {
+              "id": "arithmetic.equalize_colors.t23",
+              "params": {
+                "event": "recoloring",
+                "condition": [
+                  "color",
+                  "counting"
+                ],
+                "stimulus": "dots",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 8,
+                "counting_type": "soft",
+                "target": "equalize",
+                "n_recolored": 2
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/arithmetic.majority_takeover/arithmetic.majority_takeover.t19.combined.png",
+            "stimuli/arithmetic.majority_takeover/arithmetic.majority_takeover.t33.combined.png"
+          ],
+          "family": "arithmetic",
+          "rule": "majority_takeover",
+          "correct": "different",
+          "stimuli": [
+            {
+              "id": "arithmetic.majority_takeover.t19",
+              "params": {
+                "event": "recoloring",
+                "condition": [
+                  "color",
+                  "counting"
+                ],
+                "stimulus": "dots",
+                "colors": [
+                  "blue",
+                  "red"
+                ],
+                "n_objects": 9,
+                "counting_type": "soft",
+                "target": "majority_takeover",
+                "n_recolored": 9
+              }
+            },
+            {
+              "id": "arithmetic.majority_takeover.t33",
+              "params": {
+                "event": "recoloring",
+                "condition": [
+                  "color",
+                  "counting"
+                ],
+                "stimulus": "dots",
+                "colors": [
+                  "blue",
+                  "red"
+                ],
+                "n_objects": 5,
+                "counting_type": "soft",
+                "target": "majority_takeover",
+                "n_recolored": 5
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/arithmetic.increment_minority_color/arithmetic.increment_minority_color.t32.combined.png",
+            "stimuli/arithmetic.increment_minority_color/arithmetic.increment_minority_color.t24.combined.png"
+          ],
+          "family": "arithmetic",
+          "rule": "increment_minority_color",
+          "correct": "different",
+          "stimuli": [
+            {
+              "id": "arithmetic.increment_minority_color.t32",
+              "params": {
+                "event": "recoloring",
+                "condition": [
+                  "color",
+                  "counting"
+                ],
+                "stimulus": "dots",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 7,
+                "counting_type": "hard",
+                "target": "minority_increment",
+                "n_recolored": 1
+              }
+            },
+            {
+              "id": "arithmetic.increment_minority_color.t24",
+              "params": {
+                "event": "recoloring",
+                "condition": [
+                  "color",
+                  "counting"
+                ],
+                "stimulus": "dots",
+                "colors": [
+                  "blue",
+                  "red"
+                ],
+                "n_objects": 5,
+                "counting_type": "soft",
+                "target": "minority_increment",
+                "n_recolored": 1
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/arithmetic.increment_minority_color/arithmetic.increment_minority_color.t34.combined.png",
+            "stimuli/arithmetic.increment_minority_color/arithmetic.increment_minority_color.t27.combined.png"
+          ],
+          "family": "arithmetic",
+          "rule": "increment_minority_color",
+          "correct": "same",
+          "stimuli": [
+            {
+              "id": "arithmetic.increment_minority_color.t34",
+              "params": {
+                "event": "recoloring",
+                "condition": [
+                  "color",
+                  "counting"
+                ],
+                "stimulus": "dots",
+                "colors": [
+                  "blue",
+                  "red"
+                ],
+                "n_objects": 5,
+                "counting_type": "soft",
+                "target": "minority_increment",
+                "n_recolored": 1
+              }
+            },
+            {
+              "id": "arithmetic.increment_minority_color.t27",
+              "params": {
+                "event": "recoloring",
+                "condition": [
+                  "color",
+                  "counting"
+                ],
+                "stimulus": "dots",
+                "colors": [
+                  "blue",
+                  "red"
+                ],
+                "n_objects": 5,
+                "counting_type": "soft",
+                "target": "minority_increment",
+                "n_recolored": 1
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/arithmetic.increment_minority_color/arithmetic.increment_minority_color.t46.combined.png",
+            "stimuli/arithmetic.increment_minority_color/arithmetic.increment_minority_color.t19.combined.png"
+          ],
+          "family": "arithmetic",
+          "rule": "increment_minority_color",
+          "correct": "same",
+          "stimuli": [
+            {
+              "id": "arithmetic.increment_minority_color.t46",
+              "params": {
+                "event": "recoloring",
+                "condition": [
+                  "color",
+                  "counting"
+                ],
+                "stimulus": "dots",
+                "colors": [
+                  "blue",
+                  "red"
+                ],
+                "n_objects": 5,
+                "counting_type": "soft",
+                "target": "minority_increment",
+                "n_recolored": 1
+              }
+            },
+            {
+              "id": "arithmetic.increment_minority_color.t19",
+              "params": {
+                "event": "recoloring",
+                "condition": [
+                  "color",
+                  "counting"
+                ],
+                "stimulus": "dots",
+                "colors": [
+                  "blue",
+                  "red"
+                ],
+                "n_objects": 5,
+                "counting_type": "soft",
+                "target": "minority_increment",
+                "n_recolored": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "block_index": 4,
+      "family": "attraction",
+      "context": "application",
+      "frame_color": "cyan",
+      "trials": [
+        {
+          "imgs": [
+            "stimuli/attraction.floating_blocks/attraction.floating_blocks.t6.combined.png",
+            "stimuli/attraction.floating_blocks/attraction.floating_blocks.t42.combined.png"
+          ],
+          "family": "attraction",
+          "rule": "floating_blocks",
+          "correct": "",
+          "stimuli": [
+            {
+              "id": "attraction.floating_blocks.t6",
+              "params": {
+                "event": "floating",
+                "condition": "movement",
+                "stimulus": "big_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            },
+            {
+              "id": "attraction.floating_blocks.t42",
+              "params": {
+                "event": "floating",
+                "condition": "movement",
+                "stimulus": "big_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/attraction.floating_blocks/attraction.floating_blocks.t11.combined.png",
+            "stimuli/attraction.floating_blocks/attraction.floating_blocks.t34.combined.png"
+          ],
+          "family": "attraction",
+          "rule": "floating_blocks",
+          "correct": "same",
+          "stimuli": [
+            {
+              "id": "attraction.floating_blocks.t11",
+              "params": {
+                "event": "floating",
+                "condition": "movement",
+                "stimulus": "big_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            },
+            {
+              "id": "attraction.floating_blocks.t34",
+              "params": {
+                "event": "floating",
+                "condition": "movement",
+                "stimulus": "big_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/attraction.floating_blocks/attraction.floating_blocks.t41.combined.png",
+            "stimuli/attraction.floating_blocks/attraction.floating_blocks.t20.combined.png"
+          ],
+          "family": "attraction",
+          "rule": "floating_blocks",
+          "correct": "same",
+          "stimuli": [
+            {
+              "id": "attraction.floating_blocks.t41",
+              "params": {
+                "event": "floating",
+                "condition": "movement",
+                "stimulus": "big_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            },
+            {
+              "id": "attraction.floating_blocks.t20",
+              "params": {
+                "event": "floating",
+                "condition": "movement",
+                "stimulus": "big_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/attraction.color_attraction/attraction.color_attraction.t5.combined.png",
+            "stimuli/attraction.color_attraction/attraction.color_attraction.t23.combined.png"
+          ],
+          "family": "attraction",
+          "rule": "color_attraction",
+          "correct": "different",
+          "stimuli": [
+            {
+              "id": "attraction.color_attraction.t5",
+              "params": {
+                "event": "attraction",
+                "condition": [
+                  "color",
+                  "movement"
+                ],
+                "stimulus": "big_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2,
+                "bigger_block": "red"
+              }
+            },
+            {
+              "id": "attraction.color_attraction.t23",
+              "params": {
+                "event": "attraction",
+                "condition": [
+                  "color",
+                  "movement"
+                ],
+                "stimulus": "big_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2,
+                "bigger_block": "blue"
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/attraction.falling_blocks/attraction.falling_blocks.t21.combined.png",
+            "stimuli/attraction.falling_blocks/attraction.falling_blocks.t25.combined.png"
+          ],
+          "family": "attraction",
+          "rule": "falling_blocks",
+          "correct": "different",
+          "stimuli": [
+            {
+              "id": "attraction.falling_blocks.t21",
+              "params": {
+                "event": "falling",
+                "condition": "movement",
+                "stimulus": "big_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            },
+            {
+              "id": "attraction.falling_blocks.t25",
+              "params": {
+                "event": "falling",
+                "condition": "movement",
+                "stimulus": "big_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/attraction.floating_blocks/attraction.floating_blocks.t43.combined.png",
+            "stimuli/attraction.floating_blocks/attraction.floating_blocks.t31.combined.png"
+          ],
+          "family": "attraction",
+          "rule": "floating_blocks",
+          "correct": "same",
+          "stimuli": [
+            {
+              "id": "attraction.floating_blocks.t43",
+              "params": {
+                "event": "floating",
+                "condition": "movement",
+                "stimulus": "big_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            },
+            {
+              "id": "attraction.floating_blocks.t31",
+              "params": {
+                "event": "floating",
+                "condition": "movement",
+                "stimulus": "big_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/attraction.floating_blocks/attraction.floating_blocks.t12.combined.png",
+            "stimuli/attraction.floating_blocks/attraction.floating_blocks.t30.combined.png"
+          ],
+          "family": "attraction",
+          "rule": "floating_blocks",
+          "correct": "same",
+          "stimuli": [
+            {
+              "id": "attraction.floating_blocks.t12",
+              "params": {
+                "event": "floating",
+                "condition": "movement",
+                "stimulus": "big_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            },
+            {
+              "id": "attraction.floating_blocks.t30",
+              "params": {
+                "event": "floating",
+                "condition": "movement",
+                "stimulus": "big_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/attraction.size_attraction/attraction.size_attraction.t11.combined.png",
+            "stimuli/attraction.size_attraction/attraction.size_attraction.t44.combined.png"
+          ],
+          "family": "attraction",
+          "rule": "size_attraction",
+          "correct": "different",
+          "stimuli": [
+            {
+              "id": "attraction.size_attraction.t11",
+              "params": {
+                "event": "attraction",
+                "condition": [
+                  "shape",
+                  "movement"
+                ],
+                "stimulus": "big_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2,
+                "bigger_block": "red"
+              }
+            },
+            {
+              "id": "attraction.size_attraction.t44",
+              "params": {
+                "event": "attraction",
+                "condition": [
+                  "shape",
+                  "movement"
+                ],
+                "stimulus": "big_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2,
+                "bigger_block": "blue"
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/attraction.color_repulsion/attraction.color_repulsion.t27.combined.png",
+            "stimuli/attraction.color_repulsion/attraction.color_repulsion.t18.combined.png"
+          ],
+          "family": "attraction",
+          "rule": "color_repulsion",
+          "correct": "different",
+          "stimuli": [
+            {
+              "id": "attraction.color_repulsion.t27",
+              "params": {
+                "event": "repulsion",
+                "condition": [
+                  "color",
+                  "movement"
+                ],
+                "stimulus": "big_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            },
+            {
+              "id": "attraction.color_repulsion.t18",
+              "params": {
+                "event": "repulsion",
+                "condition": [
+                  "color",
+                  "movement"
+                ],
+                "stimulus": "big_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "block_index": 5,
+      "family": "occlusion",
+      "context": "inference",
+      "frame_color": "yellow",
+      "trials": [
+        {
+          "imgs": [
+            "stimuli/occlusion.mirror_y/occlusion.mirror_y.t12.combined.png",
+            "stimuli/occlusion.mirror_y/occlusion.mirror_y.t47.combined.png"
+          ],
+          "family": "occlusion",
+          "rule": "mirror_y",
+          "correct": "",
+          "stimuli": [
+            {
+              "id": "occlusion.mirror_y.t12",
+              "params": {
+                "event": "mirror",
+                "condition": "shape",
+                "stimulus": "occluding_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            },
+            {
+              "id": "occlusion.mirror_y.t47",
+              "params": {
+                "event": "mirror",
+                "condition": "shape",
+                "stimulus": "occluding_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/occlusion.mirror_y/occlusion.mirror_y.t42.combined.png",
+            "stimuli/occlusion.mirror_y/occlusion.mirror_y.t19.combined.png"
+          ],
+          "family": "occlusion",
+          "rule": "mirror_y",
+          "correct": "same",
+          "stimuli": [
+            {
+              "id": "occlusion.mirror_y.t42",
+              "params": {
+                "event": "mirror",
+                "condition": "shape",
+                "stimulus": "occluding_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            },
+            {
+              "id": "occlusion.mirror_y.t19",
+              "params": {
+                "event": "mirror",
+                "condition": "shape",
+                "stimulus": "occluding_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/occlusion.rotate_180/occlusion.rotate_180.t20.combined.png",
+            "stimuli/occlusion.rotate_180/occlusion.rotate_180.t24.combined.png"
+          ],
+          "family": "occlusion",
+          "rule": "rotate_180",
+          "correct": "different",
+          "stimuli": [
+            {
+              "id": "occlusion.rotate_180.t20",
+              "params": {
+                "event": "rotation",
+                "condition": "shape",
+                "stimulus": "occluding_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            },
+            {
+              "id": "occlusion.rotate_180.t24",
+              "params": {
+                "event": "rotation",
+                "condition": "shape",
+                "stimulus": "occluding_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/occlusion.rotate_90/occlusion.rotate_90.t3.combined.png",
+            "stimuli/occlusion.rotate_90/occlusion.rotate_90.t15.combined.png"
+          ],
+          "family": "occlusion",
+          "rule": "rotate_90",
+          "correct": "different",
+          "stimuli": [
+            {
+              "id": "occlusion.rotate_90.t3",
+              "params": {
+                "event": "rotation",
+                "condition": "shape",
+                "stimulus": "occluding_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            },
+            {
+              "id": "occlusion.rotate_90.t15",
+              "params": {
+                "event": "rotation",
+                "condition": "shape",
+                "stimulus": "occluding_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/occlusion.mirror_x/occlusion.mirror_x.t10.combined.png",
+            "stimuli/occlusion.mirror_x/occlusion.mirror_x.t19.combined.png"
+          ],
+          "family": "occlusion",
+          "rule": "mirror_x",
+          "correct": "different",
+          "stimuli": [
+            {
+              "id": "occlusion.mirror_x.t10",
+              "params": {
+                "event": "mirror",
+                "condition": "shape",
+                "stimulus": "occluding_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            },
+            {
+              "id": "occlusion.mirror_x.t19",
+              "params": {
+                "event": "mirror",
+                "condition": "shape",
+                "stimulus": "occluding_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/occlusion.mirror_x/occlusion.mirror_x.t20.combined.png",
+            "stimuli/occlusion.mirror_x/occlusion.mirror_x.t30.combined.png"
+          ],
+          "family": "occlusion",
+          "rule": "mirror_x",
+          "correct": "same",
+          "stimuli": [
+            {
+              "id": "occlusion.mirror_x.t20",
+              "params": {
+                "event": "mirror",
+                "condition": "shape",
+                "stimulus": "occluding_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            },
+            {
+              "id": "occlusion.mirror_x.t30",
+              "params": {
+                "event": "mirror",
+                "condition": "shape",
+                "stimulus": "occluding_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/occlusion.mirror_x/occlusion.mirror_x.t24.combined.png",
+            "stimuli/occlusion.mirror_x/occlusion.mirror_x.t7.combined.png"
+          ],
+          "family": "occlusion",
+          "rule": "mirror_x",
+          "correct": "same",
+          "stimuli": [
+            {
+              "id": "occlusion.mirror_x.t24",
+              "params": {
+                "event": "mirror",
+                "condition": "shape",
+                "stimulus": "occluding_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            },
+            {
+              "id": "occlusion.mirror_x.t7",
+              "params": {
+                "event": "mirror",
+                "condition": "shape",
+                "stimulus": "occluding_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/occlusion.mirror_x/occlusion.mirror_x.t23.combined.png",
+            "stimuli/occlusion.mirror_x/occlusion.mirror_x.t37.combined.png"
+          ],
+          "family": "occlusion",
+          "rule": "mirror_x",
+          "correct": "same",
+          "stimuli": [
+            {
+              "id": "occlusion.mirror_x.t23",
+              "params": {
+                "event": "mirror",
+                "condition": "shape",
+                "stimulus": "occluding_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            },
+            {
+              "id": "occlusion.mirror_x.t37",
+              "params": {
+                "event": "mirror",
+                "condition": "shape",
+                "stimulus": "occluding_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            }
+          ]
+        },
+        {
+          "imgs": [
+            "stimuli/occlusion.occlusion_reversal/occlusion.occlusion_reversal.t4.combined.png",
+            "stimuli/occlusion.occlusion_reversal/occlusion.occlusion_reversal.t10.combined.png"
+          ],
+          "family": "occlusion",
+          "rule": "occlusion_reversal",
+          "correct": "different",
+          "stimuli": [
+            {
+              "id": "occlusion.occlusion_reversal.t4",
+              "params": {
+                "event": "occlusion_reversal",
+                "condition": "shape",
+                "stimulus": "occluding_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            },
+            {
+              "id": "occlusion.occlusion_reversal.t10",
+              "params": {
+                "event": "occlusion_reversal",
+                "condition": "shape",
+                "stimulus": "occluding_blocks",
+                "colors": [
+                  "red",
+                  "blue"
+                ],
+                "n_objects": 2
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

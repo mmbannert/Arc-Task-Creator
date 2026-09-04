@@ -121,11 +121,13 @@ def generate_falling_blocks(size_range=(2, 6)):
     x2 = rand_between(x1 + w1 + 1, cols - w2)
     y2 = rand_between(1, rows - h2 - 1)
 
-    grid_input.set_rect(col_min=x1, row_min=y1, col_max=x1 + w1 - 1, row_max=y1 + h1 - 1, color=COLORS[0])
-    grid_input.set_rect(col_min=x2, row_min=y2, col_max=x2 + w2 - 1, row_max=y2 + h2 - 1, color=COLORS[1])
+    color_left, color_right = random.sample(COLORS[:2], 2)
 
-    grid_output.set_rect(col_min=x1, row_min=0, col_max=x1 + w1 - 1, row_max=0 + h1 - 1, color=COLORS[0])
-    grid_output.set_rect(col_min=x2, row_min=0, col_max=x2 + w2 - 1, row_max=0 + h2 - 1, color=COLORS[1])
+    grid_input.set_rect(col_min=x1, row_min=y1, col_max=x1 + w1 - 1, row_max=y1 + h1 - 1, color=color_left)
+    grid_input.set_rect(col_min=x2, row_min=y2, col_max=x2 + w2 - 1, row_max=y2 + h2 - 1, color=color_right)
+
+    grid_output.set_rect(col_min=x1, row_min=0, col_max=x1 + w1 - 1, row_max=0 + h1 - 1, color=color_left)
+    grid_output.set_rect(col_min=x2, row_min=0, col_max=x2 + w2 - 1, row_max=0 + h2 - 1, color=color_right)
 
     params = make_params(
         event="falling",

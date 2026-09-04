@@ -4,15 +4,11 @@ from src.config import COLORS
 from src.rules._common import make_grids, make_params
 from src.util import rand_between
 
-
 SHAPE_DIRECTIONS = {
     "plus": ((0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)),
     "cross": ((0, 0), (1, 1), (1, -1), (-1, 1), (-1, -1)),
 }
 
-# TODO: at least once provide:
-#  1. same shapes different color.
-#  2. touching edge shapes different color.
 
 def generate_color_inversion(object_num=(3, 4)):
     grid_input, grid_output, placed = _generate_cross_plus_input(object_num)
@@ -108,8 +104,8 @@ def _generate_cross_plus_input(object_num):
             ]
 
             if (
-                _has_same_shape_different_colors(colored)
-                and _has_touching_different_colors(colored)
+                    _has_same_shape_different_colors(colored)
+                    and _has_touching_different_colors(colored)
             ):
                 break
 
@@ -175,6 +171,7 @@ def _has_touching_pair_and_isolated_object(placed):
                 touched[j] = True
 
     return any(touched) and any(not is_touched for is_touched in touched)
+
 
 def _has_same_shape_different_colors(placed):
     return any(

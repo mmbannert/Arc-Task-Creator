@@ -4,7 +4,6 @@ from src.config import COLORS
 from src.rules._common import make_grids, make_params
 from src.util import rand_between
 
-
 SHAPE_DIRECTIONS = {
     "plus": ((0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)),
     "cross": ((0, 0), (1, 1), (1, -1), (-1, 1), (-1, -1)),
@@ -16,7 +15,7 @@ def generate_color_inversion(object_num=(3, 4)):
 
     for _, cells, color in placed:
         output_color = COLORS[1] if color == COLORS[0] else COLORS[0]
-        grid_output.fill_multiple_cells(cells, output_color)
+        grid_output.set_multi_cells(cells, output_color)
 
     params = make_params(
         event="recoloring",
@@ -40,7 +39,7 @@ def generate_touching_edges_recolor(object_num=(3, 4)):
         )
 
         output_color = COLORS[0] if touches_other else COLORS[1]
-        grid_output.fill_multiple_cells(cells, output_color)
+        grid_output.set_multi_cells(cells, output_color)
 
     params = make_params(
         event="recoloring",
@@ -62,7 +61,7 @@ def generate_shape_color_mapping(object_num=(3, 4)):
     }
 
     for shape, cells, _ in placed:
-        grid_output.fill_multiple_cells(cells, shape_colors[shape])
+        grid_output.set_multi_cells(cells, shape_colors[shape])
 
     params = make_params(
         event="recoloring",
@@ -77,9 +76,11 @@ def generate_shape_color_mapping(object_num=(3, 4)):
 
 def _generate_cross_plus_input(object_num):
     """
-    Generate randomly colored cross/plus objects while guaranteeing:
-    - at least one pair of touching objects
+    Generate cross/plus objects guaranteeing:
+    - at least one touching pair
     - at least one isolated object
+    - same-shaped objects with different colors
+    - touching objects with different colors
     """
     while True:
         n_objects = rand_between(*object_num)
@@ -96,18 +97,26 @@ def _generate_cross_plus_input(object_num):
         if not _has_touching_pair_and_isolated_object(placed):
             continue
 
-        colored = []
+        while True:
+            colored = [
+                (shape, cells, random.choice(COLORS[:2]))
+                for shape, cells in placed
+            ]
 
-        for shape, cells in placed:
-            color = random.choice(COLORS[:2])
-            grid_input.fill_multiple_cells(cells, color)
-            colored.append((shape, cells, color))
+            if (
+                    _has_same_shape_different_colors(colored)
+                    and _has_touching_different_colors(colored)
+            ):
+                break
+
+        for _, cells, color in colored:
+            grid_input.set_multi_cells(cells, color)
 
         return grid_input, grid_output, colored
 
 
 def _place_cross_plus_objects(grid, n_objects):
-    candidates = grid.interior_cells()
+    candidates = grid.get_interior_cells()
     random.shuffle(candidates)
 
     used = set()
@@ -162,3 +171,19 @@ def _has_touching_pair_and_isolated_object(placed):
                 touched[j] = True
 
     return any(touched) and any(not is_touched for is_touched in touched)
+
+
+def _has_same_shape_different_colors(placed):
+    return any(
+        shape1 == shape2 and color1 != color2
+        for i, (shape1, _, color1) in enumerate(placed)
+        for shape2, _, color2 in placed[i + 1:]
+    )
+
+
+def _has_touching_different_colors(placed):
+    return any(
+        color1 != color2 and _objects_touch(cells1, cells2)
+        for i, (_, cells1, color1) in enumerate(placed)
+        for _, cells2, color2 in placed[i + 1:]
+    )

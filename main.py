@@ -1,15 +1,7 @@
-import random
 from pathlib import Path
-
-from src.visualize import save_grid, save_combined_grids
 from src.stimulus import Stimulus
 from src.util import append_jsonl, next_idx
-
-from src.rules.recolor import (
-    generate_shape_color_mapping,
-    generate_touching_edges_recolor,
-    generate_color_inversion
-)
+from src.visualize import save_combined_grids
 
 from src.rules.arithmetic import (
     generate_minority_takeover,
@@ -18,16 +10,20 @@ from src.rules.arithmetic import (
     generate_increment_majority_color,
     generate_increment_minority_color
 )
-
+from src.rules.attraction import (
+    generate_color_attraction,
+    generate_size_attraction,
+    generate_color_repulsion,
+    generate_falling_blocks,
+    generate_floating_blocks,
+)
 from src.rules.expansion import (
     generate_star_expansion_single_step,
     generate_star_expansion_ray,
     generate_plus_expansion_single_step,
     generate_plus_expansion_ray,
-    generate_3arm_star_expansion_ray,
-    generate_8_arm_star_expansion_ray
+    generate_3arm_star_expansion_ray
 )
-
 from src.rules.occlusion import (
     generate_occlusion_reversal,
     generate_occlusion_mirror_x,
@@ -35,14 +31,10 @@ from src.rules.occlusion import (
     generate_occlusion_rotate_90,
     generate_occlusion_rotate_180,
 )
-
-from src.rules.attraction import (
-    generate_color_attraction,
-    generate_size_attraction,
-    generate_color_repulsion,
-    generate_falling_blocks,
-    generate_float,
-    generate_falling_dots,
+from src.rules.recolor import (
+    generate_shape_color_mapping,
+    generate_touching_edges_recolor,
+    generate_color_inversion
 )
 
 
@@ -56,7 +48,7 @@ def main(N):
         "attraction.color_attraction": generate_color_attraction,
         "attraction.size_attraction": generate_size_attraction,
         "attraction.falling_blocks": generate_falling_blocks,
-        "attraction.float": generate_float,
+        "attraction.floating_blocks": generate_floating_blocks,
         "attraction.color_repulsion": generate_color_repulsion,
         "expansion.star_step": generate_star_expansion_single_step,
         "expansion.star_ray": generate_star_expansion_ray,
@@ -84,19 +76,11 @@ def _generate_stimulus(rule: str, gen, out_root: str = "out") -> None:
     jsonl_path = base / "stimuli.jsonl"
 
     idx = next_idx(jsonl_path)
-
     produced = gen()
+
     inp, out, params = (*produced, {})[:3]
-
     stim_id = f"{rule}.t{idx}"
-    p_in = base / f"{stim_id}.input.png"
-    p_out = base / f"{stim_id}.output.png"
     p_comb = base / f"{stim_id}.combined.png"
-
-    # Separate stimuli currently not needed. Useful when participant picks correct output from multiple options.
-    # save_grid(inp, str(p_in))
-    # save_grid(out, str(p_out))
-
     save_combined_grids(inp, out, str(p_comb))
 
     family = rule.split(".", 1)[0]
@@ -114,4 +98,4 @@ def _generate_stimulus(rule: str, gen, out_root: str = "out") -> None:
 
 
 if __name__ == "__main__":
-    main(40)
+    main(10)

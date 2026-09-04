@@ -41,13 +41,13 @@ def resolve_color(name):
 
 def _draw_grid(ax, grid):
     rgb_grid = np.array([
-        [resolve_color(grid.get(row, col)) for col in range(grid.cols)]
+        [resolve_color(grid.get_cell(row, col)) for col in range(grid.cols)]
         for row in range(grid.rows)
     ])
 
     ax.imshow(
         rgb_grid,
-        origin="lower",
+        origin="lower",  # so its like coordinate system (x = col, y = row)
         interpolation="none",
         extent=(0, grid.cols, 0, grid.rows),
     )

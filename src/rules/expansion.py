@@ -57,9 +57,9 @@ def _generate_expansion(object_count_range, directions, mode):
     grid_input, grid_output = make_grids()
 
     n = rand_between(*object_count_range)
-    centers = random.sample(grid_input.interior_cells(), n)
+    centers = random.sample(grid_input.get_interior_cells(), n)
 
-    grid_input.fill_multiple_cells(centers, COLORS[0])
+    grid_input.set_multi_cells(centers, COLORS[0])
 
     if mode == "step":
         _apply_single_step(grid_output, centers, directions)
@@ -72,7 +72,7 @@ def _generate_expansion(object_count_range, directions, mode):
     else:
         raise ValueError(f"Unknown expansion mode: {mode}")
 
-    grid_output.fill_multiple_cells(centers, COLORS[0])
+    grid_output.set_multi_cells(centers, COLORS[0])
 
     params = make_params(
         event="expansion",
@@ -88,7 +88,7 @@ def _generate_expansion(object_count_range, directions, mode):
 def _apply_single_step(grid_output, centers, directions):
     for row, col in centers:
         for d_row, d_col in directions:
-            grid_output.fill_cell(row + d_row, col + d_col, COLORS[1])
+            grid_output.set_cell(row + d_row, col + d_col, COLORS[1])
 
 
 def _apply_ray(grid_output, centers, directions):
@@ -100,6 +100,6 @@ def _apply_ray(grid_output, centers, directions):
             current_col = col + d_col
 
             while 0 <= current_row < rows and 0 <= current_col < cols:
-                grid_output.fill_cell(current_row, current_col, COLORS[1])
+                grid_output.set_cell(current_row, current_col, COLORS[1])
                 current_row += d_row
                 current_col += d_col

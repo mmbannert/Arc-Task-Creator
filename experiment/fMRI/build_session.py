@@ -13,7 +13,7 @@ from pathlib import Path
 
 if __name__ == "__main__":
 
-    stimulus_dataset_dir: str = "out"  # rename the folder later
+    stimulus_dataset_dir: str = "stimuli"  # rename the folder later
     output_dir: str = "."
     participant: str = "p01"  # must be "pXX" where X is a digit
 

@@ -193,30 +193,20 @@ end
 
 
 function [hint, leftText, rightText] = context_trial_text(context, trialIndex)
-    isInitialTrial = (trialIndex == 1);
 
     switch context
         case 'inference'
-            if isInitialTrial
-                hint = "First rule";
-                leftText = "←   Ready";
-                rightText = "Ready   →";
-            else
-                hint = "Previous rule";
-                leftText = "←   Same";
-                rightText = "Different   →";
-            end
-
+            hint = "Previous";
         case 'application'
-            if isInitialTrial
-                hint = "Memorize this rule";
-                leftText = "←   Ready";
-                rightText = "Ready   →";
-            else
-                hint = "Memorized rule";
-                leftText = "←   Same";
-                rightText = "Different   →";
-            end
+            hint = "First";
+    end
+
+    if trialIndex == 1
+        leftText = "←   Ready";
+        rightText = "Ready   →";
+    else
+        leftText = "←   Same";
+        rightText = "Different   →";
     end
 end
 

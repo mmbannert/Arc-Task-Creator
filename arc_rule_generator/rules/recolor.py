@@ -1,8 +1,6 @@
 import random
 
-from src.config import COLORS
-from src.rules._common import make_grids, make_params
-from src.util import rand_between
+from arc_rule_generator.rules._common import make_grids, make_params, rand_between, COLORS
 
 SHAPE_DIRECTIONS = {
     "plus": ((0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)),

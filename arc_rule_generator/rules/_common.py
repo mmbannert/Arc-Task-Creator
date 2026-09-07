@@ -1,5 +1,15 @@
-from src.grid import Grid
-from src.config import GRID_SIZE
+import random
+
+from arc_rule_generator.grid import Grid
+
+
+GRID_SIZE = (12, 12)
+
+COLORS = (
+    "red",
+    "blue",
+    "gray"
+)
 
 
 def make_grids():
@@ -16,3 +26,6 @@ def make_params(event, condition, stimulus, colors, n_objects, **extra):
         "n_objects": n_objects,
         **extra
     }
+
+def rand_between(a, b):
+    return random.randint(a, b) if a < b else a

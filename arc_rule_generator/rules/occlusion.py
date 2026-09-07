@@ -1,7 +1,6 @@
 import random
 
-from src.config import COLORS, GRID_SIZE
-from src.rules._common import make_params, make_grids
+from arc_rule_generator.rules._common import make_params, make_grids, COLORS, GRID_SIZE
 
 
 def generate_occlusion_mirror_x(size_range=(2, 5)):

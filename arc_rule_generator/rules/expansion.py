@@ -1,8 +1,8 @@
 import random
 
-from src.util import rand_between
-from src.rules._common import make_grids, make_params
-from src.config import COLORS
+from arc_rule_generator.util import rand_between
+from arc_rule_generator.rules._common import make_grids, make_params
+from arc_rule_generator.config import COLORS
 
 
 def generate_star_expansion_single_step(star_num=(1, 4)):

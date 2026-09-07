@@ -1,37 +1,37 @@
 from pathlib import Path
-from src.stimulus import Stimulus
-from src.util import append_jsonl, next_idx
-from src.visualize import save_combined_grids
+from stimulus import Stimulus
+from util import append_jsonl, next_idx
+from visualize import save_combined_grids
 
-from src.rules.arithmetic import (
+from rules.arithmetic import (
     generate_minority_takeover,
     generate_majority_takeover,
     generate_equalize_colors,
     generate_increment_majority_color,
     generate_increment_minority_color
 )
-from src.rules.attraction import (
+from rules.attraction import (
     generate_color_attraction,
     generate_size_attraction,
     generate_color_repulsion,
     generate_falling_blocks,
     generate_floating_blocks,
 )
-from src.rules.expansion import (
+from rules.expansion import (
     generate_star_expansion_single_step,
     generate_star_expansion_ray,
     generate_plus_expansion_single_step,
     generate_plus_expansion_ray,
     generate_3arm_star_expansion_ray
 )
-from src.rules.occlusion import (
+from rules.occlusion import (
     generate_occlusion_reversal,
     generate_occlusion_mirror_x,
     generate_occlusion_mirror_y,
     generate_occlusion_rotate_90,
     generate_occlusion_rotate_180,
 )
-from src.rules.recolor import (
+from rules.recolor import (
     generate_shape_color_mapping,
     generate_touching_edges_recolor,
     generate_color_inversion

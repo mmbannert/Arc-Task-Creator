@@ -1,8 +1,8 @@
 import random
 
-from src.rules._common import make_grids, make_params
-from src.config import COLORS
-from src.util import rand_between
+from arc_rule_generator.rules._common import make_grids, make_params
+from arc_rule_generator.config import COLORS
+from arc_rule_generator.util import rand_between
 
 
 def generate_majority_takeover(count_range=(1, 6)):

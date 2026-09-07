@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt
 
-from src.config import COLOR_VALUES
+from config import COLOR_VALUES
 
 
 def save_combined_grids(grid1, grid2, save_path="combined.png"):

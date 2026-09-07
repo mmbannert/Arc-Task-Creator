@@ -1,5 +1,5 @@
-from src.grid import Grid
-from src.config import GRID_SIZE
+from arc_rule_generator.grid import Grid
+from arc_rule_generator.config import GRID_SIZE
 
 
 def make_grids():

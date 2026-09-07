@@ -76,7 +76,7 @@ def main(n):
             generate_stimulus(rule, generator)
 
 
-def generate_stimulus(rule, generator, out_root="out"):
+def generate_stimulus(rule, generator, out_root="stimuli"):
     base = Path(out_root) / rule
     base.mkdir(parents=True, exist_ok=True)
 
@@ -100,4 +100,4 @@ def generate_stimulus(rule, generator, out_root="out"):
 
 
 if __name__ == "__main__":
-    main(10)
+    main(5)

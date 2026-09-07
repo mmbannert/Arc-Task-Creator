@@ -1,16 +1,13 @@
-from __future__ import annotations
-
 from dataclasses import dataclass, asdict
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 
 @dataclass(frozen=True)
 class Stimulus:
     id: str
-    rule: str  # e.g. "cross_plus_recolor"
-    family: str  # e.g. "color" (inferred)
-    params: Dict[str, Any]
+    rule: str  # e.g. "color_inversion"
+    family: str  # e.g. "recolor"
+    params: dict[str, Any]
 
-    def to_json_dict(self) -> Dict[str, Any]:
-        d = asdict(self)
-        return d
+    def to_json_dict(self) -> dict[str, Any]:
+        return asdict(self)

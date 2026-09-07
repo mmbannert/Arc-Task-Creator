@@ -1,9 +1,7 @@
 import random
 
-from arc_rule_generator.config import COLORS
-from arc_rule_generator.rules._common import make_grids, make_params
+from arc_rule_generator.rules._common import make_grids, make_params, rand_between, COLORS
 from arc_rule_generator.grid import Grid
-from arc_rule_generator.util import rand_between
 
 
 def generate_color_attraction(size_range=(2, 5)):

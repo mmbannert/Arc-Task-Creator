@@ -1,0 +1,129 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{caption}
+\usepackage[most]{tcolorbox}
+\usepackage{float}
+\usepackage[a4paper,
+  top=3.1cm,
+  bottom=3.2cm,
+  left=3cm,
+  right=3cm
+]{geometry}
+\directlua{dofile("catalogue.lua")}
+
+\newlength{\cataloguewidth}
+\setlength{\cataloguewidth}{\textwidth}
+
+\newcommand{\ruleexamples}[2]{
+\begin{center}
+\begin{tabular}{cc}
+\includegraphics[width=0.35\textwidth]{#1} &
+\includegraphics[width=0.35\textwidth]{#2}
+\end{tabular}
+\end{center}
+}
+
+\newtcolorbox{excludedrule}{
+    colback=black!5,
+    colframe=black!20,
+    coltext=black!45,
+    boxrule=0.5pt,
+    arc=1mm,
+    left=6pt,
+    right=6pt,
+    top=5pt,
+    bottom=5pt,
+    before skip=3pt,
+    after skip=3pt
+}
+
+
+\newcommand{\rulemeta}[3]{
+\smallskip\\
+\textcolor{orange}{Event:} #1 \quad
+\textcolor{orange}{Condition:} #2 \quad
+\textcolor{orange}{Stimulus:} #3
+}
+
+
+\title{Experiment Design and Rule Catalog}
+\author{}
+\date{}
+
+\begin{document}
+
+
+\vspace*{-2cm}
+{\let\newpage\relax\maketitle}
+
+\vspace*{-1cm}
+\section*{Design}
+
+The experiment consists of six sessions with five blocks each, one per rule family: Arithmetic, Attraction, Recoloring, Expansion, and Occlusion.
+
+Each block contains one rule family and one of two contexts (Figure \ref{fig:task-contexts}):
+
+\begin{itemize}
+    \item \textbf{Previous rule (Inference):} compare the current rule with the rule from the previous trial.
+    \item \textbf{First/Memorized rule (Application):} compare the current rule with the rule introduced at the start of the block.
+\end{itemize}
+
+Each trial presents two examples of the same hidden rule. A block contains one initial rule trial followed by eight same/different decisions, balanced to four \textit{same} and four \textit{different} trials with a maximum run length of three identical responses.
+
+Contexts alternate within sessions and the starting context alternates across sessions. Rule families are assigned such that each family occurs equally often in both contexts across the six sessions.
+
+Frame color is counterbalanced across participants: Variant A (odd participant numbers) uses yellow for Inference and cyan for Application; Variant B (even participant numbers) reverses this mapping.
+
+Trials last 10\,s and each block is preceded by 10\,s fixation. Including the final fixation and 10\,s of dummy scans (e.g. TR = 2\,s), each session requires 520\,s (8\,min 40\,s; 260 volumes).
+
+\newpage
+\newgeometry{top=3cm,bottom=3cm,left=1.2cm,right=1.2cm}
+\thispagestyle{empty}
+
+\begin{figure}[H]
+\centering
+
+{\large\bfseries Application / Memorized rule}
+
+\medskip
+
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{cc}
+\includegraphics[width=0.49\textwidth]{images/memorize_first_rule.png} &
+\includegraphics[width=0.49\textwidth]{images/memorize_different.png} \\
+\small Initial trial &
+\small Decision trial
+\end{tabular}
+
+\vfill
+
+\vspace{1cm}
+
+{\large\bfseries Inference / Previous rule}
+
+\medskip
+
+\begin{tabular}{cc}
+\includegraphics[width=0.49\textwidth]{images/first_rule.png} &
+\includegraphics[width=0.49\textwidth]{images/previous_same.png} \\
+\small Initial trial &
+\small Decision trial
+\end{tabular}
+
+\vspace{0.2cm}
+
+\caption{Example screens for the two experimental contexts (Variant A).}
+\label{fig:task-contexts}
+\end{figure}
+
+\newpage
+\restoregeometry
+
+
+\directlua{render_catalogue("images")}
+
+
+\end{document}

@@ -1,0 +1,251 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,top=1.8cm,bottom=1.8cm,left=2.2cm,right=2.2cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{etoolbox}
+\usepackage{titlesec}
+\usepackage{parskip}
+\usepackage{float}
+\usepackage[hidelinks]{hyperref}
+\usepackage[most]{tcolorbox}
+
+% ------------------------------------------------------------
+% COLORS
+% ------------------------------------------------------------
+
+\definecolor{accent}{HTML}{2E5A88}
+\definecolor{lightaccent}{HTML}{EEF4F9}
+
+\titleformat{\section}
+{\large\bfseries\color{accent}}
+{}
+{0pt}
+{}
+
+\titlespacing{\section}{0pt}{12pt}{5pt}
+
+% ============================================================
+% PARTICIPANT VERSION
+%
+% Version A:
+%   Previous rule = Yellow
+%   Memorized rule = Cyan
+%
+% Version B:
+%   Previous rule = Cyan
+%   Memorized rule = Yellow
+%
+% Set to A for odd participant numbers (p01, p03, ...)
+% Set to B for even participant numbers (p02, p04, ...)
+\providecommand{\ParticipantVersion}{A}
+
+\definecolor{colYellow}{HTML}{FFF200}
+\definecolor{colCyan}{HTML}{00E5E5}
+
+\newcommand{\VersionTag}{}
+\newcommand{\PrevColorName}{}
+\newcommand{\PrevColorHex}{}
+\newcommand{\MemColorName}{}
+\newcommand{\MemColorHex}{}
+
+\ifdefstring{\ParticipantVersion}{A}{
+\renewcommand{\VersionTag}{Version A}
+\renewcommand{\PrevColorName}{Yellow}
+\renewcommand{\PrevColorHex}{colYellow}
+\renewcommand{\MemColorName}{Cyan}
+\renewcommand{\MemColorHex}{colCyan}
+}{
+\ifdefstring{\ParticipantVersion}{B}{
+\renewcommand{\VersionTag}{Version B}
+\renewcommand{\PrevColorName}{Cyan}
+\renewcommand{\PrevColorHex}{colCyan}
+\renewcommand{\MemColorName}{Yellow}
+\renewcommand{\MemColorHex}{colYellow}
+}{
+\PackageError{Task_Instructions}
+{Unknown \string\ParticipantVersion\space value "\ParticipantVersion" --- must be A or B}
+{Set \string\ParticipantVersion\space to A or B.}
+}
+}
+
+% ------------------------------------------------------------
+% COLOR SWATCH
+% ------------------------------------------------------------
+
+\newcommand{\swatch}[1]{%
+\tikz[baseline=-0.6ex]{
+\fill[#1] (0,0) rectangle (0.5cm,0.4cm);
+\draw[black!40] (0,0) rectangle (0.5cm,0.4cm);
+}%
+}
+
+% ------------------------------------------------------------
+% OVERVIEW BOX
+% ------------------------------------------------------------
+
+\newtcolorbox{overviewbox}{
+colback=lightaccent,
+colframe=accent,
+boxrule=0.7pt,
+arc=2mm,
+left=8pt,
+right=8pt,
+top=8pt,
+bottom=8pt
+}
+
+% ------------------------------------------------------------
+% BLOCK TYPE BOXES
+% ------------------------------------------------------------
+
+\newtcolorbox{prevbox}{
+    colback=\PrevColorHex!10!white,
+    colframe=\PrevColorHex!70!black,
+    boxrule=1pt,
+    arc=2mm,
+    left=8pt,
+    right=8pt,
+    top=7pt,
+    bottom=7pt
+}
+
+\newtcolorbox{membox}{
+    colback=\MemColorHex!10!white,
+    colframe=\MemColorHex!70!black,
+    boxrule=1pt,
+    arc=2mm,
+    left=8pt,
+    right=8pt,
+    top=7pt,
+    bottom=7pt
+}
+
+\pagestyle{plain}
+
+\begin{document}
+
+{\LARGE\bfseries Instructions}\par
+\vspace{4pt}
+{\color{accent}\rule{\linewidth}{1pt}}
+
+\vspace{8pt}
+
+Welcome to our experiment! We are grateful for your support of our research.
+
+
+\vspace{0.4cm}
+
+\begin{overviewbox}
+In this experiment, you will \textbf{infer rules} from transformations shown in before-and-after pictures %(see Figure 1) 
+and decide whether the underlying rule is the same or different across new examples.
+\end{overviewbox}
+
+\vspace{0.4cm}
+
+The experiment is organised in multiple blocks consisting of several trials. Each block starts with the presentation of two matrix pairs consisting of coloured shapes. Each matrix pair shows a before-and-after transformation (see Figure 1). Your goal is to \textbf{infer the rule that transforms the matrix} on the left-hand side into the matrix shown on the right. Within each trial, both matrix pairs are examples of the same underlying rule. This means, you will never see examples of two different rules on the screen at the same time. Use both examples together to infer the transformation rule.
+
+\vspace{0.6cm}
+
+The following trials will present two new matrix pairs. Depending on the frame colour, perform one of the following tasks: 
+
+\vspace{0.2cm}
+
+\begin{prevbox}
+\textbf{\PrevColorName\ frame --- ``Previous''}
+
+Do the two matrix pairs represent examples of the same rule \textit{you saw in the \underline{previous} trial}?
+
+\vspace{0.2cm}
+{
+
+\centering
+\textbf{Press left for "Same", press right for "Different"}.
+
+}
+
+\vspace{0.2cm}
+
+
+Figure 2 shows matrix pairs that represent the \textit{same} rule. The correct response would therefore be "Same". 
+
+Figure 3 on the other hand shows matrix pairs that represent a \textit{different} rule. The correct answer would therefore be "Different". If the rule is different, infer the new rule that transforms the matrices. This rule should now be retained in memory and be used for comparison in the next trial (Figure 5).
+
+\end{prevbox}
+
+\vspace{0.2cm}
+
+\begin{membox}
+\textbf{\MemColorName\ frame --- ``First''}
+
+Do the two matrix pairs represent examples of the same rule \textit{you saw \underline{at the beginning} of this block}? 
+
+\vspace{0.2cm}
+{
+
+\centering
+\textbf{Press left for "Same", press right for "Different"}.
+
+}
+
+\vspace{0.2cm}
+
+
+Wait for the next trial to start -- do not update the rule that you are keeping in your memory. Each comparison within this block is therefore done with respect to the rule shown at the beginning of the block (Figure 4).
+
+\end{membox}
+
+\vspace{0.2cm}
+To sum up, there are \textbf{two kinds of blocks} and the reference rule depends on the block. Pay careful attention to the coloured frame and the hint at the top of the screen to remind you which task you are supposed to carry out.
+\vspace{0.6cm}
+
+You have \textbf{10 seconds} for each decision. If you do not respond in time, the experiment will continue with the next trial and your response will be registered as "wrong".
+
+Between blocks, a cross will appear in the middle of the screen. This is a short rest. Look at the cross and do not press anything.
+
+\newpage
+
+\section{Figures}
+
+\begin{figure}[H]
+\centering
+
+{\large\bfseries Place Holder Figures}
+
+\medskip
+
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{cc}
+\includegraphics[width=0.49\textwidth]{images/memorize_first_rule.png} &
+\includegraphics[width=0.49\textwidth]{images/memorize_different.png} \\
+\small Initial trial &
+\small Decision trial
+\end{tabular}
+
+\vfill
+
+\vspace{1cm}
+
+
+\medskip
+
+\begin{tabular}{cc}
+\includegraphics[width=0.49\textwidth]{images/first_rule.png} &
+\includegraphics[width=0.49\textwidth]{images/previous_same.png} \\
+\small Initial trial &
+\small Decision trial
+\end{tabular}
+
+\vspace{0.2cm}
+
+\caption{Example screens for the two experimental contexts (Variant A).}
+\label{fig:task-contexts}
+\end{figure}
+
+
+\end{document}

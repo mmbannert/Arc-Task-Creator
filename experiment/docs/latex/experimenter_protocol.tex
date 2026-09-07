@@ -1,0 +1,111 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,top=1.8cm,bottom=1.8cm,left=2cm,right=2cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\usepackage{titlesec}
+\usepackage{parskip}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{accent}{HTML}{2E5A88}
+\definecolor{sayfill}{HTML}{EFF4FA}
+\definecolor{sayline}{HTML}{9FB7D4}
+\definecolor{sayhead}{HTML}{34557B}
+\definecolor{notefill}{HTML}{FCEFE3}
+\definecolor{noteline}{HTML}{E3B686}
+\definecolor{notehead}{HTML}{8A4B0B}
+\definecolor{colYellow}{HTML}{FFF200}
+\definecolor{colCyan}{HTML}{00E5E5}
+
+\titleformat{\section}{\Large\bfseries\color{accent}}{\thesection}{0.5em}{}
+\titlespacing{\section}{0pt}{18pt}{8pt}
+\titleformat{\subsection}{\large\bfseries\color{accent!80!black}}{\thesubsection}{0.5em}{}
+\titlespacing{\subsection}{0pt}{14pt}{6pt}
+
+% ---- Reusable boxes ----
+\newtcolorbox{saybox}{
+  breakable, enhanced, colback=sayfill, colframe=sayline,
+  boxrule=0.5pt, arc=1.5pt, left=8pt, right=8pt, top=6pt, bottom=6pt,
+  before skip=8pt, after skip=10pt
+}
+\newcommand{\sayheader}{\textbf{\small\color{sayhead}}\par}
+
+\newtcolorbox{notebox}{
+  breakable, enhanced, colback=notefill, colframe=noteline,
+  boxrule=0.5pt, arc=1.5pt, left=8pt, right=8pt, top=6pt, bottom=6pt,
+  before skip=8pt, after skip=10pt
+}
+\newcommand{\noteheader}[1]{\textbf{\small\color{notehead}#1}\par\vspace{4pt}}
+
+\newcommand{\swatch}[1]{\tikz[baseline=-0.6ex]{\fill[#1] (0,0) rectangle (0.5cm,0.4cm); \draw[black!40] (0,0) rectangle (0.5cm,0.4cm);}}
+
+\pagestyle{plain}
+
+\begin{document}
+
+{\LARGE\bfseries Experimenter Protocol}\par
+\vspace{3pt}
+{\color{accent}\rule{\linewidth}{1pt}}
+
+\section*{1. Colour mapping reference}
+Frame colours swap between the versions. Check which applies to \textbf{this} participant.
+
+\vspace{6pt}
+\noindent
+\begin{tabular}{@{}l c l c l@{}}
+& \multicolumn{2}{c}{``Previous'' blocks} & \multicolumn{2}{c}{``First'' blocks} \\
+\textbf{Version A} (odd participant \#) & \swatch{colYellow} & Yellow & \swatch{colCyan} & Cyan \\
+\textbf{Version B} (even participant \#) & \swatch{colCyan} & Cyan & \swatch{colYellow} & Yellow \\
+\end{tabular}
+
+\section*{2. Before the session}
+Give the participant the \texttt{Task\_Instructions} handout matching their participant number and go through it together and answer any questions. Remind the participant that they can always check the button labels and block hints during the task, so they do not need to memorize them. At this stage, they only need to understand the task correctly. Once the participant understands the task, begin the practice trials and follow the feedback protocol below. 
+
+\section*{3. Feedback protocol during training}
+% \noindent\textbf{If participant asks:}
+% \begin{saybox}
+% \sayheader
+% Yes, that's correct.\\
+
+% No, that one was [same/different].
+% \end{saybox}
+
+% \noindent\textbf{Incorrect:}
+% \begin{saybox}
+% \sayheader
+% No, that one was [same/different].
+% \end{saybox}
+
+% \noindent\textbf{Three wrong in a row, stop and ask:}
+% \begin{saybox}
+% \sayheader
+% Which trial did you compare this pair to?
+% \end{saybox}
+
+\noindent\textbf{If participant mixes up block types:}
+\begin{saybox}
+\sayheader
+Remember, your reference rule depends on the frame color and hint at top.
+
+\textit{(Point to the frame and hint on the screen.)}
+
+Right now you're comparing to the the rule from the [previous trial / first trial of the block].
+%[Yellow/Cyan] and ``Previous'' means compare to the pair you just saw in the previous trial. [Cyan/Yellow] and ``First'' means compare to the very first pair from the start of the block.
+\end{saybox}
+
+\noindent\textbf{If participant compares the two pictures within a trial to each other:}
+\begin{saybox}
+\sayheader
+Remember, the top and bottom picture are always two examples of the same rule.
+\end{saybox}
+\end{document}

@@ -15,6 +15,7 @@ function log = init_log(session,config)
     log.session.number_of_trials_per_block = session.number_of_trials_per_block;
     log.session.number_of_blocks = session.number_of_blocks;
     log.session.number_of_trials_total = session.number_of_trials_total;
+    log.session.button_mapping = session.button_mapping;
     log.session.keys = config.keys;
 
     log.trials = repmat(utilities.log.trial_template(), 0, 1);

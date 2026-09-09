@@ -6,7 +6,7 @@ config = utilities.session.default_config();
 
 try
     session = jsondecode(fileread(sessionPath));
-    keys = utilities.session.setup_keys(config);
+    keys = utilities.session.setup_keys(config, session.button_mapping);
     [window, windowRect] = utilities.screen.setup_window(config);
     textureCache = utilities.session.preload_textures(session, sessionPath, window);
 
@@ -84,7 +84,7 @@ function trial = run_trial(block, trialIndex, trialData)
     utilities.screen.trial_screen( ...
         window, windowRect, block, trialIndex, trialData, textureCache, ...
         keys.sameResponse, keys.differentResponse, keys.escape, ...
-        config.response_time_window);
+        config.response_time_window, session.button_mapping);
 
 
     trial = utilities.log.make_trial( ...

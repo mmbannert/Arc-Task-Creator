@@ -96,20 +96,20 @@ end
 
 function [resp, rt, tOn, allResponses, allRts] = trial_screen( ...
     w, rect, block, trialIndex, trialData, textureCache, ...
-    sameKey, differentKey, escapeKey, duration)
+    sameKey, differentKey, escapeKey, duration, button_mapping)
 
-    utilities.screen.draw_trial(w, rect, block, trialIndex, trialData, textureCache, "");
+    utilities.screen.draw_trial(w, rect, block, trialIndex, trialData, textureCache, "", button_mapping);
     tOn = Screen('Flip', w);
 
     [resp, rt, allResponses, allRts] = utilities.screen.collect_responses( ...
         w, rect, block, trialIndex, trialData, textureCache, ...
-        tOn, duration, sameKey, differentKey, escapeKey);
+        tOn, duration, sameKey, differentKey, escapeKey, button_mapping);
 end
 
 
 function [firstResponse, firstRt, allResponses, allRts] = collect_responses( ...
     w, rect, block, trialIndex, trialData, textureCache, ...
-    tOn, duration, sameKey, differentKey, escapeKey)
+    tOn, duration, sameKey, differentKey, escapeKey, button_mapping)
  
     firstResponse        = "timeout";
     firstRt              = NaN;
@@ -143,22 +143,22 @@ function [firstResponse, firstRt, allResponses, allRts] = collect_responses( ...
         if firstResponse == "timeout"
             firstResponse = response;
             firstRt       = rt;
-            utilities.screen.draw_trial(w, rect, block, trialIndex, trialData, textureCache, response);
+            utilities.screen.draw_trial(w, rect, block, trialIndex, trialData, textureCache, response, button_mapping);
             Screen('Flip', w);
         end
     end
 end
 
-function draw_trial(w, rect, block, trialIndex, trialData, textureCache, selectedResponse)
+function draw_trial(w, rect, block, trialIndex, trialData, textureCache, selectedResponse, button_mapping)
     utilities.screen.clear_screen(w);
     Screen('FrameRect', w, utilities.screen.context_frame_rgb(block.frame_color), rect, 30);
-    utilities.screen.draw_header(w, rect, block.context, trialIndex, selectedResponse);
+    utilities.screen.draw_header(w, rect, block.context, trialIndex, selectedResponse, button_mapping);
     utilities.screen.draw_two_stacked_imgs(w, rect, textureCache, trialData.imgs);
 end
 
 
-function draw_header(w, rect, context, trialIndex, selectedResponse)
-    [hint, leftText, rightText] = utilities.screen.context_trial_text(context, trialIndex);
+function draw_header(w, rect, context, trialIndex, selectedResponse, button_mapping)
+    [hint, leftText, rightText] = utilities.screen.context_trial_text(context, trialIndex, button_mapping);
 
     Screen('TextStyle', w, 1);
     Screen('TextSize', w, 38);
@@ -167,21 +167,23 @@ function draw_header(w, rect, context, trialIndex, selectedResponse)
     Screen('TextStyle', w, 0);
     Screen('TextSize', w, 30);
 
-    utilities.screen.draw_response_tip(w, rect, selectedResponse, leftText, rightText);
+    utilities.screen.draw_response_tip(w, rect, selectedResponse, leftText, rightText, button_mapping);
 end
 
 
 
-function draw_response_tip(w, rect, selectedResponse, leftText, rightText)
+function draw_response_tip(w, rect, selectedResponse, leftText, rightText, button_mapping)
     y = rect(4) * 0.18;
 
     leftColor = [1 1 1];
     rightColor = [1 1 1];
 
+    same_is_left = strcmp(string(button_mapping.same), 'left');  % ← add this
+
     if selectedResponse == "same"
-        leftColor = [1 1 0];
+        if same_is_left, leftColor  = [1 1 0]; else, rightColor = [1 1 0]; end
     elseif selectedResponse == "different"
-        rightColor = [1 1 0];
+        if same_is_left, rightColor = [1 1 0]; else, leftColor  = [1 1 0]; end
     end
 
     centerX = rect(3) / 2;
@@ -192,21 +194,22 @@ function draw_response_tip(w, rect, selectedResponse, leftText, rightText)
 end
 
 
-function [hint, leftText, rightText] = context_trial_text(context, trialIndex)
+function [hint, leftText, rightText] = context_trial_text(context, trialIndex, button_mapping)
 
-    switch context
-        case 'inference'
-            hint = "Previous";
-        case 'application'
-            hint = "First";
+   switch context
+        case 'inference',   hint = "Previous";
+        case 'application', hint = "First";
     end
 
     if trialIndex == 1
-        leftText = "←   Ready";
+        leftText  = "←   Ready";
         rightText = "Ready   →";
-    else
-        leftText = "←   Same";
+    elseif strcmp(string(button_mapping.same), 'left')
+        leftText  = "←   Same";
         rightText = "Different   →";
+    else
+        leftText  = "←   Different";
+        rightText = "Same   →";
     end
 end
 

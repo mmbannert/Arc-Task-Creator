@@ -26,6 +26,12 @@ if __name__ == "__main__":
     else:
         context_frame_colors = {"inference": "yellow", "application": "cyan"}
 
+    # Counterbalance button mapping (same/different → left/right physical buttons)
+    if int(participant.removeprefix("p")) % 2 == 0:
+        button_mapping = {"same": "left", "different": "right"}
+    else:
+        button_mapping = {"same": "right", "different": "left"}
+
     # ------------------------------------------------------------------ #
     # Setup                                                              #
     # ------------------------------------------------------------------ #
@@ -282,6 +288,7 @@ if __name__ == "__main__":
 
         session = {
             "participant": participant,
+            "button_mapping": button_mapping,
             "seed": seed,
             "starting_context": starting_context,
             "number_of_decision_trials_per_block": number_of_decision_trials_per_block,

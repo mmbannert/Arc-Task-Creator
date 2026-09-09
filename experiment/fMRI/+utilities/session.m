@@ -22,8 +22,8 @@ function config = default_config()
     config.native_resolution = [3440, 1440];    % at brunsstr
 
     % ---- response keys ----
-    config.keys.same      = '3#'; % left button. 
-    config.keys.different = '4$'; % right button. 
+    config.keys.left      = '3#'; % index finger.
+    config.keys.right     = '4$'; % middle finger.
     % 3T lab keyboard for RIGHT hand has '4$' on index finger (left-most button) and '3#' on middle finger (second-from-left button).
     % For standard keyboard swap them.
 
@@ -39,11 +39,17 @@ function config = default_config()
 end
 
 
-function keys = setup_keys(config)
+function keys = setup_keys(config, button_mapping)
     KbName('UnifyKeyNames');
  
-    keys.sameResponse      = KbName(config.keys.same);
-    keys.differentResponse = KbName(config.keys.different);
+    if strcmp(string(button_mapping.same), 'left')
+        keys.sameResponse      = KbName(config.keys.left);
+        keys.differentResponse = KbName(config.keys.right);
+    else
+        keys.sameResponse      = KbName(config.keys.right);
+        keys.differentResponse = KbName(config.keys.left);
+    end
+
     keys.escape            = KbName('ESCAPE');
     keys.scannerTrigger    = KbName(config.trigger_key_name);
     keys.response          = [keys.sameResponse keys.differentResponse];

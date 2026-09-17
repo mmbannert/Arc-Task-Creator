@@ -5,12 +5,10 @@ from stimulus import Stimulus
 from visualize import save_combined_grids
 
 from rules.arithmetic import (
-    generate_majority_in_big_overtakes,
-    generate_majority_in_small_overtakes,
-    generate_minority_in_small_overtakes,
-    generate_minority_in_big_overtakes,
+    generate_minority_takeover,
+    generate_majority_takeover,
+    generate_middle_takeover
 )
-
 from rules.attraction import (
     generate_color_attraction,
     generate_size_attraction,
@@ -39,7 +37,7 @@ from rules.recolor import (
 )
 
 
-RULES = {
+RULES_ALL = {
     "occlusion.occlusion_reversal": generate_occlusion_reversal,
     "occlusion.mirror_x": generate_occlusion_mirror_x,
     "occlusion.mirror_y": generate_occlusion_mirror_y,
@@ -58,18 +56,23 @@ RULES = {
     "expansion.plus_ray": generate_plus_expansion_ray,
     "expansion.3_arm_star_ray": generate_3arm_star_expansion_ray,
 
-    "arithmetic.majority_in_big_overtakes": generate_majority_in_big_overtakes,
-    "arithmetic.majority_in_small_overtakes": generate_majority_in_small_overtakes,
-    "arithmetic.minority_in_small_overtakes": generate_minority_in_small_overtakes,
-    "arithmetic.minority_in_big_overtakes": generate_minority_in_big_overtakes,
+    "arithmetic.minority_takeover": generate_minority_takeover,
+    "arithmetic.majority_takeover": generate_majority_takeover,
+    "arithmetic.middle_takeover": generate_middle_takeover,
 
     "recolor.shape_color_mapping": generate_shape_color_mapping,
     "recolor.touching_edges_recolor": generate_touching_edges_recolor,
     "recolor.color_inversion": generate_color_inversion,
 }
 
+RULES_SELECTED = {
+    "recolor.shape_color_mapping": generate_shape_color_mapping,
+    "recolor.touching_edges_recolor": generate_touching_edges_recolor,
+    "recolor.color_inversion": generate_color_inversion,
+}
+
 def main(n):
-    for rule, generator in RULES.items():
+    for rule, generator in RULES_SELECTED.items():
         for _ in range(n):
             generate_stimulus(rule, generator)
 
@@ -98,4 +101,4 @@ def generate_stimulus(rule, generator, out_root="stimuli"):
 
 
 if __name__ == "__main__":
-    main(50)
+    main(3)

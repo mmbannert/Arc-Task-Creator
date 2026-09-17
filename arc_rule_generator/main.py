@@ -69,6 +69,10 @@ RULES_SELECTED = {
     "recolor.shape_color_mapping": generate_shape_color_mapping,
     "recolor.touching_edges_recolor": generate_touching_edges_recolor,
     "recolor.color_inversion": generate_color_inversion,
+
+    "arithmetic.minority_takeover": generate_minority_takeover,
+    "arithmetic.majority_takeover": generate_majority_takeover,
+    "arithmetic.middle_takeover": generate_middle_takeover,
 }
 
 def main(n):
@@ -101,4 +105,4 @@ def generate_stimulus(rule, generator, out_root="stimuli"):
 
 
 if __name__ == "__main__":
-    main(3)
+    main(50)
